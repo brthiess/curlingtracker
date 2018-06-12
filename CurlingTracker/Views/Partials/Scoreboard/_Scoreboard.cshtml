@@ -1,0 +1,18 @@
+@model Event[]
+<section class='scores-section section'>
+	<h2 class='section-header'>Scores</h2>
+	<section class='sub-section'>
+		<div class='scores-sub-section'>
+			@if (Model.Count() > 0) 
+			{
+				Html.RenderPartial("../Partials/Scoreboard/_EventList", Model);
+				Html.RenderPartial("../Partials/Scoreboard/_ScoresAndStandings", Model[0]);
+			}
+			else 
+			{
+				<h3 class='no-games-text'>It appears there are no events to show at this current moment</h3>
+			}
+
+		</div>
+	</section>
+</section>
