@@ -39,3 +39,5 @@
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Shared/Partials/_Modal.g.cshtml.cs
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Shared/Partials/_Navigation.g.cshtml.cs
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Partials/Scoreboard/_EventList.g.cshtml.cs
+/home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Partials/Scoreboard/_Scores.g.cshtml.cs
+/home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Partials/Scoreboard/_ScoresAndStandings.g.cshtml.cs

@@ -4,10 +4,10 @@
 		<div data-draw-id='<%- competition.currentDrawId %>' class='games-container'>
 			<div class='select-wrapper scores-draw-wrapper'>
 				<select class='game-time-name' onchange="updateDrawId(<%- competition.eventId %>, $(this).val());">
-					<% for (var i = 0; i < competition.draws.length; i++){ %>
-						<option value='<%- competition.draws[i].drawId %>' class='game-time-name-option' <%- (competition.draws[i].drawId == competition.currentDrawId ? "selected" : "") %>><%- functions.formatDate(new Date(competition.draws[i].startsAt * 1000), "dddd h:mmtt ") %> - <%- competition.draws[i].displayName %> </option>
-					<% } %>
-				</select>
+					@for(var i = 0; i < Model.Draws.Count; i++) {
+						<option value='@Model.Draws[i].DrawId' class='game-time-name-option'> @Model.Draws[i].Date - @Model.Draws[i].DisplayName</option>
+					}  
+					</select>
 			</div>
 			<% include scores-games %>
 		</div>

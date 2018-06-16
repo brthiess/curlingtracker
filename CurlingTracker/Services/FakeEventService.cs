@@ -11,8 +11,8 @@ namespace CurlingTracker.Services
     {
         public Task<Event[]> GetCurrentEventsAsync()
         {
-            
-            return Task.FromResult(new[] { item1, item2 });
+            Event[] events = GetRandomEvents(5).ToArray();
+            return Task.FromResult(events);
         }
 
         private List<Event> GetRandomEvents(int amount)
@@ -27,6 +27,14 @@ namespace CurlingTracker.Services
         private Event GetRandomEvent()
         {
             return new Event(GetRandomEventName(), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), GetRandomLocation(), GetRandomEventType(), GetDraws(7));
+        }
+
+        private Event.EventType GetRandomEventType()
+        {
+            Random random = new Random();
+            Array values = Enum.GetValues(typeof (Event.EventType));
+            Event.EventType randomEventType = (Event.EventType)values.GetValue(random.Next(values.Length));
+            return randomEventType;
         }
 
         private string GetRandomEventName()
@@ -47,14 +55,14 @@ namespace CurlingTracker.Services
 
             for(int i = 0; i < amount; i++)
             {
-                draws.Add(GetRandomDraw());
+                draws.Add(GetRandomDraw(i));
             }
             return draws;
         }
 
-        private Draw GetRandomDraw()
+        private Draw GetRandomDraw(int drawNumber)
         {
-            return new Draw(DateUtil.RandomDay());
+            return new Draw(DateUtil.RandomDay(), "Draw " + drawNumber);
         }
     }
 }

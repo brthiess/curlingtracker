@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "67a5d0c54aaed8f0c1470a95e34d8c5f9f68b4a7"
+    "signature": "955115a05e34e6ee449018f061a66c4579180b15"
   },
   "compilationOptions": {
     "defines": [
@@ -27,7 +27,8 @@
           "Microsoft.AspNetCore.App": "2.1.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "2.1.0",
           "Microsoft.NETCore.App": "2.1.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.0"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.0",
+          "RandomNameGenerator": "1.0.4"
         },
         "runtime": {
           "CurlingTracker.dll": {}
@@ -409,6 +410,17 @@
         },
         "compile": {
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
+        }
+      },
+      "RandomNameGenerator/1.0.4": {
+        "runtime": {
+          "lib/RandomNameGenerator.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/RandomNameGenerator.dll": {}
         }
       },
       "SQLitePCLRaw.bundle_green/1.1.11": {
@@ -3764,6 +3776,13 @@
       "sha512": "sha512-hmWi7oVNV397Luu7CQwCs/Ctxld+sMLUw9uxRBqVODpvDx1y0M+63sBe4Fh5n0urHRRsIlT/++FNj/UVZLz/Tw==",
       "path": "nuget.frameworks/4.7.0-rtm.5148",
       "hashPath": "nuget.frameworks.4.7.0-rtm.5148.nupkg.sha512"
+    },
+    "RandomNameGenerator/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-uol9L79Sh5CTvy2BCI8hRVYFF3AK6QQoBSCRCLz291Pt8UQPc1hndKKVTjDwKzf8Z16vze4v9//84DOlpEY2Gg==",
+      "path": "randomnamegenerator/1.0.4",
+      "hashPath": "randomnamegenerator.1.0.4.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_green/1.1.11": {
       "type": "package",
