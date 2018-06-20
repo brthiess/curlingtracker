@@ -4,7 +4,6 @@ namespace CurlingTracker.Models
 {
     public class Event 
     {
-        public enum EventType {MEN, WOMEN, MIXED_DOUBLES, MIXED}
         public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws)
         {
             this.Name = name;

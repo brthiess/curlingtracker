@@ -1,18 +1,22 @@
 using System;
+using System.Collections.Generic;
 
 namespace CurlingTracker.Models
 {
     public class Team 
     {
-        public enum TeamType {MIXED_DOUBLES, CLASSIC, MIXED_CLASSIC}
+        public Team(EventType.TeamType teamType, List<Player> players)
+        {
+            this.TeamType= teamType;
+
+        }
+        public EventType.TeamType TeamType {get;set;}
 
         public Guid TeamId {get; set;}
-
-        public TeamType Type {get;set;}
         
-        public enum Gender {MEN, WOMEN}
-        public DateTime StartDate {get;set;}
+        public Gender gender{get;set;}
 
-        public DateTime EndDate {get;set;}        
+        public List<Player> Players {get;set;}
+      
     }
 }
