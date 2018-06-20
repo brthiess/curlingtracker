@@ -62,7 +62,21 @@ namespace CurlingTracker.Services
 
         private Draw GetRandomDraw(int drawNumber)
         {
-            return new Draw(DateUtil.RandomDay(), "Draw " + drawNumber);
+            return new Draw(DateUtil.RandomDay(), "Draw " + drawNumber, GetGames(10));
+        }
+
+        private List<Game> GetGames(int amount)
+        {
+            var games = new List<Game>();
+            for(var i = 0; i < amount; i++)
+            {
+                games.Add(GetRandomGame());
+            }
+        }
+
+        private Game GetRandomGame()
+        {
+            
         }
     }
 }

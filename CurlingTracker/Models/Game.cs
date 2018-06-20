@@ -4,19 +4,15 @@ namespace CurlingTracker.Models
 {
     public class Game
     {
-        public Game(){
+        public Game(Team team1, Team team2){
             Team t = new Team();
             t.Type = Team.TeamType.MIXED_CLASSIC;
         }
-        public Guid Id {get; set;}
+        public Guid GameId {get; set;}
 
-        public Guid DrawId{get; set;}
+        public Team Team1 {get;set;}
 
-        public Guid EventId{get; set;}
-
-        public Guid Team1Id{get; set;}
-
-        public Guid Team2Id{get; set;}
+        public Team Team2 {get;set;}
                 
     }
 }
