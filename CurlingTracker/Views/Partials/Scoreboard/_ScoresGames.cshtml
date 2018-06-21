@@ -1,4 +1,4 @@
-
+@using CurlingTracker.Utility
 @Model Event
 <div class='scores-games-wrapper'>
 	@if (Model.CurrentDraw != null) 
@@ -10,20 +10,20 @@
 				<div class='scores-team-container'>
 					<div class='scores-team-name'>
 						@game.Team1ShortName 
-						<span data-hammer1>@(game.Team1Hammer ? "<img src='/images/hammer.png'/>" : "")</span>
+						<span data-hammer1>@Html.Raw(game.Team1Hammer ? "<img src='/images/hammer.png'/>" : "")</span>
 					</div>
 					<div data-score1 class='scores-score'>@game.Team1Score</div>
 				</div>
 				<div class='scores-team-container'>
 					<div class='scores-team-name'>
 						@game.Team2ShortName 
-						<span data-hammer2>@(game.Team2Hammer ? "<img src='/images/hammer.png'/>" : "")</span>
+						<span data-hammer2>@Html.Raw(game.Team2Hammer ? "<img src='/images/hammer.png'/>" : "")</span>
 					</div>
 					<div data-score2 class='scores-score'>@game.Team2Score</div>
 				</div>
 			</div>
 			<div data-end class='scores-end-container @(game.IsFinal ? " scores-final " : "")'>
-				@(DateTime.Now < Model.CurrentDraw.Date ? Model.CurrentDraw.Date.ToString() : (game.IsFinal ? "Final (" + game.CurrentEnd + ")" : game.CurrentEnd + " end"))
+				@(DateTime.Now < Model.CurrentDraw.Date ? Model.CurrentDraw.Date.ToString() : (game.IsFinal ? "Final (" + game.CurrentEnd + ")" : StringUtil.AddOrdinal(game.CurrentEnd) + " end"))
 			</div>						
 		</div>
 		}

@@ -10,7 +10,7 @@ namespace CurlingTracker.Services
     {
         public Task<Event[]> GetCurrentEventsAsync()
         {
-            Event[] events = GetRandomEvents(5).ToArray();
+            Event[] events = GetRandomEvents(8).ToArray();
             return Task.FromResult(events);
         }
 
@@ -43,7 +43,7 @@ namespace CurlingTracker.Services
         {
             var random = new Random();
             string[] endingNames = {"Classic", "Spiel", "Cashspiel"};
-            return "The " + location + " " +  RandomNameGenerator.NameGenerator.GenerateLastName() + " " + endingNames[random.Next(endingNames.Length)];
+            return "The " + location + " " +  StringUtil.FirstLetterToUpper(RandomNameGenerator.NameGenerator.GenerateLastName()) + " " + endingNames[random.Next(endingNames.Length)];
         }
 
         private string GetRandomLocation()
@@ -66,7 +66,7 @@ namespace CurlingTracker.Services
 
         private Draw GetRandomDraw(int drawNumber, EventType eventType)
         {
-            return new Draw(DateUtil.RandomDay(), "Draw " + drawNumber, GetGames(10, eventType));
+            return new Draw(DateUtil.RandomDay(), "Draw " + (drawNumber + 1), GetGames(10, eventType));
         }
 
         private List<Game> GetGames(int amount, EventType eventType)
@@ -231,7 +231,7 @@ namespace CurlingTracker.Services
             {
                 g = RandomNameGenerator.Gender.Male;
             }
-            return new Player(RandomNameGenerator.NameGenerator.GenerateFirstName(g), RandomNameGenerator.NameGenerator.GenerateLastName(), gender, position, isSkip);
+            return new Player(StringUtil.FirstLetterToUpper(RandomNameGenerator.NameGenerator.GenerateFirstName(g)), StringUtil.FirstLetterToUpper(RandomNameGenerator.NameGenerator.GenerateLastName()), gender, position, isSkip);
         }
 
         private Gender GetRandomGender()

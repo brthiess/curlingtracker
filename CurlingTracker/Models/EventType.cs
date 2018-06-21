@@ -1,4 +1,5 @@
 using System;
+using CurlingTracker.Utility;
 
 namespace CurlingTracker.Models
 {
@@ -18,6 +19,8 @@ namespace CurlingTracker.Models
 
         }
         public TeamType teamType {get;set;}
+
+        
 
         public int NumberOfPlayers {get;set;}
 
@@ -39,6 +42,11 @@ namespace CurlingTracker.Models
             {
                 return Gender.Mixed;
             }
+        }
+
+        public string GetTeamTypeToString()
+        {
+            return StringUtil.FirstLetterToUpper(teamType.ToString().Replace("_", " "));
         }
     }
 }

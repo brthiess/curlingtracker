@@ -5,7 +5,7 @@
 		{
 			<li class='competition-list-item @(i == 0 ? "active" : "")' data-id='@Model[i].EventId' onclick='showCompetition("@Model[i].EventId");'>
 				<div class='scores-tournament-category'>
-					<div class='scores-tournament-category-title'>@Model[i].Type</div>
+					<div class='scores-tournament-category-title'>@Model[i].Type.GetTeamTypeToString()</div>
 				</div>
 				<div class='scores-tournament-info'>
 					<div class='scores-tournament-name'>@Model[i].Name</div>

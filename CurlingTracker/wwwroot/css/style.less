@@ -25,6 +25,7 @@
 	box-sizing: border-box;
 }
 
+
 html {
 	font-family: 'Open Sans', sans-serif;
 }
@@ -69,7 +70,7 @@ select {
 	}
 }
 .sub-section {
-	max-width: 1200px;
+	max-width: 1400px;
     margin: auto;
 }
 .overflow-arrow {
@@ -577,47 +578,40 @@ display:none !important;
 	display:-ms-flex;
 	display:-webkit-flex;
 	display:flex;
-	flex-flow: column;
+	flex-flow: row;
+	align-items: flex-start;
+	@media @mini-tablets {
+		justify-content: center;
+	}
 }
 .competition-list-container {
 	position: relative;
+	@media @mini-tablets {
+		width: 100%;
+		max-width: 500px;
+	}
 }
 
 .competition-list {
 	list-style:none;
 	display:flex;
-	flex-flow:row;
-	flex-wrap: wrap;
-	padding: 10px 0;
-	@media @mini-tablets {
-		padding: 10px 5px;
-		flex-wrap: nowrap;
-		overflow: scroll;
-		-webkit-overflow-scrolling: touch;
-		&::-webkit-scrollbar {
-			display:none;
-		}
-		&:after {
-			content: '';
-			width: 1px;
-			height: 1px;
-			display: block;
-			flex-shrink: 0;
-		}
+	flex-flow:column;	
+	width: 400px;
+	@media @laptops {
+		width: 300px;
 	}
-	
+	@media @mini-tablets {
+		width: 100%;
+	}
 }
 .competition-list-item {
 	padding: 10px;
     cursor: pointer;
     overflow: hidden;
     background: #fff;
-    margin: 10px;
+    margin: 5px 10px;
 	flex-shrink: 0;
     .box-shadow;
-	@media @smartphones {
-		width: 80%;
-	}
 	&.active {
 		outline: 5px solid @main;
 	}
@@ -625,51 +619,8 @@ display:none !important;
 		background: #f5f5f5;
 		.box-shadow-hover;
 	}
-	@media @large-desktops {
-		width: ~"calc(14.29% - 10px)";
-		&:nth-child(7n + 1) {
-			margin-left: 0;
-		}
-		&:nth-child(7n) {
-			margin-right: 0;
-		}
-	}
-	@media @desktop-only {
-		width: ~"calc(16.66% - 17px)";
-		&:nth-child(6n + 1) {
-			margin-left: 0;
-		}
-		&:nth-child(6n) {
-			margin-right: 0;
-		}
-	}
-	@media @laptops-only {
-		width: ~"calc(20% - 16px)";
-		&:nth-child(5n + 1) {
-			margin-left: 0;
-		}
-		&:nth-child(5n) {
-			margin-right: 0;
-		}
-	}
-	@media @tablets {
-		width: ~"calc(25% - 15px)";
-		&:nth-child(4n + 1) {
-			margin-left: 0;
-		}
-		&:nth-child(4n) {
-			margin-right: 0;
-		}
-	}
-	@media @mini-tablets {
-		&:nth-child(n){
-			margin: 10px;
-		}
-		&:first-child {
-			margin-left: 0;
-		}
-		width: 190px;
-		
+	&:nth-child(1) {
+		margin-top: 5px;
 	}
 }
 .scores-tournament-category {
@@ -685,9 +636,6 @@ display:none !important;
 .scores-tournament-name {
 	font-size: 18px;
 	color: @main;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
 	@media @tablets {
 		font-size: 17px;
 	}	
@@ -708,6 +656,16 @@ display:none !important;
 	background-color: white;
 	width: 100%;
 	.box-shadow;
+	@media @mini-tablets {
+		display: none;
+	}
+	&.active {
+		position: fixed;
+    	display: block;
+    	top: 0;
+		overflow: auto;
+		height: 100%;
+	}
 }
 .scores-container .scores-info-container {
 	display: none;
@@ -917,8 +875,10 @@ a.teams {
 		background: @main;
 		width: 100%;
 		left: 0;
+		transform-origin: left;
 		-webkit-transform-origin: left;
-		    -webkit-transform: scaleX(0);
+		transform: scaleX(0);
+		-webkit-transform: scaleX(0);
 		animation: live-indicator-length-animation 12s 1s infinite alternate cubic-bezier(0.75,0, 0.25, 1);
 	}
 	@media @mini-tablets {
