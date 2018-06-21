@@ -14,6 +14,23 @@ namespace CurlingTracker.Models
             this.EventId = new Guid();
             this.Draws = draws;
         }
+
+        public Draw CurrentDraw {
+            get
+            {
+                int minTimeBetween = int.MaxValue;
+                Draw currentDraw = null;
+                foreach(Draw d in this.Draws)
+                {
+                    int timeBetween = DateTime.Compare(DateTime.Now, d.Date);
+                    if (timeBetween >= 0 && timeBetween < minTimeBetween)
+                    {
+                        currentDraw = d;
+                    }
+                }
+                return currentDraw;
+            }
+        }
         public Guid EventId {get; set;}
 
         public string Name {get;set;}

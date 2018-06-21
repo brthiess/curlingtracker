@@ -9,7 +9,7 @@
 					}  
 					</select>
 			</div>
-			<% include scores-games %>
+			@{await Html.RenderPartialAsync("../Scoreboard/_ScoresGames.cshtml");}
 		</div>
 	</div>
 </div>

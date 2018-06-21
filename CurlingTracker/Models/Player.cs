@@ -4,9 +4,14 @@ namespace CurlingTracker.Models
 {
     public class Player 
     {
-        public Player(string firstName, string lastName)
+        public enum Position{Lead, Second, Third, Fourth}
+        public Player(string firstName, string lastName, Gender gender, Position position, bool isSkip)
         {
-            
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Gender = gender;
+            this.position = position;
+            this.IsSkip = isSkip;
         }
 
 
@@ -14,12 +19,27 @@ namespace CurlingTracker.Models
 
         public string FirstName {get;set;}
         public string LastName {get;set;}
+
+        public Position position {get;set;}
+
+        public bool IsSkip {get;set;}
+
         public string GetFullName() 
         {
             return FirstName + " " + LastName;
-        } 
-        
-        public enum Gender {MEN, WOMEN}
-      
+        }       
+
+        public string GetPositionName()
+        {
+            if (!IsSkip)
+            {
+                return this.position.ToString();
+            }
+            else
+            {
+                return "Skip";
+            }
+        }
+        public Gender Gender {get;set;}
     }
 }

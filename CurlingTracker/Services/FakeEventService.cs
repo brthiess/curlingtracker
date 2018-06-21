@@ -26,78 +26,197 @@ namespace CurlingTracker.Services
         private Event GetRandomEvent()
         {
             EventType eventType = GetRandomEventType();
-            return new Event(GetRandomEventName(), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), GetRandomLocation(), eventType, GetDraws(7, GetRandomGender(), eventType));
+            string location = GetRandomLocation();
+            return new Event(GetRandomEventName(location), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), location, eventType, GetDraws(7, eventType));
         }
 
         private EventType GetRandomEventType()
         {
             Random random = new Random();
+            int numberOfEnds = (random.Next(0,2) == 1 ? 8 : 10);
             Array values = Enum.GetValues(typeof (EventType.TeamType));
-            EventType randomEventType = new EventType((EventType.TeamType)values.GetValue(random.Next(values.Length)));
+            EventType randomEventType = new EventType((EventType.TeamType)values.GetValue(random.Next(values.Length)), numberOfEnds);
             return randomEventType;
         }
 
-        private string GetRandomEventName()
+        private string GetRandomEventName(string location)
         {
-            return "The " +  RandomNameGenerator.NameGenerator.GenerateLastName() + " Classic";
+            return "The " + location + " " +  RandomNameGenerator.NameGenerator.GenerateLastName() + " Classic";
         }
 
         private string GetRandomLocation()
         {
             string[] Cities = new string[7] {"Edmonton, AB", "Winnipeg, MB", "Saskatoon, SK", "Toronto, ON", "St. John's, NF", "Stockholm, Sweden", "Hamburg, DE"};
-            Random rand = new Random(DateTime.Now.Second);
+            Random rand = new Random();
             return Cities[rand.Next(0, Cities.Length - 1)];
         }
         //Gets random list of draws
-        private List<Draw> GetDraws(int amount, Gender gender, EventType eventType) 
+        private List<Draw> GetDraws(int amount, EventType eventType) 
         {
             List<Draw> draws = new List<Draw>();
 
             for(int i = 0; i < amount; i++)
             {
-                draws.Add(GetRandomDraw(i, gender, eventType));
+                draws.Add(GetRandomDraw(i, eventType));
             }
             return draws;
         }
 
-        private Draw GetRandomDraw(int drawNumber, Gender gender, EventType eventType)
+        private Draw GetRandomDraw(int drawNumber, EventType eventType)
         {
-            return new Draw(DateUtil.RandomDay(), "Draw " + drawNumber, GetGames(10, gender, eventType));
+            return new Draw(DateUtil.RandomDay(), "Draw " + drawNumber, GetGames(10, eventType));
         }
 
-        private List<Game> GetGames(int amount, Gender gender, EventType eventType)
+        private List<Game> GetGames(int amount, EventType eventType)
         {
             var games = new List<Game>();
             for(var i = 0; i < amount; i++)
             {
-                games.Add(GetRandomGame(gender, eventType));
+                games.Add(GetRandomGame(eventType));
             }
+            return games;
         }
 
-        private Game GetRandomGame(Gender gender, EventType eventType)
+        private Game GetRandomGame( EventType eventType)
         {
-            Team team1 = GetRandomTeam(gender, eventType);
+            Team team1 = GetRandomTeam(eventType);
+            Team team2 = GetRandomTeam(eventType);
+            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds));
+            return game;
         }
 
-        private Team GetRandomTeam(Gender gender, EventType eventType)
+        private Linescore GetRandomLineScore(int numberOfEnds)
         {
-            List<Player> players = GetRandomPlayers(gender, eventType);
+            var linescore = new Linescore();
+            var rand = new Random();
+            int team1Score = 0;
+            int team2Score = 0;
+            bool team1Hammer = (rand.Next() % 2 == 0);
+            for(var endNumber = 1; endNumber <= numberOfEnds; endNumber++)
+            {
+                if (team1Score > 0)
+                {
+                    team1Hammer = false;
+                }    
+                else if (team2Score > 0)
+                {
+                    team1Hammer = true;
+                }
+                
+                team1Score = 0;
+                team2Score = 0;
+                if (rand.Next() % 2 == 0)
+                {
+                    team1Score = GetRandomScore();
+                }
+                else 
+                {
+                    team2Score = GetRandomScore();
+                }
+                linescore.AddEnd(new End(team1Score, team2Score, team1Hammer, endNumber));
+            }
+            return linescore;
+        }
+
+        private int GetRandomScore()
+        {
+            var rand = new Random();
+            var score = 0;
+            int distribution = rand.Next(0,1000);
+            if (distribution < 300)
+            {
+                score = 0;
+            }
+            else if (distribution < 600)
+            {
+                score = 1;
+            }
+            else if (distribution < 800) 
+            {
+                score = 2;
+            }
+            else if (distribution < 950)
+            {
+                score = 3;
+            }
+            else if (distribution < 980)
+            {
+                score = 4;
+            }
+            else if (distribution < 990)
+            {
+                score = 5;
+            }
+            else if (distribution < 999) 
+            {
+                score = 6;
+            }
+            else if (distribution < 1000) 
+            {
+                score = 8;
+            }
+            return score;
+        }
+        private Team GetRandomTeam(EventType eventType)
+        {
+            List<Player> players = GetRandomPlayers(eventType);
             return new Team(eventType.teamType, players);
         }
 
-        private List<Player> GetRandomPlayers(Gender gender, EventType eventType)
+        private List<Player> GetRandomPlayers(EventType eventType)
         {
             var players = new List<Player>();
             int numberOfPlayers = eventType.NumberOfPlayers;
+            Gender currentGender = eventType.Gender;
+            
             for (var i = 0; i < numberOfPlayers; i++)
             {   
-                
+                if (eventType.Gender == Gender.Mixed && i < (numberOfPlayers / 2))
+                {
+                    currentGender = Gender.Male;
+                }
+                else if (eventType.Gender == Gender.Mixed && i >= (numberOfPlayers / 2))
+                {
+                    currentGender = Gender.Female;
+                }
+                players.Add(GetRandomPlayer(eventType.Gender, GetPositionFromNumber(i + 1), GetIsSkipFromPositionNumber(i + 1)));
             }
+            return players;
         }
 
-        private Player GetRandomPlayer(Gender gender)
+        private bool GetIsSkipFromPositionNumber(int position)
         {
-            
+            return (position == 4);
+        }
+        
+
+        private Player.Position GetPositionFromNumber(int position)
+        {
+            if (position == 1)
+            {
+                return Player.Position.Lead;
+            }
+            else if (position == 2)
+            {
+                return Player.Position.Second;
+            }
+            else if (position == 3)
+            {
+                return Player.Position.Third;
+            }
+            else 
+            {
+                return Player.Position.Fourth;
+            }
+        }
+        private Player GetRandomPlayer(Gender gender, Player.Position position, bool isSkip)
+        {
+            RandomNameGenerator.Gender g = RandomNameGenerator.Gender.Female;
+            if (gender == Gender.Male)
+            {
+                g = RandomNameGenerator.Gender.Male;
+            }
+            return new Player(RandomNameGenerator.NameGenerator.GenerateFirstName(g), RandomNameGenerator.NameGenerator.GenerateLastName(), gender, position, isSkip);
         }
 
         private Gender GetRandomGender()
