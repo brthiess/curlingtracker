@@ -4,12 +4,13 @@ namespace CurlingTracker.Models
 {
     public class Game
     {
-        public Game(Team team1, Team team2, Linescore linescore){
+        public Game(Team team1, Team team2, Linescore linescore, bool isFinal){
             this.Team1 = team1;
             this.Team2 = team2;
             this.Linescore = linescore;
             this.Team1ShortName = GetTeamShortNameFromTeam(team1);
             this.Team2ShortName = GetTeamShortNameFromTeam(team2);
+            this.IsFinal = isFinal;
         }
         public Guid GameId {get; set;}
 
@@ -21,7 +22,50 @@ namespace CurlingTracker.Models
         public string Team1ShortName {get;}
         public string Team2ShortName {get;}
 
+        public int Team1Score
+        {
+            get
+            {
+                return Linescore.Team1Score;
+            }
+        }
+
+        public int Team2Score
+        {
+            get
+            {
+                return Linescore.Team2Score;
+            }
+        }
+
+        public bool Team1Hammer 
+        {
+            get
+            {
+                return Linescore.Team1Hammer;
+            }
+        }
+
+        public bool Team2Hammer 
+        {
+            get
+            {
+                return Linescore.Team2Hammer;
+            }
+        }
+
+        public int CurrentEnd
+        {
+            get
+            {
+                return Linescore.GetCurrentEnd();
+            }
+        }
+
         public Linescore Linescore {get;set;}
+
+
+        public bool IsFinal {get;set;}
 
         private string GetTeamShortNameFromTeam(Team team)
         {

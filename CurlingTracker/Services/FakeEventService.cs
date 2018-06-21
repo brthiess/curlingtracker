@@ -41,7 +41,9 @@ namespace CurlingTracker.Services
 
         private string GetRandomEventName(string location)
         {
-            return "The " + location + " " +  RandomNameGenerator.NameGenerator.GenerateLastName() + " Classic";
+            var random = new Random();
+            string[] endingNames = {"Classic", "Spiel", "Cashspiel"};
+            return "The " + location + " " +  RandomNameGenerator.NameGenerator.GenerateLastName() + " " + endingNames[random.Next(endingNames.Length)];
         }
 
         private string GetRandomLocation()
@@ -81,8 +83,21 @@ namespace CurlingTracker.Services
         {
             Team team1 = GetRandomTeam(eventType);
             Team team2 = GetRandomTeam(eventType);
-            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds));
+            var random = new Random();
+            int numberOfEnds = random.Next(eventType.NumberOfEnds + 1);
+            bool isFinal = GetTrueWithProbability((double)numberOfEnds / (double)eventType.NumberOfEnds);
+            var game = new Game(team1, team2, GetRandomLineScore(numberOfEnds), isFinal);
             return game;
+        }
+
+        private bool GetTrueWithProbability(double probability)
+        {
+            var random = new Random();
+            if (random.NextDouble() < probability)
+            {
+                return true;
+            }
+           return false;
         }
 
         private Linescore GetRandomLineScore(int numberOfEnds)
