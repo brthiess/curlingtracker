@@ -43,12 +43,12 @@ select {
 }
 .select-wrapper:after {
   position: absolute;
-  content: "\f0d7";
-  font: normal normal normal 14px/1 FontAwesome;
+  content: "\25be";
   right: 15px;
-  top: calc(50% - 10px);
-  font-size: 20px;
+  top: calc(50% - 18px);
+  font-size: 25px;
   pointer-events: none;
+  transform: scaleY(0.5);
 }
 .sub-section {
   max-width: 1400px;
@@ -840,19 +840,19 @@ a.teams {
   transform: translateY(-2px);
   cursor: pointer;
 }
+@media only screen and (max-width: 1400px) {
+  .game-container {
+    width: calc(25% - 20px);
+  }
+}
 @media only screen and (max-width: 1240px) {
   .game-container {
-    width: 350px;
+    width: calc(33% - 20px);
   }
 }
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 1029px) {
   .game-container {
-    width: 299px;
-  }
-}
-@media only screen and (max-width: 719px) {
-  .game-container {
-    width: 320px;
+    width: calc(50% - 20px);
   }
 }
 @media only screen and (max-width: 479px) {
@@ -881,27 +881,8 @@ a.teams {
   border-right: 1px solid #ddd;
   padding: 0 10px 0 0;
   font-size: 17px;
-  width: 209px;
-}
-@media only screen and (max-width: 1240px) {
-  .scores-teams-container {
-    width: 255px;
-  }
-}
-@media only screen and (max-width: 850px) {
-  .scores-teams-container {
-    width: 209px;
-  }
-}
-@media only screen and (max-width: 719px) {
-  .scores-teams-container {
-    width: 230px;
-  }
-}
-@media only screen and (max-width: 479px) {
-  .scores-teams-container {
-    width: 75%;
-  }
+  width: calc(100% - 50px);
+  flex-shrink: 0;
 }
 .scores-team-container {
   display: flex;

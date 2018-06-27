@@ -11,13 +11,19 @@ namespace CurlingTracker.Models
             this.EndDate = endDate;
             this.Location = location;
             this.Type = type;
-            this.EventId = new Guid();
+            this.EventId = Guid.NewGuid();
             this.Draws = draws;
         }
 
+        private Draw _currentDraw = null;
         public Draw CurrentDraw {
             get
             {
+                if (_currentDraw != null)
+                {
+                    return _currentDraw;
+                }
+
                 int minTimeBetween = int.MaxValue;
                 Draw currentDraw = null;
                 foreach(Draw d in this.Draws)
@@ -28,6 +34,7 @@ namespace CurlingTracker.Models
                         currentDraw = d;
                     }
                 }
+                _currentDraw = currentDraw;
                 return currentDraw;
             }
         }

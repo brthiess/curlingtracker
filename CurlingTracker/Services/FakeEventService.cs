@@ -14,6 +14,12 @@ namespace CurlingTracker.Services
             return Task.FromResult(events);
         }
 
+        public Task<Event> GetEventAsync(int eventId)
+        {
+            Event eventObject = GetRandomEvent();
+            return Task.FromResult(eventObject);
+        }
+
         private List<Event> GetRandomEvents(int amount)
         {
             List<Event> Events = new List<Event>();
@@ -231,7 +237,7 @@ namespace CurlingTracker.Services
             {
                 g = RandomNameGenerator.Gender.Male;
             }
-            return new Player(StringUtil.FirstLetterToUpper(RandomNameGenerator.NameGenerator.GenerateFirstName(g)), StringUtil.FirstLetterToUpper(RandomNameGenerator.NameGenerator.GenerateLastName()), gender, position, isSkip);
+            return new Player(StringUtil.FirstLetterToUpper(GetRandomName(true, g)), StringUtil.FirstLetterToUpper(GetRandomName(false, g)), gender, position, isSkip);
         }
 
         private Gender GetRandomGender()
@@ -245,6 +251,21 @@ namespace CurlingTracker.Services
             {
                 return Gender.Female;
             }
+        }
+
+        private string GetRandomName(bool firstName, RandomNameGenerator.Gender g)
+        {
+            string name = "";
+            if (firstName)
+            {
+                name = RandomNameGenerator.NameGenerator.GenerateFirstName(g);
+            }
+            else 
+            {
+                var rand = new Random();
+                name = RandomNameGenerator.NameGenerator.GenerateLastName() + (rand.Next() % 2 == 0 ? "-" + RandomNameGenerator.NameGenerator.GenerateLastName() : "");
+            }
+            return name;               
         }
     }
 }

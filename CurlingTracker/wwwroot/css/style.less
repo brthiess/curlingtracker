@@ -61,12 +61,12 @@ select {
 	display: inline-block;
 	&:after {
 		position: absolute;
-		content: "\f0d7";
-		font: normal normal normal 14px/1 FontAwesome;
+		content: "\25be";
 		right: 15px;
-		top: ~"calc(50% - 10px)";
-		font-size: 20px;
+		top: ~"calc(50% - 18px)";
+		font-size: 25px;
 		pointer-events: none;
+		transform: scaleY(0.5);
 	}
 }
 .sub-section {
@@ -789,14 +789,14 @@ a.teams {
 		transform: translateY(-2px);
 		cursor: pointer;
 	}
+	@media @desktop {
+		width: ~"calc(25% - 20px)"
+	}
 	@media @laptops {
-		width: 350px;
+		width: ~"calc(33% - 20px)";
 	}
-	@media @medium-tablets {
-		width: 299px;
-	}
-	@media @mini-tablets {
-		width: 320px;
+	@media @tablets {
+		width: ~"calc(50% - 20px)";
 	}
 	@media @smartphones {
 		width: 100%;
@@ -823,19 +823,8 @@ a.teams {
     border-right: 1px solid #ddd;
     padding: 0 10px 0 0;
 	font-size: 17px;
-	width: 209px;
-	@media @laptops{
-		width: 255px;
-	}
-	@media @medium-tablets {
-		width: 209px;
-	}
-	@media @mini-tablets {
-		width: 230px;
-	}
-	@media @smartphones {
-		width: 75%;
-	}
+	width: ~"calc(100% - 50px)";
+	flex-shrink: 0;
 }
 .scores-team-container {
     display: flex;
