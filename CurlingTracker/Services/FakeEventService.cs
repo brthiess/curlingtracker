@@ -141,7 +141,7 @@ namespace CurlingTracker.Services
                 {
                     team2Score = GetRandomScore();
                 }
-                linescore.AddEnd(new End(team1Score, team2Score, team1Hammer, endNumber, false));
+                linescore.AddEnd(new End(team1Score, team2Score, team1Hammer, endNumber, true));
             }
             return linescore;
         }

@@ -39,6 +39,20 @@ namespace CurlingTracker.Models
             }
         }
 
+        public int GetTeamXScoreInEnd(int teamNumber, int endNumber)
+        {
+            int score = -1;
+            if (teamNumber == 1)
+            {
+                score = Ends[endNumber].Team1Score;
+            }
+            else 
+            {
+                score = Ends[endNumber].Team2Score;
+            }
+            return score;
+        }
+
         public int Team1Score
         {
             get
@@ -88,7 +102,6 @@ namespace CurlingTracker.Models
                 }
                 currentEnd++;
             }
-            currentEnd = this.NumberOfEnds;
             _currentEnd = currentEnd;
             return currentEnd;
         }

@@ -8,9 +8,8 @@ namespace CurlingTracker.Models
             this.Team1 = team1;
             this.Team2 = team2;
             this.Linescore = linescore;
-            this.Team1ShortName = GetTeamShortNameFromTeam(team1);
-            this.Team2ShortName = GetTeamShortNameFromTeam(team2);
             this.IsFinal = isFinal;
+            this.PercentagesAvailable = false;
         }
         public Guid GameId {get; set;}
 
@@ -18,9 +17,21 @@ namespace CurlingTracker.Models
 
         public Team Team2 {get;set;}
 
+        public bool PercentagesAvailable {get;set;}
         
-        public string Team1ShortName {get;}
-        public string Team2ShortName {get;}
+        public string Team1ShortName {
+            get
+            {
+                return Team1.Name;
+            }
+        }
+
+        public string Team2ShortName {
+            get
+            {
+                return Team2.Name;
+            }
+        }
 
         public int Team1Score
         {
@@ -64,52 +75,17 @@ namespace CurlingTracker.Models
 
         public Linescore Linescore {get;set;}
 
+        public int GetScoreForEnd(int teamNumber, int endNumber)
+        {
+            return Linescore.GetTeamXScoreInEnd(teamNumber, endNumber);
+        }
+
 
         public bool IsFinal {get;set;}
 
         public int GetNumberOfEnds()
         {
             return Linescore.GetNumberOfEnds();
-        }
-
-        private string GetTeamShortNameFromTeam(Team team)
-        {
-            if (team.TeamType == EventType.TeamType.MIXED_DOUBLES)
-            {
-                return GetMixedDoublesTeamShortNameFromTeam(team);
-            }
-            else
-            {
-                return GetClassicTeamShortNameFromTeam(team);
-            }
-        }
-        
-        private string GetClassicTeamShortNameFromTeam(Team team)
-        {
-            string teamName = "";
-            foreach(Player player in team.Players)
-            {
-                if (player.IsSkip)
-                {
-                    teamName += player.LastName;
-                }
-            }
-            return teamName;
-        }
-        private string GetMixedDoublesTeamShortNameFromTeam(Team team)
-        {
-            string teamName = "";
-            int i = 0;
-            foreach(Player player in team.Players)
-            {
-                teamName += player.LastName;
-                if (i == 0)
-                {
-                    teamName += "/";
-                }
-                i++;
-            }
-            return teamName;
         }
     }
 }

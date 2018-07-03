@@ -6,38 +6,62 @@
 				<th class='linescore-table-header t-left'>Team</th>
 				<th class='linescore-table-header t-left'></th>
 				@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
-                    <div>@endNumber</div>
+                    <th class='linescore-table-header t-left'>@endNumber</th>
                 }				
 				<th class='linescore-table-header t-center'>Tot</th>
 			</thead>
 			<tbody>
 				<tr>
 					<td class='linescore-table-data t-left no-padding'>@Model.Team1.Name;</td>
-					<td class='linescore-table-data t-left'>@(Model.Team1Hammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "")</td>
+					<td class='linescore-table-data t-left'>@Html.Raw(Model.Team1Hammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "")</td>
 					@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
-						<td class='linescore-table-data t-center'>@(numberOfEnds < Model.homeScores.length ? game.homeScores[i] : "<span class='faded'>X</span>") %></td>
+						<td class='linescore-table-data t-center'>@Html.Raw(endNumber < Model.CurrentEnd ? @Model.GetScoreForEnd(1, endNumber) : "<span class='faded'>X</span>")</td>
                     }
-					<td class='linescore-table-data t-center'><strong><%- game.homeTotal %></strong></td>
+					<td class='linescore-table-data t-center'>@Model.Team1Score</strong></td>
 				</tr>
 				<tr>
-					<td class='linescore-table-data t-left no-padding'><%- game.awayTeamDisplayName %></td>
-					<td class='linescore-table-data t-left'><%- (game.awayHammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "") %></td>
-					<% for (var i = 0; i < game.numberOfEnds; i++) { %>
-						<td class='linescore-table-data t-center'><%- (i < game.awayScores.length ? game.awayScores[i] : "<span class='faded'>X</span>") %></td>
-					<% } %>
-					<td class='linescore-table-data t-center'><strong><%- game.awayTotal %></strong></td>
+					<td class='linescore-table-data t-left no-padding'>@Model.Team2.Name;</td>
+					<td class='linescore-table-data t-left'>@Html.Raw(Model.Team2Hammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "")</td>
+					@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
+						<td class='linescore-table-data t-center'>@Html.Raw(endNumber < Model.CurrentEnd ? @Model.GetScoreForEnd(2, endNumber) : "<span class='faded'>X</span>")</td>
+                    }
+					<td class='linescore-table-data t-center'><strong>@Model.Team2Score</strong></td>
 				</tr>
 			</tbody>
 		</table>
 	</section>
 	<section class='game-details-team-container'>
 		<div class='game-details-team'>
-			<% if(game.percentagesAvailable == true) { %>
-				<% include percentages.ejs %>
-			<% } 
-			 else { %>
-				<% include team.ejs %>
-			<% } %>
+			@if(@Model.PercentagesAvailable == true) { 
+				
+			} 
+			else {
+				<div class='game-team-details-team-container @(Model.Team1.TeamType == EventType.TeamType.MIXED_DOUBLES ? "mixed-doubles" : "")'>
+					<div class='game-team-details-team '>
+						<h3 class='game-team-details-header'>Team @Model.Team1.Name</h3>
+							@foreach (var player in @Model.Team1.Players) {
+								<div class='game-team-details-player'>
+									<div class='game-team-details-position'>player.Position</div>
+									<div class='game-team-details-player-image'><img src='/images/players/<%- game.team1.players[player].image %>'/></div>
+									<div class='game-team-details-player-name'><%- game.team1.players[player].name %></div>
+								</div>
+							}
+					</div>
+					
+					<div class='game-team-details-team <%- (game.division == "mixed-doubles" ? "mixed-doubles" : "") %>'>
+						<h3 class='game-team-details-header'>Team <%- game.awayTeamDisplayName %> </h3>
+						<% if (game.team2 != null){ %>
+							<% for (var player in game.team2.players) { %>
+								<div class='game-team-details-player <%- (game.division == "mixed-doubles" ? "mixed-doubles" : "") %>'>
+									<div class='game-team-details-position'><%- game.team2.players[player].position %></div>
+									<div class='game-team-details-player-image'><img src='/images/players/<%- game.team2.players[player].image %>'/></div>
+									<div class='game-team-details-player-name'><%- game.team2.players[player].name %></div>
+								</div>
+							<% } %>
+						<% } %>
+					</div>
+				</div>
+			}
 		</div>
 		
 	</section>

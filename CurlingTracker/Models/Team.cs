@@ -14,7 +14,6 @@ namespace CurlingTracker.Models
                 if (player.IsSkip)
                 {
                     foundSkip = true;
-                    this.Name = player.LastName;
                 }
             }
             if (!foundSkip && teamType != EventType.TeamType.MIXED_DOUBLES)
@@ -22,6 +21,7 @@ namespace CurlingTracker.Models
                 throw new Exception("Created team without a skip!");
             }
             this.Players = players;
+            this.Name = GetTeamShortName();
         }
         public EventType.TeamType TeamType {get;set;}
 
@@ -30,7 +30,49 @@ namespace CurlingTracker.Models
         public Gender gender{get;set;}
 
         public List<Player> Players {get;set;}
-      
+
         public string Name {get;set;}
+        
+
+        private string GetTeamShortName()
+        {
+            if (this.TeamType == EventType.TeamType.MIXED_DOUBLES)
+            {
+                return GetMixedDoublesTeamShortNameFromTeam();
+            }
+            else
+            {
+                return GetClassicTeamShortNameFromTeam();
+            }
+        }
+        
+        private string GetClassicTeamShortNameFromTeam()
+        {
+            string teamName = "";
+            foreach(Player player in this.Players)
+            {
+                if (player.IsSkip)
+                {
+                    teamName += player.LastName;
+                }
+            }
+            return teamName;
+        }
+        private string GetMixedDoublesTeamShortNameFromTeam()
+        {
+            string teamName = "";
+            int i = 0;
+            foreach(Player player in this.Players)
+            {
+                teamName += player.LastName;
+                if (i == 0)
+                {
+                    teamName += "/";
+                }
+                i++;
+            }
+            return teamName;
+        }
+
     }
 }
