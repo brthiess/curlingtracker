@@ -655,6 +655,7 @@ display:none !important;
 	padding: 10px 0 40px;
 	background-color: white;
 	width: 100%;
+	min-width: 0;
 	.box-shadow;
 	@media @mini-tablets {
 		display: none;
@@ -790,15 +791,12 @@ a.teams {
 		cursor: pointer;
 	}
 	@media @desktop {
-		width: ~"calc(25% - 20px)"
+		width: ~"calc(33.33% - 20px)"
 	}
 	@media @laptops {
-		width: ~"calc(33% - 20px)";
-	}
-	@media @tablets {
 		width: ~"calc(50% - 20px)";
 	}
-	@media @smartphones {
+	@media @medium-tablets {
 		width: 100%;
 	}
 	@media @tablets {
@@ -823,7 +821,7 @@ a.teams {
     border-right: 1px solid #ddd;
     padding: 0 10px 0 0;
 	font-size: 17px;
-	width: ~"calc(100% - 50px)";
+	width: ~"calc(100% - 70px)";
 	flex-shrink: 0;
 }
 .scores-team-container {

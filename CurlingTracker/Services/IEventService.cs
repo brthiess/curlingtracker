@@ -9,6 +9,8 @@ namespace CurlingTracker.Services
     {
         Task<Event[]> GetCurrentEventsAsync();
 
-        Task<Event> GetEventAsync(int eventId);
+        Task<Event> GetEventAsync(string eventId);
+
+        Task<Game> GetGameAsync(string gameId);
     }
 }

@@ -5,13 +5,18 @@ namespace CurlingTracker.Models
 {
     public class Linescore
     {
-        public Linescore()
+        ///Number of ends in the game (not including extra end)
+        public Linescore(int numberOfEnds)
         {
             this.Ends = new Dictionary<int, End>();
+            this.NumberOfEnds = numberOfEnds + 1; //Add one for extra end
         }
         public Linescore(Dictionary<int, End> ends){
             this.Ends = ends;
         }
+
+        
+        public int NumberOfEnds {get;set;}
 
         public Guid LinescoreId {get; set;}
 
@@ -19,6 +24,11 @@ namespace CurlingTracker.Models
                 
         public void AddEnd(End end)
         {
+            if (Ends.Count == this.NumberOfEnds)
+            {
+                throw new Exception("Cannot add another end.  Already reached the maximum number of ends");
+            }
+
             if (!Ends.ContainsKey(end.EndNumber))
             {
                 Ends.Add(end.EndNumber, end);
@@ -60,11 +70,33 @@ namespace CurlingTracker.Models
                 return GetTeamXHammer(2);
             }
         }
+
+        private int  _currentEnd = -1;
         public int GetCurrentEnd()
         {
-            return Ends.Count + 1;
+            if (_currentEnd != -1)
+            {
+                return _currentEnd;
+            }
+            
+            int currentEnd = 1;
+            foreach(KeyValuePair<int, End> end in Ends)
+            {
+                if(!end.Value.IsOver)
+                {
+                    break;
+                }
+                currentEnd++;
+            }
+            currentEnd = this.NumberOfEnds;
+            _currentEnd = currentEnd;
+            return currentEnd;
         }
 
+        public int GetNumberOfEnds()
+        {
+            return this.NumberOfEnds;
+        }
         private int GetTeamXScore(int x)
         {
             int score = 0;

@@ -14,10 +14,17 @@ namespace CurlingTracker.Services
             return Task.FromResult(events);
         }
 
-        public Task<Event> GetEventAsync(int eventId)
+        public Task<Event> GetEventAsync(string eventId)
         {
             Event eventObject = GetRandomEvent();
             return Task.FromResult(eventObject);
+        }
+
+        public Task<Game> GetGameAsync(string gameId)
+        {
+            EventType et = GetRandomEventType();
+            Game gameObject = GetRandomGame(et);
+            return Task.FromResult(gameObject);    
         }
 
         private List<Event> GetRandomEvents(int amount)
@@ -90,9 +97,9 @@ namespace CurlingTracker.Services
             Team team1 = GetRandomTeam(eventType);
             Team team2 = GetRandomTeam(eventType);
             var random = new Random();
-            int numberOfEnds = random.Next(eventType.NumberOfEnds + 1);
-            bool isFinal = GetTrueWithProbability((double)numberOfEnds / (double)eventType.NumberOfEnds);
-            var game = new Game(team1, team2, GetRandomLineScore(numberOfEnds), isFinal);
+            int numberOfPlayedEnds = random.Next(eventType.NumberOfEnds + 1);
+            bool isFinal = GetTrueWithProbability((double)numberOfPlayedEnds / (double)eventType.NumberOfEnds);
+            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds, numberOfPlayedEnds), isFinal);
             return game;
         }
 
@@ -106,14 +113,14 @@ namespace CurlingTracker.Services
            return false;
         }
 
-        private Linescore GetRandomLineScore(int numberOfEnds)
+        private Linescore GetRandomLineScore(int numberOfEnds, int numberOfPlayedEnds)
         {
-            var linescore = new Linescore();
+            var linescore = new Linescore(numberOfEnds);
             var rand = new Random();
             int team1Score = 0;
             int team2Score = 0;
             bool team1Hammer = (rand.Next() % 2 == 0);
-            for(var endNumber = 1; endNumber <= numberOfEnds; endNumber++)
+            for(var endNumber = 1; endNumber <= numberOfPlayedEnds; endNumber++)
             {
                 if (team1Score > 0)
                 {
@@ -134,7 +141,7 @@ namespace CurlingTracker.Services
                 {
                     team2Score = GetRandomScore();
                 }
-                linescore.AddEnd(new End(team1Score, team2Score, team1Hammer, endNumber));
+                linescore.AddEnd(new End(team1Score, team2Score, team1Hammer, endNumber, false));
             }
             return linescore;
         }

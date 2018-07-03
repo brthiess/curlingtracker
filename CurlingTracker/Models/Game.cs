@@ -67,6 +67,11 @@ namespace CurlingTracker.Models
 
         public bool IsFinal {get;set;}
 
+        public int GetNumberOfEnds()
+        {
+            return Linescore.GetNumberOfEnds();
+        }
+
         private string GetTeamShortNameFromTeam(Team team)
         {
             if (team.TeamType == EventType.TeamType.MIXED_DOUBLES)

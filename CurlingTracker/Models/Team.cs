@@ -14,6 +14,7 @@ namespace CurlingTracker.Models
                 if (player.IsSkip)
                 {
                     foundSkip = true;
+                    this.Name = player.LastName;
                 }
             }
             if (!foundSkip && teamType != EventType.TeamType.MIXED_DOUBLES)
@@ -30,5 +31,6 @@ namespace CurlingTracker.Models
 
         public List<Player> Players {get;set;}
       
+        public string Name {get;set;}
     }
 }

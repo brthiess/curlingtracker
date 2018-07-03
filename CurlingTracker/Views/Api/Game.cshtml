@@ -1,0 +1,44 @@
+
+<section class='game-details-container'>
+	<section class='linescore'>
+		<table class='linescore-table'>
+			<thead>
+				<th class='linescore-table-header t-left'>Team</th>
+				<th class='linescore-table-header t-left'></th>
+				@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
+                    <div>@endNumber</div>
+                }				
+				<th class='linescore-table-header t-center'>Tot</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td class='linescore-table-data t-left no-padding'>@Model.Team1.Name;</td>
+					<td class='linescore-table-data t-left'>@(Model.Team1Hammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "")</td>
+					@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
+						<td class='linescore-table-data t-center'>@(numberOfEnds < Model.homeScores.length ? game.homeScores[i] : "<span class='faded'>X</span>") %></td>
+                    }
+					<td class='linescore-table-data t-center'><strong><%- game.homeTotal %></strong></td>
+				</tr>
+				<tr>
+					<td class='linescore-table-data t-left no-padding'><%- game.awayTeamDisplayName %></td>
+					<td class='linescore-table-data t-left'><%- (game.awayHammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "") %></td>
+					<% for (var i = 0; i < game.numberOfEnds; i++) { %>
+						<td class='linescore-table-data t-center'><%- (i < game.awayScores.length ? game.awayScores[i] : "<span class='faded'>X</span>") %></td>
+					<% } %>
+					<td class='linescore-table-data t-center'><strong><%- game.awayTotal %></strong></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<section class='game-details-team-container'>
+		<div class='game-details-team'>
+			<% if(game.percentagesAvailable == true) { %>
+				<% include percentages.ejs %>
+			<% } 
+			 else { %>
+				<% include team.ejs %>
+			<% } %>
+		</div>
+		
+	</section>
+</section>

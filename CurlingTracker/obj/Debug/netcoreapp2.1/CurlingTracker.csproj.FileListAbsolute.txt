@@ -44,3 +44,4 @@
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Partials/Scoreboard/_ScoresGames.g.cshtml.cs
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Api/Scores.g.cshtml.cs
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Shared/_Blank.g.cshtml.cs
+/home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Api/Game.g.cshtml.cs

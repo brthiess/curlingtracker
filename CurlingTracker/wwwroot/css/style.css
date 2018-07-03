@@ -702,6 +702,7 @@ select {
   padding: 10px 0 40px;
   background-color: white;
   width: 100%;
+  min-width: 0;
   box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.2);
 }
 @media only screen and (max-width: 719px) {
@@ -842,20 +843,15 @@ a.teams {
 }
 @media only screen and (max-width: 1400px) {
   .game-container {
-    width: calc(25% - 20px);
+    width: calc(33.33% - 20px);
   }
 }
 @media only screen and (max-width: 1240px) {
   .game-container {
-    width: calc(33% - 20px);
-  }
-}
-@media only screen and (max-width: 1029px) {
-  .game-container {
     width: calc(50% - 20px);
   }
 }
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 850px) {
   .game-container {
     width: 100%;
   }
@@ -881,7 +877,7 @@ a.teams {
   border-right: 1px solid #ddd;
   padding: 0 10px 0 0;
   font-size: 17px;
-  width: calc(100% - 50px);
+  width: calc(100% - 70px);
   flex-shrink: 0;
 }
 .scores-team-container {

@@ -5,7 +5,7 @@
 	{
 		foreach(Game game in Model.CurrentDraw.Games)
 		{
-			<div data-game-id='@game.GameId' class='game-container'>
+			<div data-game-id='@game.GameId' class='game-container' onclick="showGameView(@game.GameId)">
 			<div class='scores-teams-container'>
 				<div class='scores-team-container'>
 					<div class='scores-team-name'>
