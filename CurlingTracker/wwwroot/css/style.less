@@ -18,6 +18,16 @@
 @smartphones:    ~"only screen and (max-width: 479px)";
 @tiny-smartphones:    ~"only screen and (max-width: 370px)";
 
+/* Animations */
+@keyframes rotation{
+	from{
+	  transform: rotate(0deg);
+	}
+	to{
+	  transform: rotate(360deg);
+	}
+  }
+
 /* Global */
 * {
 	padding:0;
@@ -28,10 +38,6 @@
 
 html {
 	font-family: 'Open Sans', sans-serif;
-}
-body:after{
-	content: url(/images/loading.svg);
-	display:none;
 }
 a {
 	text-decoration: none;
@@ -173,25 +179,24 @@ display:none !important;
 	padding: 0 !important;
 }
 .loading {
-	position: relative;
-	&:after {
-		content: '';
-		position: absolute;
-		background: blue;
-		height: 100%;
-		width: 100%;
-		top: 0;
-		left: 0;
-		background-color: rgba(255,255,255,0.9);
-		background-image: url(/images/loading.svg);
-		background-repeat: no-repeat;
-		background-position: center 200px;
-		background-size: 200px;
-		@media @smartphones {
-			background-position: center 100px;
-		}
-	}
-	
+	position: absolute;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.7);
+}
+.spinner {
+	border-top: 3px solid rgba(0, 0, 0, 0.5);
+	border-right: 3px solid transparent;
+	border-radius: 50%;
+	-webkit-animation: rotation .8s linear infinite;
+	animation: rotation .8s linear infinite;
+	width: 100px;
+	height: 100px;
 }
 .full-link {
 	position: absolute;
@@ -651,7 +656,8 @@ display:none !important;
 	}
 }
 
-.scores-container {
+.scores-container-container {
+	position: relative;
 	padding: 10px 0 40px;
 	background-color: white;
 	width: 100%;
@@ -660,12 +666,15 @@ display:none !important;
 	@media @mini-tablets {
 		display: none;
 	}
-	&.active {
-		position: fixed;
-    	display: block;
-    	top: 0;
-		overflow: auto;
-		height: 100%;
+	@media @mini-tablets{
+		&.active {
+			position: fixed;
+			display: block;
+			top: 0;
+			height: 100%;
+			left: 0;
+			width: 100%;
+		}
 	}
 }
 .scores-container .scores-info-container {
@@ -1170,23 +1179,15 @@ a.teams {
 	}
 }
 .game-team-details-player {
-	width: 25%; 
-	display: inline-block;
-	padding: 0 10px;
-	vertical-align: top;
-	&:first-child {
-		padding-left: 0;
-	}
-	&:last-child {
-		padding-right: 0;
-	}
+    display: inline-block;
+    padding: 0 10px;
+    vertical-align: top;
+    width: 164px;
+
 	
 	@media @tiny-smartphones {
 		width: 50%;
 		margin: 0 0 20px 0;
-	}
-	&.mixed-doubles {
-		width: 50%;
 	}
 }
 .game-team-details-position {

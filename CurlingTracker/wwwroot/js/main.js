@@ -2,13 +2,38 @@
 function showCompetition(competitionId){
 	$('.competition-list-item').removeClass('active');
 	$('.competition-list-item[data-id=' + competitionId + ']').addClass('active');
-	$('.scores-container').addClass('loading');
+	addLoadingToClass('scores-container-container');
+	makeScoresContainerActive();
 	getScoresView(competitionId, null, function(viewHtml){
-		$('.scores-container').replaceWith(viewHtml);
+		$('.scores-container-container').html(viewHtml);
 		currentCompetitionId = competitionId;
-		currentDrawId = $('.scores-container [data-draw-id]').attr('data-draw-id');
-		$('.scores-container').removeClass('loading');
+		currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
+		removeLoadingFromClass('scores-container-container');
 	});
+}
+
+function showGame(gameId){
+	makeScoresContainerActive();
+	addLoadingToClass('scores-container-container');
+	getGameView(gameId, function(viewHtml){
+		$('.scores-info-wrapper').html(viewHtml);
+		removeLoadingFromClass('scores-container-container');
+	});
+}
+
+function removeLoadingFromClass(className){
+	$('.' + className + ' .loading').remove();
+	$('.' + className).css('position', '');
+}
+
+function addLoadingToClass(className){
+	$('.' + className).append('<div class="loading"><div class="spinner"></div></div>');
+}
+function makeScoresContainerActive(){
+	$('.scores-container-container').addClass('active');
+	if ($(window).width() < 480){
+		$('body').css('overflow', 'hidden');
+	}
 }
 
 function refreshDrawScores(){
