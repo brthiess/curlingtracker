@@ -1,7 +1,11 @@
 @*Model = Event *@
+<div class='scores-top-header'>
+	<div class="scores-top-header-back-button back" onclick="closeScores();"></div>
+		<h2 class='scores-top-header-title'>@Model.Name</h2> 
+	<div class="scores-top-header-back-button close" onclick="closeScores();"></div>
+</div>
 <div class='scores-container' data-competition-id='@Model.EventId'>
 		<div class='scores-header'>
-			<h2 class='scores-header-title'>@Model.Name</h2> 
 			<div class='tabs'>
 				<h3 class='tab-title active' data-scoreboard-section='scores' onclick='showOnScoreboard("scores");'>Scores</h3>
 				<!--<h3 class='tab-title' data-scoreboard-section='standings' onclick='showOnScoreboard("standings");'><%- (competition.type == null || competition.type == "round-robin" ? "Standings" : "Bracket") %></h3>

@@ -1,4 +1,5 @@
 /* Scoreboard */
+var fullScreenScoreboardWidth = 719;
 function showCompetition(competitionId){
 	$('.competition-list-item').removeClass('active');
 	$('.competition-list-item[data-id=' + competitionId + ']').addClass('active');
@@ -21,6 +22,9 @@ function showGame(gameId){
 	});
 }
 
+function closeScores(){
+	makeScoresContainerInActive();
+}
 function removeLoadingFromClass(className){
 	$('.' + className + ' .loading').remove();
 	$('.' + className).css('position', '');
@@ -31,9 +35,14 @@ function addLoadingToClass(className){
 }
 function makeScoresContainerActive(){
 	$('.scores-container-container').addClass('active');
-	if ($(window).width() < 480){
+	if ($(window).width() < fullScreenScoreboardWidth){
 		$('body').css('overflow', 'hidden');
 	}
+}
+
+function makeScoresContainerInActive(){
+	$('.scores-container-container').removeClass('active');
+	$('body').css('overflow', 'hidden');
 }
 
 function refreshDrawScores(){

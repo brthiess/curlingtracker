@@ -666,6 +666,11 @@ select {
 .competition-list-item:nth-child(1) {
   margin-top: 5px;
 }
+@media only screen and (max-width: 719px) {
+  .competition-list-item.active {
+    outline: none;
+  }
+}
 .scores-tournament-category {
   display: flex;
   justify-content: space-between;
@@ -703,7 +708,6 @@ select {
 }
 .scores-container-container {
   position: relative;
-  padding: 10px 0 40px;
   background-color: white;
   width: 100%;
   min-width: 0;
@@ -722,7 +726,11 @@ select {
     height: 100%;
     left: 0;
     width: 100%;
+    overflow: auto;
   }
+}
+.scores-container {
+  padding: 10px 0 40px;
 }
 .scores-container .scores-info-container {
   display: none;
@@ -730,9 +738,43 @@ select {
 .scores-container .scores-info-container.active {
   display: block;
 }
+/*mobile scores header*/
+.scores-top-header {
+  background: #333;
+  color: white;
+  display: flex;
+  flex-flow: row;
+  overflow: hidden;
+  height: 60px;
+  justify-content: space-between;
+  align-items: center;
+}
+.scores-top-header-title {
+  font-size: 16px;
+  font-weight: 100;
+  text-transform: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.scores-top-header-back-button {
+  width: 70px;
+  height: 100%;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  background-size: 33px;
+}
+.scores-top-header-back-button.back {
+  background-image: url(/images/back-button.png);
+}
+.scores-top-header-back-button.close {
+  background-image: url(/images/close-button.png);
+}
 .scores-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0px 20px;
   line-height: 40px;
   margin-bottom: 30px;
