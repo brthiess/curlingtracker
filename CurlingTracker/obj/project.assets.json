@@ -13565,28 +13565,30 @@
     ]
   },
   "packageFolders": {
-    "/home/brad/.nuget/packages/": {},
-    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\brad\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/CurlingTracker.csproj",
+      "projectUniqueName": "D:\\test\\curlingtracker\\CurlingTracker\\CurlingTracker.csproj",
       "projectName": "CurlingTracker",
-      "projectPath": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/CurlingTracker.csproj",
-      "packagesPath": "/home/brad/.nuget/packages/",
-      "outputPath": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/",
+      "projectPath": "D:\\test\\curlingtracker\\CurlingTracker\\CurlingTracker.csproj",
+      "packagesPath": "C:\\Users\\brad\\.nuget\\packages\\",
+      "outputPath": "D:\\test\\curlingtracker\\CurlingTracker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/home/brad/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\brad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

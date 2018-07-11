@@ -14,6 +14,7 @@
 @tablets-only:    ~"only screen and (max-width: 1029px) and (min-width: 720px)";
 @medium-tablets: ~"only screen and (max-width: 850px)";
 @mini-tablets:    ~"only screen and (max-width: 719px)";
+@not-mini-tablets: ~"only screen and (min-width: 720px)";
 @mini-mini-tablets:    ~"only screen and (max-width: 600px)";
 @smartphones:    ~"only screen and (max-width: 479px)";
 @tiny-smartphones:    ~"only screen and (max-width: 370px)";
@@ -726,7 +727,14 @@ display:none !important;
 		background-image: url(/images/close-button.png);
 	}
 }
-
+@media @not-mini-tablets {
+	[data-close-button]{
+		transform:scale(0);
+	}
+	[data-back-button][data-back-action=close]{
+		transform: scale(0);
+	}
+}
 .scores-header {
 	display:flex;
 	justify-content: flex-end;

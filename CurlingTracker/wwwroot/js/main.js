@@ -1,30 +1,49 @@
 /* Scoreboard */
 var fullScreenScoreboardWidth = 719;
-function showCompetition(competitionId){
+
+
+function showEvent(eventId){
 	$('.competition-list-item').removeClass('active');
-	$('.competition-list-item[data-id=' + competitionId + ']').addClass('active');
+	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
 	addLoadingToClass('scores-container-container');
 	makeScoresContainerActive();
-	getScoresView(competitionId, null, function(viewHtml){
+	getScoresView(eventId, null, function(viewHtml){
 		$('.scores-container-container').html(viewHtml);
-		currentCompetitionId = competitionId;
+		currentCompetitionId = eventId;
 		currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
 		removeLoadingFromClass('scores-container-container');
+		updateBackButton(true);
 	});
 }
 
-function showGame(gameId){
+function showGame(gameId, eventId){
 	makeScoresContainerActive();
 	addLoadingToClass('scores-container-container');
 	getGameView(gameId, function(viewHtml){
 		$('.scores-info-wrapper').html(viewHtml);
 		removeLoadingFromClass('scores-container-container');
+		updateBackButton(false, eventId);
 	});
+}
+
+function updateBackButton(isClosing, eventId){
+	var onClickAttr = "";
+	var backButton = $("[data-back-button]");
+	if (isClosing){
+		onClickAttr = "closeScores()";
+		backButton.attr("data-back-action", "close");
+	}
+	else {
+		onClickAttr = "showEvent('" + eventId + "');";
+		backButton.attr("data-back-action", "back");
+	}
+	backButton.attr("onclick", onClickAttr);
 }
 
 function closeScores(){
 	makeScoresContainerInActive();
 }
+
 function removeLoadingFromClass(className){
 	$('.' + className + ' .loading').remove();
 	$('.' + className).css('position', '');
@@ -42,7 +61,7 @@ function makeScoresContainerActive(){
 
 function makeScoresContainerInActive(){
 	$('.scores-container-container').removeClass('active');
-	$('body').css('overflow', 'hidden');
+	$('body').css('overflow');
 }
 
 function refreshDrawScores(){

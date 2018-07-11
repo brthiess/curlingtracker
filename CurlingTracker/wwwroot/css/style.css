@@ -772,6 +772,12 @@ select {
 .scores-top-header-back-button.close {
   background-image: url(/images/close-button.png);
 }
+[data-close-button]{
+	transform:scale(0);
+}
+[data-back-button][data-back-action=close]{
+	transform: scale(0);
+}
 .scores-header {
   display: flex;
   justify-content: flex-end;

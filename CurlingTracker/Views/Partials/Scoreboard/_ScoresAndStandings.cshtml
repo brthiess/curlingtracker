@@ -1,8 +1,8 @@
 @*Model = Event *@
 <div class='scores-top-header'>
-	<div class="scores-top-header-back-button back" onclick="closeScores();"></div>
+	<div class="scores-top-header-back-button back" onclick="closeScores();" data-back-button data-back-action="close"></div>
 		<h2 class='scores-top-header-title'>@Model.Name</h2> 
-	<div class="scores-top-header-back-button close" onclick="closeScores();"></div>
+	<div class="scores-top-header-back-button close" onclick="closeScores();" data-close-button></div>
 </div>
 <div class='scores-container' data-competition-id='@Model.EventId'>
 		<div class='scores-header'>
