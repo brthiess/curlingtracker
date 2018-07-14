@@ -5,6 +5,16 @@ namespace CurlingTracker.Models
 {
     public class Team 
     {
+        public Guid TeamId {get; set;}
+        
+        public EventType.TeamType TeamType {get;set;}
+        
+        public Gender gender{get;set;}
+
+        public List<Player> Players {get;set;}
+
+        public string Name {get;set;}
+        
         public Team(EventType.TeamType teamType, List<Player> players)
         {
             this.TeamType= teamType;
@@ -23,16 +33,6 @@ namespace CurlingTracker.Models
             this.Players = players;
             this.Name = GetTeamShortName();
         }
-        public EventType.TeamType TeamType {get;set;}
-
-        public Guid TeamId {get; set;}
-        
-        public Gender gender{get;set;}
-
-        public List<Player> Players {get;set;}
-
-        public string Name {get;set;}
-        
 
         private string GetTeamShortName()
         {

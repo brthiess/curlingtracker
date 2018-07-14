@@ -4,14 +4,6 @@ namespace CurlingTracker.Models
 {
     public class Game
     {
-        public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId){
-            this.Team1 = team1;
-            this.Team2 = team2;
-            this.Linescore = linescore;
-            this.IsFinal = isFinal;
-            this.PercentagesAvailable = false;
-            this.EventId = eventId;
-        }
         public Guid GameId {get; set;}
 
         public Team Team1 {get;set;}
@@ -21,6 +13,15 @@ namespace CurlingTracker.Models
         public Guid EventId {get;set;}
 
         public bool PercentagesAvailable {get;set;}
+
+        public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId){
+            this.Team1 = team1;
+            this.Team2 = team2;
+            this.Linescore = linescore;
+            this.IsFinal = isFinal;
+            this.PercentagesAvailable = false;
+            this.EventId = eventId;
+        }
         
         public string Team1ShortName {
             get

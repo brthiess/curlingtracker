@@ -4,6 +4,20 @@ namespace CurlingTracker.Models
 {
     public class Event 
     {
+        public Guid EventId {get; set;}
+
+        public string Name {get;set;}
+        
+        public DateTime StartDate {get;set;}
+
+        public DateTime EndDate {get;set;}   
+
+        public string Location {get;set;}     
+
+        public EventType Type {get;set;}
+
+        public List<Draw> Draws {get;set;}
+
         public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws)
         {
             this.Name = name;
@@ -38,18 +52,5 @@ namespace CurlingTracker.Models
                 return currentDraw;
             }
         }
-        public Guid EventId {get; set;}
-
-        public string Name {get;set;}
-        
-        public DateTime StartDate {get;set;}
-
-        public DateTime EndDate {get;set;}   
-
-        public string Location {get;set;}     
-
-        public EventType Type {get;set;}
-
-        public List<Draw> Draws {get;set;}
     }
 }

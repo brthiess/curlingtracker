@@ -16,7 +16,7 @@ namespace CurlingTracker.Data.Migrations
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: false),
-                    
+                    Type = table.Column<Guid>(nullable: false)
                 }
             );
         }

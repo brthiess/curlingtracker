@@ -54,7 +54,7 @@ namespace CurlingTracker.Services
             Random random = new Random();
             int numberOfEnds = (random.Next(0,2) == 1 ? 8 : 10);
             Array values = Enum.GetValues(typeof (EventType.TeamType));
-            EventType randomEventType = new EventType((EventType.TeamType)values.GetValue(random.Next(values.Length)), numberOfEnds);
+            EventType randomEventType = new EventType((EventType.TeamType)values.GetValue(random.Next(values.Length)), numberOfEnds, Guid.NewGuid());
             return randomEventType;
         }
 

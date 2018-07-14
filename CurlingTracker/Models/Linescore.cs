@@ -5,6 +5,12 @@ namespace CurlingTracker.Models
 {
     public class Linescore
     {
+        public Guid LinescoreId {get; set;}
+        
+        public int NumberOfEnds {get;set;}
+
+        public Dictionary<int, End> Ends {get;set;}
+
         ///Number of ends in the game (not including extra end)
         public Linescore(int numberOfEnds)
         {
@@ -14,13 +20,6 @@ namespace CurlingTracker.Models
         public Linescore(Dictionary<int, End> ends){
             this.Ends = ends;
         }
-
-        
-        public int NumberOfEnds {get;set;}
-
-        public Guid LinescoreId {get; set;}
-
-        public Dictionary<int, End> Ends {get;set;}
                 
         public void AddEnd(End end)
         {
