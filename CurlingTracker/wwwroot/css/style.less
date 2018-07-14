@@ -1248,16 +1248,18 @@ a.teams {
 	text-align: center;
 }
 .game-team-details-player-image {
-    margin: auto;
+	margin: auto;
+	height: 150px;
+	width: 110px;
+	@media @smartphones {
+		width: 90px;
+		height: 120px;
+	}
 	img {
 		width: 100%;
-	}
-	width: 110px;
-	@media @mini-tablets {
-		width: 90px;
-	}
-	@media @smartphones {
-		width: 70px;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
 	}
 }
 .game-team-details-player-name {

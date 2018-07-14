@@ -27,6 +27,12 @@ namespace CurlingTracker.Services
             return Task.FromResult(gameObject);    
         }
 
+        public Task<Draw> GetDrawAsync(string drawId)
+        {
+            EventType et = GetRandomEventType();
+            Draw draw = GetRandomDraw(1, et);
+            return Task.FromResult(draw);
+        }
         private List<Event> GetRandomEvents(int amount)
         {
             List<Event> Events = new List<Event>();
@@ -79,7 +85,7 @@ namespace CurlingTracker.Services
 
         private Draw GetRandomDraw(int drawNumber, EventType eventType)
         {
-            return new Draw(DateUtil.RandomDay(), "Draw " + (drawNumber + 1), GetGames(10, eventType));
+            return new Draw(DateUtil.RandomDay(), "Draw " + (drawNumber + 1), GetGames(10, eventType), Guid.NewGuid());
         }
 
         private List<Game> GetGames(int amount, EventType eventType)
@@ -244,7 +250,9 @@ namespace CurlingTracker.Services
             {
                 g = RandomNameGenerator.Gender.Male;
             }
-            return new Player(StringUtil.FirstLetterToUpper(GetRandomName(true, g)), StringUtil.FirstLetterToUpper(GetRandomName(false, g)), gender, position, isSkip);
+            Player p = new Player(StringUtil.FirstLetterToUpper(GetRandomName(true, g)), StringUtil.FirstLetterToUpper(GetRandomName(false, g)), gender, position, isSkip);
+            p.SetRandomImage();
+            return p;
         }
 
         private Gender GetRandomGender()

@@ -1,9 +1,9 @@
 @*Model = Event *@
 <div class='scores-info-container active' data-scoreboard-section='scores'>
 	<div class='scores'>
-		<div data-draw-id='<%- competition.currentDrawId %>' class='games-container'>
+		<div data-draw-id='@Model.CurrentDraw.DrawId' class='games-container'>
 			<div class='select-wrapper scores-draw-wrapper'>
-				<select class='game-time-name' onchange="updateDrawId(<%- competition.eventId %>, $(this).val());">
+				<select class='game-time-name' onchange="showDraw($(this).val());">
 					@for(var i = 0; i < Model.Draws.Count; i++) {
 						<option value='@Model.Draws[i].DrawId' class='game-time-name-option'> @Model.Draws[i].Date.ToString("MMMM dd h:mmtt", System.Globalization.CultureInfo.InvariantCulture) - @Model.Draws[i].DisplayName</option>
 					}  
@@ -13,6 +13,3 @@
 		</div>
 	</div>
 </div>
-<script>
-	currentDrawId = "@(Model.CurrentDraw != null ? Model.CurrentDraw.DrawId : "")";
-</script>

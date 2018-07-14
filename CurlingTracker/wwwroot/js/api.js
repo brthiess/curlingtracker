@@ -23,3 +23,16 @@ function getGameView(gameId, callback){
 		}
 	})}, 1000);
 }
+
+function getDrawView(drawId, callback){
+	setTimeout(function(){$.ajax({
+		method: "GET",
+		url: "/api/draw/" + drawId,
+		success: function(data){
+			callback(data);
+		},
+		error: function(data){
+			console.log(data);
+		}
+	})}, 1000);
+}

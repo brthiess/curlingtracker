@@ -29,5 +29,13 @@ namespace CurlingTracker.Controllers
             var item = await _eventService.GetGameAsync(gameId);
             return View(item);
         }
+
+        public async Task<IActionResult> Draw(string drawId)
+        {
+            ViewData["Layout"] = "_Blank";
+            var item = await _eventService.GetDrawAsync(drawId);
+            ViewData["EventId"] = item.EventId;
+            return View(item);
+        }
     }
 }

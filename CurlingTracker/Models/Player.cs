@@ -43,5 +43,11 @@ namespace CurlingTracker.Models
             }
         }
         public Gender Gender {get;set;}
+
+        public void SetRandomImage()
+        {
+            Random random = new Random();
+            this.Image = "random" + random.Next(1,7) + ".jpeg";
+        }
     }
 }

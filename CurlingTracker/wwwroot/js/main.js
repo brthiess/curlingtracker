@@ -26,6 +26,15 @@ function showGame(gameId, eventId){
 	});
 }
 
+function showDraw(drawId){
+	console.log(drawId);
+	addLoadingToClass('scores-container-container');
+	getDrawView(drawId, function(viewHtml){
+		removeLoadingFromClass('scores-container-container');
+		$('.scores-games-wrapper').html(viewHtml);
+	})
+}
+
 function updateBackButton(isClosing, eventId){
 	var onClickAttr = "";
 	var backButton = $("[data-back-button]");
@@ -61,7 +70,7 @@ function makeScoresContainerActive(){
 
 function makeScoresContainerInActive(){
 	$('.scores-container-container').removeClass('active');
-	$('body').css('overflow');
+	$('body').css('overflow', '');
 }
 
 function refreshDrawScores(){
