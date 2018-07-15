@@ -15,6 +15,7 @@ namespace CurlingTracker.Models
 
         public Guid EventId {get;set;}
         
+        public Draw(){}
         public Draw(DateTime date, string displayName, List<Game> games, Guid eventId)
         {
             this.Date = date;
@@ -23,5 +24,7 @@ namespace CurlingTracker.Models
             this.EventId = eventId;
             this.DrawId = Guid.NewGuid();
         }
+
+        
     }
 }

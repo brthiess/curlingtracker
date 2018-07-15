@@ -14,6 +14,11 @@ namespace CurlingTracker.Models
 
         public bool PercentagesAvailable {get;set;}
 
+        public Linescore Linescore {get;set;}
+
+        public bool IsFinal {get;set;}
+
+        public Game(){}
         public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId){
             this.Team1 = team1;
             this.Team2 = team2;
@@ -77,15 +82,11 @@ namespace CurlingTracker.Models
             }
         }
 
-        public Linescore Linescore {get;set;}
 
         public int GetScoreForEnd(int teamNumber, int endNumber)
         {
             return Linescore.GetTeamXScoreInEnd(teamNumber, endNumber);
         }
-
-
-        public bool IsFinal {get;set;}
 
         public int GetNumberOfEnds()
         {

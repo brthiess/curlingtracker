@@ -18,6 +18,7 @@ namespace CurlingTracker.Models
 
         public List<Draw> Draws {get;set;}
 
+        public Event(){}
         public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws)
         {
             this.Name = name;
@@ -28,6 +29,7 @@ namespace CurlingTracker.Models
             this.EventId = Guid.NewGuid();
             this.Draws = draws;
         }
+       
 
         private Draw _currentDraw = null;
         public Draw CurrentDraw {

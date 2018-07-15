@@ -5,9 +5,9 @@ namespace CurlingTracker.Models
 {
     public class EventType
     {
-        public Guid EventTypeId;
+        public Guid EventTypeId {get;set;}
 
-        public Guid EventId;
+        public Guid EventId {get;set;}
 
         public TeamType teamType {get;set;}
 
@@ -19,6 +19,7 @@ namespace CurlingTracker.Models
 
         public enum TeamType {MEN, WOMEN, MIXED_DOUBLES, MIXED}
         
+        public EventType(){}
         public EventType(TeamType teamType, int numberOfEnds, Guid eventId)
         {
             this.teamType = teamType;

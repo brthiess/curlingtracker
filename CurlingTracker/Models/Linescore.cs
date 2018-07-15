@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using CurlingTracker.Utility;
 
 namespace CurlingTracker.Models
 {
@@ -9,7 +11,21 @@ namespace CurlingTracker.Models
         
         public int NumberOfEnds {get;set;}
 
+        [NotMapped]
         public Dictionary<int, End> Ends {get;set;}
+
+
+        public string DictionaryAsXml
+        {
+            get
+            {
+                return StringUtil.ToXML(Ends);
+            }
+            set
+            {
+                Ends = StringUtil.LoadFromXMLString(value);
+            }
+        }
 
         ///Number of ends in the game (not including extra end)
         public Linescore(int numberOfEnds)
@@ -52,6 +68,7 @@ namespace CurlingTracker.Models
             return score;
         }
 
+        [NotMapped]
         public int Team1Score
         {
             get
@@ -60,6 +77,7 @@ namespace CurlingTracker.Models
             }
         }
 
+        [NotMapped]
         public int Team2Score
         {
             get
@@ -68,6 +86,7 @@ namespace CurlingTracker.Models
             }
         }
 
+        [NotMapped] 
         public bool Team1Hammer
         {
             get
@@ -76,6 +95,7 @@ namespace CurlingTracker.Models
             }
         }
 
+        [NotMapped]
         public bool Team2Hammer
         {
             get

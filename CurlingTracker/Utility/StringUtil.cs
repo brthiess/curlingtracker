@@ -1,4 +1,7 @@
 using System;
+using System.Xml.Serialization;
+using System.Collections.Generic;
+using CurlingTracker.Models;
 
 namespace CurlingTracker.Utility
 {
@@ -32,7 +35,21 @@ namespace CurlingTracker.Utility
                 default:
                     return num + "th";
             }
+        }
 
+        public static string ToXML(Dictionary<int, End> dictionary)
+        {
+            var stringwriter = new System.IO.StringWriter();
+            var serializer = new XmlSerializer(dictionary.GetType());
+            serializer.Serialize(stringwriter, dictionary);
+            return stringwriter.ToString();
+        }
+
+        public static Dictionary<int, End> LoadFromXMLString(string xmlText)
+        {
+            var stringReader = new System.IO.StringReader(xmlText);
+            var serializer = new XmlSerializer(typeof(Dictionary<int, End>));
+            return serializer.Deserialize(stringReader) as Dictionary<int, End>;
         }
     }
 }

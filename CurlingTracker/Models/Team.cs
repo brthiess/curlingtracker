@@ -14,7 +14,8 @@ namespace CurlingTracker.Models
         public List<Player> Players {get;set;}
 
         public string Name {get;set;}
-        
+
+        public Team(){}        
         public Team(EventType.TeamType teamType, List<Player> players)
         {
             this.TeamType= teamType;
