@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CurlingTracker.Models
 {
@@ -7,12 +8,15 @@ namespace CurlingTracker.Models
     {
         public Guid DrawId {get; set;}
 
+        [Required]
         public DateTime Date {get;set;}
 
+        [Required]
         public string DisplayName {get;set;}
 
         public List<Game> Games{get;set;}
 
+        [Required]
         public Guid EventId {get;set;}
         
         public Draw(){}

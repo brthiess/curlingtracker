@@ -15,9 +15,11 @@ namespace CurlingTracker.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
 
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         { 
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;");
+            optionsBuilder.UseMySql(@"server=localhost;port=3306;database=db;uid=root;password=jikipol");
         }
     }
 }

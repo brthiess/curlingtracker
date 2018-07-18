@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 namespace CurlingTracker.Models
 {
     public class Event 
     {
         public Guid EventId {get; set;}
 
+        [Required]
         public string Name {get;set;}
         
         public DateTime StartDate {get;set;}
 
         public DateTime EndDate {get;set;}   
 
+        [Required]
         public string Location {get;set;}     
 
         public EventType Type {get;set;}

@@ -1,5 +1,5 @@
 using System;
-
+using System.ComponentModel.DataAnnotations;
 namespace CurlingTracker.Models
 {
     public class Player 
@@ -8,11 +8,15 @@ namespace CurlingTracker.Models
 
         public Guid PlayerId {get; set;}
 
+        [Required]
         public string FirstName {get;set;}
        
+       [Required]
         public string LastName {get;set;}
 
+        [Required]
         public string Image {get;set;}
+        
         
         public Position position {get;set;}
 
@@ -21,6 +25,7 @@ namespace CurlingTracker.Models
         public Gender Gender {get;set;}
 
         public enum Position{Lead, Second, Third, Fourth}
+
         
         public Player(string firstName, string lastName, Gender gender, Position position, bool isSkip, string image = "default.png")
         {

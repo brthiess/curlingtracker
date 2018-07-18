@@ -1,19 +1,22 @@
 using System;
-
+using System.ComponentModel.DataAnnotations;
 namespace CurlingTracker.Models
 {
     public class Game
     {
         public Guid GameId {get; set;}
 
+        [Required]
         public Team Team1 {get;set;}
 
+        [Required]
         public Team Team2 {get;set;}
 
         public Guid EventId {get;set;}
 
         public bool PercentagesAvailable {get;set;}
 
+        [Required]
         public Linescore Linescore {get;set;}
 
         public bool IsFinal {get;set;}
