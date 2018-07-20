@@ -8,6 +8,11 @@ namespace CurlingTracker.Services
 {
     public class FakeEventService : IEventService
     {
+        public Task<bool> AddEventAsync(Event e)
+        {
+            return Task.FromResult(true);
+        }
+
         public Task<Event[]> GetCurrentEventsAsync()
         {
             Event[] events = GetRandomEvents(8).ToArray();

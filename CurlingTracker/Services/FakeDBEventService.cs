@@ -51,6 +51,13 @@ namespace CurlingTracker.Services
             }
             return null;  
         }
+
+        public async Task<bool> AddEventAsync(Event e)
+        {
+            _context.Events.Add(e);
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1;
+        }
     }
 
 }

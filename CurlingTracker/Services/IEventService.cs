@@ -14,5 +14,7 @@ namespace CurlingTracker.Services
         Task<Game> GetGameAsync(string gameId);
 
         Task<Draw> GetDrawAsync(string drawId);
+
+        Task<bool> AddEventAsync(Event e);
     }
 }
