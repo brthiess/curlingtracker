@@ -17,7 +17,7 @@ namespace Crawler
             }
         }
         
-        public static List<string> GetCurrentEventIDs()
+        public static List<string> GetCurrentCZIDs()
         {
             string currentEventPageHtml = GetHtml(GetCurrentEventPageUrl());
             List<string> eventIds = Parser.GetCurrentEventIds(currentEventPageHtml);

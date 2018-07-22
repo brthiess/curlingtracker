@@ -7,9 +7,13 @@ namespace CurlingTracker.Services
 {
     public interface IEventService
     {
+        Task<Event[]> GetAllEventsAsync();
+
         Task<Event[]> GetCurrentEventsAsync();
 
         Task<Event> GetEventAsync(string eventId);
+
+        Task<Event> GetEventByCzIdAsync(string czId);        
 
         Task<Game> GetGameAsync(string gameId);
 

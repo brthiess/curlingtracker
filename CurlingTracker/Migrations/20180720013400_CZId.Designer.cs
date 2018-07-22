@@ -3,18 +3,21 @@ using System;
 using CurlingTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurlingTracker.Migrations
 {
     [DbContext(typeof(CurlingContext))]
-    partial class CurlingContextModelSnapshot : ModelSnapshot
+    [Migration("20180720013400_CZId")]
+    partial class CZId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
+                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("CurlingTracker.Models.Draw", b =>
                 {

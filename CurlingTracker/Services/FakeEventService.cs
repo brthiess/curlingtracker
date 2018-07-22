@@ -13,6 +13,12 @@ namespace CurlingTracker.Services
             return Task.FromResult(true);
         }
 
+        public Task<Event[]> GetAllEventsAsync()
+        {
+            Event[] events = GetRandomEvents(8).ToArray();
+            return Task.FromResult(events);
+        }
+        
         public Task<Event[]> GetCurrentEventsAsync()
         {
             Event[] events = GetRandomEvents(8).ToArray();
@@ -25,6 +31,11 @@ namespace CurlingTracker.Services
             return Task.FromResult(eventObject);
         }
 
+        public Task<Event> GetEventByCzIdAsync(string eventId)
+        {
+            Event eventObject = GetRandomEvent();
+            return Task.FromResult(eventObject);
+        }
         public Task<Game> GetGameAsync(string gameId)
         {
             EventType et = GetRandomEventType();

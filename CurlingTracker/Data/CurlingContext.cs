@@ -15,11 +15,13 @@ namespace CurlingTracker.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
 
-
+        public CurlingContext(DbContextOptions<CurlingContext> options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { 
-            optionsBuilder.UseMySql(@"server=localhost;port=3306;database=db;uid=root;password=jikipol");
+        {
+            optionsBuilder.UseSqlite("DataSource=app.db");
         }
     }
 }

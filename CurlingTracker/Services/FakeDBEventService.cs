@@ -17,6 +17,10 @@ namespace CurlingTracker.Services
             _context = context;
         }
 
+        public async Task<Event[]> GetAllEventsAsync()
+        {
+            return await _context.Events.ToArrayAsync();
+        }
         public async Task<Event[]> GetCurrentEventsAsync()
         {
             return await _context.Events.Where(x => x.StartDate > DateTime.Now).ToArrayAsync();
@@ -32,6 +36,15 @@ namespace CurlingTracker.Services
             return null;
         }
 
+        public async Task<Event> GetEventByCzIdAsync(string eventId)
+        {
+            Event[] events = await _context.Events.Where(x => x.CZId.ToString() == eventId).ToArrayAsync();
+            if (events.Count() > 0)
+            {
+                return events[0];
+            }
+            return null;
+        }
         public async Task<Game> GetGameAsync(string gameId)
         {
             Game[] games = await _context.Games.Where(x => x.GameId.ToString() == gameId).ToArrayAsync();

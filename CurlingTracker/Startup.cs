@@ -30,7 +30,7 @@ namespace CurlingTracker
         {
 
             services.AddDbContext<CurlingContext>(options =>
-                options.UseMySql(
+                options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<CurlingContext>();
