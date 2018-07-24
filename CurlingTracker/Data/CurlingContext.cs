@@ -21,7 +21,7 @@ namespace CurlingTracker.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("DataSource=app.db");
+            optionsBuilder.UseSqlite("DataSource=../CurlingTracker/app.db");
         }
     }
 }

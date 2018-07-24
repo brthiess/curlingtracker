@@ -3,23 +3,20 @@ using System;
 using CurlingTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CurlingTracker.Migrations
 {
     [DbContext(typeof(CurlingContext))]
-    [Migration("20180715180334_InitialCreate")]
+    [Migration("20180723030755_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
 
             modelBuilder.Entity("CurlingTracker.Models.Draw", b =>
                 {
@@ -28,7 +25,8 @@ namespace CurlingTracker.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("DisplayName");
+                    b.Property<string>("DisplayName")
+                        .IsRequired();
 
                     b.Property<Guid>("EventId");
 
@@ -44,11 +42,15 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("EventId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CZId");
+
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<string>("Location");
+                    b.Property<string>("Location")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
@@ -91,13 +93,13 @@ namespace CurlingTracker.Migrations
 
                     b.Property<bool>("IsFinal");
 
-                    b.Property<Guid?>("LinescoreId");
+                    b.Property<Guid>("LinescoreId");
 
                     b.Property<bool>("PercentagesAvailable");
 
-                    b.Property<Guid?>("Team1TeamId");
+                    b.Property<Guid>("Team1TeamId");
 
-                    b.Property<Guid?>("Team2TeamId");
+                    b.Property<Guid>("Team2TeamId");
 
                     b.HasKey("GameId");
 
@@ -131,15 +133,18 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("PlayerId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
                     b.Property<int>("Gender");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("Image")
+                        .IsRequired();
 
                     b.Property<bool>("IsSkip");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<Guid?>("TeamId");
 
@@ -192,15 +197,18 @@ namespace CurlingTracker.Migrations
 
                     b.HasOne("CurlingTracker.Models.Linescore", "Linescore")
                         .WithMany()
-                        .HasForeignKey("LinescoreId");
+                        .HasForeignKey("LinescoreId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurlingTracker.Models.Team", "Team1")
                         .WithMany()
-                        .HasForeignKey("Team1TeamId");
+                        .HasForeignKey("Team1TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurlingTracker.Models.Team", "Team2")
                         .WithMany()
-                        .HasForeignKey("Team2TeamId");
+                        .HasForeignKey("Team2TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CurlingTracker.Models.Player", b =>

@@ -22,7 +22,7 @@ namespace Crawler
                 string eventId = GetEventIdFromLink(node.Attributes["href"].Value);
                 if (!string.IsNullOrEmpty(eventId))
                 {
-                    eventIds.Add(eventId);
+                    eventIds.Add(eventId.Trim());
                 }
             }            
             return eventIds;

@@ -12,10 +12,11 @@ namespace CurlingTracker.Migrations
                 columns: table => new
                 {
                     EventId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
-                    Location = table.Column<string>(nullable: true)
+                    Location = table.Column<string>(nullable: false),
+                    CZId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,7 +56,7 @@ namespace CurlingTracker.Migrations
                 {
                     DrawId = table.Column<Guid>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    DisplayName = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(nullable: false),
                     EventId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -96,9 +97,9 @@ namespace CurlingTracker.Migrations
                 columns: table => new
                 {
                     PlayerId = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Image = table.Column<string>(nullable: false),
                     position = table.Column<int>(nullable: false),
                     IsSkip = table.Column<bool>(nullable: false),
                     Gender = table.Column<int>(nullable: false),
@@ -120,11 +121,11 @@ namespace CurlingTracker.Migrations
                 columns: table => new
                 {
                     GameId = table.Column<Guid>(nullable: false),
-                    Team1TeamId = table.Column<Guid>(nullable: true),
-                    Team2TeamId = table.Column<Guid>(nullable: true),
+                    Team1TeamId = table.Column<Guid>(nullable: false),
+                    Team2TeamId = table.Column<Guid>(nullable: false),
                     EventId = table.Column<Guid>(nullable: false),
                     PercentagesAvailable = table.Column<bool>(nullable: false),
-                    LinescoreId = table.Column<Guid>(nullable: true),
+                    LinescoreId = table.Column<Guid>(nullable: false),
                     IsFinal = table.Column<bool>(nullable: false),
                     DrawId = table.Column<Guid>(nullable: true)
                 },
@@ -142,19 +143,19 @@ namespace CurlingTracker.Migrations
                         column: x => x.LinescoreId,
                         principalTable: "Linescore",
                         principalColumn: "LinescoreId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Games_Teams_Team1TeamId",
                         column: x => x.Team1TeamId,
                         principalTable: "Teams",
                         principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Games_Teams_Team2TeamId",
                         column: x => x.Team2TeamId,
                         principalTable: "Teams",
                         principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

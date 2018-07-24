@@ -1,4 +1,3 @@
-/home/brad/Documents/websites/CurlingTracker/CurlingTracker/bin/Debug/netcoreapp2.1/app.db
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/bin/Debug/netcoreapp2.1/CurlingTracker.deps.json
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/bin/Debug/netcoreapp2.1/CurlingTracker.runtimeconfig.json
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/bin/Debug/netcoreapp2.1/CurlingTracker.runtimeconfig.dev.json
@@ -94,3 +93,4 @@ D:/test/curlingtracker/CurlingTracker/obj/Debug/netcoreapp2.1/CurlingTracker.pdb
 D:/test/curlingtracker/CurlingTracker/obj/Debug/netcoreapp2.1/CurlingTracker.csproj.CopyComplete
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Api/Draw.g.cshtml.cs
 /home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/Debug/netcoreapp2.1/Razor/Views/Partials/Scoreboard/_Draw.g.cshtml.cs
+/home/brad/Documents/websites/CurlingTracker/CurlingTracker/bin/Debug/netcoreapp2.1/app.db

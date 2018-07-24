@@ -35,20 +35,23 @@ namespace Crawler
         {
             List<string> czIds = Request.GetCurrentCZIDs();
             List<string> newEventIds = await GetNewEventsFromEventList(czIds);
+            foreach(string newEventId in newEventIds)
+            {
+                
+            }
         }
 
         async private static Task<List<string>> GetNewEventsFromEventList(List<string> czIds)
         {
             Event[] events = await _eventService.GetAllEventsAsync();
-            var newCzIds = new List<string>();
             foreach (Event e in events)
             {
-                if (!czIds.Contains(e.CZId))
+                if (czIds.Contains(e.CZId))
                 {
-                    newCzIds.Add(e.CZId);
+                    czIds.Remove(e.CZId);
                 }
             }
-            return newCzIds;
+            return czIds;
         }
     }
 }

@@ -29,6 +29,11 @@ namespace Crawler
             return BaseUrl + Config.Values["endpoints:currentEvents"];
         }
 
+        private static string GetEventPageUrl(string czId)
+        {
+            return BaseUrl + Config.Values["endpoints:eventInfo"].Replace("[CZ_ID]", czId);
+        }
+
         private static string GetHtml(string url)
         {
             using (WebClient client = new WebClient())
@@ -36,6 +41,11 @@ namespace Crawler
                 string htmlCode = client.DownloadString(url);
                 return htmlCode;
             }            
+        }
+
+        private static Event GetEventObject(string czId)
+        {
+            string html = GetHtml(GetEventPageUrl(czId));
         }
 
     }
