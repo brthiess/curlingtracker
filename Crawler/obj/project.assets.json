@@ -6896,7 +6896,8 @@
       "HtmlAgilityPack.CssSelectors.NetCore >= 1.1.0",
       "Microsoft.Extensions.Configuration.FileExtensions >= 2.1.1",
       "Microsoft.Extensions.Configuration.Json >= 2.1.1",
-      "Microsoft.NETCore.App >= 2.1.0"
+      "Microsoft.NETCore.App >= 2.1.0",
+      "Newtonsoft.Json >= 11.0.2"
     ]
   },
   "packageFolders": {
@@ -6966,6 +6967,10 @@
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[11.0.2, )"
           }
         },
         "imports": [

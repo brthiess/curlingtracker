@@ -39,6 +39,7 @@ namespace Crawler
         {
             string json = GetHtml(GetEventInfoUrl(czId));
             Event e = Parser.GetEventFromJson(json);
+            return e;
         }
 
     }

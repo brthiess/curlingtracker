@@ -15,7 +15,7 @@ namespace Crawler
         {
         }
 
-        public class ApiEvent
+        public class Event
         {
             public string eventId { get; set; }
             public EventWeek eventWeek { get; set; }
@@ -75,7 +75,7 @@ namespace Crawler
             public string numberOfEnds { get; set; }
             public List<string> homeScores { get; set; }
             public List<string> awayScores { get; set; }
-            public ApiEvent apiEvent { get; set; }
+            public Event @event { get; set; }
             public Draw draw { get; set; }
             public DrawRaw drawRaw { get; set; }
             public string statusText { get; set; }

@@ -13,7 +13,8 @@
           "HtmlAgilityPack": "1.8.5",
           "HtmlAgilityPack.CssSelectors.NetCore": "1.1.0",
           "Microsoft.Extensions.Configuration.FileExtensions": "2.1.1",
-          "Microsoft.Extensions.Configuration.Json": "2.1.1"
+          "Microsoft.Extensions.Configuration.Json": "2.1.1",
+          "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
           "Crawler.dll": {}

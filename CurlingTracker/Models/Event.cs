@@ -24,14 +24,14 @@ namespace CurlingTracker.Models
         public string CZId {get;set;}
 
         public Event(){}
-        public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws, string czId = null)
+        public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null)
         {
             this.Name = name;
             this.StartDate = startDate;
             this.EndDate = endDate;
             this.Location = location;
             this.Type = type;
-            this.EventId = Guid.NewGuid();
+            this.EventId = (eventId.HasValue ? eventId.Value : Guid.NewGuid());
             this.Draws = draws;
             this.CZId = czId;
         }

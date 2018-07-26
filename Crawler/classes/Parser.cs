@@ -35,13 +35,17 @@ namespace Crawler
             var api = new Api(json).Values;
             int numberOfEnds = 8;
             int.TryParse(api.numberOfEnds, out numberOfEnds);
+            Guid eventId = Guid.NewGuid();
             Event e = new Event(
-                api.apiEvent.displayName, 
-                DateTime.Parse(api.apiEvent.startDate), 
-                DateTime.Parse(api.apiEvent.endDate),
-                api.apiEvent.location,
-                new EventType(GetTeamTypeFromDivision(api.apiEvent.division), numberOfEnds, api.apiEvent.eventId)
-                api.dr)
+                api.@event.displayName, 
+                DateTime.Parse(api.@event.startDate), 
+                DateTime.Parse(api.@event.endDate),
+                api.@event.location,
+                new EventType(GetTeamTypeFromDivision(api.@event.division), numberOfEnds, eventId),
+                czId: api.@event.eventId,
+                eventId: eventId
+            );
+            return e;
         }
 
 
