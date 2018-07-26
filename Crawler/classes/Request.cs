@@ -2,21 +2,13 @@ using System;
 using System.IO;
 using System.Net;
 using System.Collections.Generic;
-
+using CurlingTracker.Models;
 
 
 namespace Crawler
 {
     public static class Request
-    {
-        private static string BaseUrl
-        {
-            get 
-            {
-                return Config.Values["baseUrl"];
-            }
-        }
-        
+    {       
         public static List<string> GetCurrentCZIDs()
         {
             string currentEventPageHtml = GetHtml(GetCurrentEventPageUrl());
@@ -26,12 +18,12 @@ namespace Crawler
 
         private static string GetCurrentEventPageUrl()
         {
-            return BaseUrl + Config.Values["endpoints:currentEvents"];
+            return Config.Values["endpoints:currentEvents"];
         }
 
-        private static string GetEventPageUrl(string czId)
+        private static string GetEventInfoUrl(string czId)
         {
-            return BaseUrl + Config.Values["endpoints:eventInfo"].Replace("[CZ_ID]", czId);
+            return Config.Values["endpoints:eventInfo"].Replace("[CZ_ID]", czId);
         }
 
         private static string GetHtml(string url)
@@ -43,9 +35,10 @@ namespace Crawler
             }            
         }
 
-        private static Event GetEventObject(string czId)
+        public static Event GetEvent(string czId)
         {
-            string html = GetHtml(GetEventPageUrl(czId));
+            string json = GetHtml(GetEventInfoUrl(czId));
+            Event e = Parser.GetEventFromJson(json);
         }
 
     }

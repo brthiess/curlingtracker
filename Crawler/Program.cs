@@ -35,8 +35,9 @@ namespace Crawler
         {
             List<string> czIds = Request.GetCurrentCZIDs();
             List<string> newEventIds = await GetNewEventsFromEventList(czIds);
-            foreach(string newEventId in newEventIds)
+            foreach(string czId in newEventIds)
             {
+                Event e = Request.GetEvent(czId);
                 
             }
         }

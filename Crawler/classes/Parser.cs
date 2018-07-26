@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using HtmlAgilityPack;
 using Fizzler.Systems.HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using CurlingTracker.Models;
+using Newtonsoft.Json;
 
 namespace Crawler
 {
@@ -28,7 +30,22 @@ namespace Crawler
             return eventIds;
         }
 
-        public static string GetEventIdFromLink(string link)
+        public static Event GetEventFromJson(string json)
+        {
+            var api = new Api(json).Values;
+            int numberOfEnds = 8;
+            int.TryParse(api.numberOfEnds, out numberOfEnds);
+            Event e = new Event(
+                api.apiEvent.displayName, 
+                DateTime.Parse(api.apiEvent.startDate), 
+                DateTime.Parse(api.apiEvent.endDate),
+                api.apiEvent.location,
+                new EventType(GetTeamTypeFromDivision(api.apiEvent.division), numberOfEnds, api.apiEvent.eventId)
+                api.dr)
+        }
+
+
+        private static string GetEventIdFromLink(string link)
         {
             string eventId = "";
             Regex r = new Regex("eventid=([A-Za-z0-9]*)");
@@ -39,5 +56,18 @@ namespace Crawler
             }
             return eventId;
         }
+        private static EventType.TeamType GetTeamTypeFromDivision(string division)
+        {
+           if (division == "men")
+           {
+               return EventType.TeamType.MEN;
+           }
+           else if (division == "women")
+           {
+               return EventType.TeamType.WOMEN;
+           }
+           return EventType.TeamType.MEN;
+        }
+
     }
 }
