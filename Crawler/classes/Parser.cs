@@ -32,7 +32,7 @@ namespace Crawler
 
         public static Event GetEventFromJson(string json)
         {
-            var api = new Api(json).Values;
+            var api = new Api(json).SubEventInfo;
             int numberOfEnds = 8;
             int.TryParse(api.numberOfEnds, out numberOfEnds);
             Guid eventId = Guid.NewGuid();
@@ -71,6 +71,11 @@ namespace Crawler
                return EventType.TeamType.WOMEN;
            }
            return EventType.TeamType.MEN;
+        }
+
+        private static string GetRandomGameIdFromEventJson(string json)
+        {
+            var api = new Api(json).
         }
 
     }

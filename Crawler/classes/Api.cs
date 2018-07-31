@@ -6,11 +6,14 @@ namespace Crawler
 {
     public class Api
     {
-        public RootObject Values { get; private set; }
+        public GameObject SubEventInfo { get; private set; }
+        public EventObject MainEventInfo {get; private set;}
         public Api(string json)
         {
-            Values = JsonConvert.DeserializeObject<RootObject>(json);
+            SubEventInfo = JsonConvert.DeserializeObject<GameObject>(json);
+            MainEventInfo = JsonConvert.DeserializeObject<EventObject>(json);
         }
+
         public class EventWeek
         {
         }
@@ -56,7 +59,7 @@ namespace Crawler
             public string filled { get; set; }
         }
 
-        public class RootObject
+        public class GameObject
         {
             public string gameId { get; set; }
             public string awayTeamId { get; set; }
@@ -81,6 +84,33 @@ namespace Crawler
             public string statusText { get; set; }
             public string awayTeamUrl { get; set; }
             public string homeTeamUrl { get; set; }
+        }
+
+
+        public class Game
+        {
+            public string gameId { get; set; }
+            public string awayTeamId { get; set; }
+            public string homeTeamId { get; set; }
+            public string awayTeamDisplayName { get; set; }
+            public string awayTeamShortName { get; set; }
+            public bool awayHammer { get; set; }
+            public bool homeHammer { get; set; }
+            public string homeTeamDisplayName { get; set; }
+            public string homeTeamShortName { get; set; }
+            public string awayScore { get; set; }
+            public string homeScore { get; set; }
+            public string gameStatus { get; set; }
+            public string currentEnd { get; set; }
+            public string statusText { get; set; }
+        }
+
+        public class EventObject
+        {
+            public string displayName { get; set; }
+            public string drawName { get; set; }
+            public string startsAt { get; set; }
+            public List<Game> games { get; set; }
         }
     }
 
