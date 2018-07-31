@@ -21,14 +21,14 @@ namespace Crawler
             return Config.Values["endpoints:currentEvents"];
         }
 
-        private static string GetEventInfoUrl(string czGameId)
+        private static string GetSubEventUrl(string czGameId)
         {
-            return Config.Values["endpoints:eventInfo"].Replace("[CZ_GAME_ID]", czGameId);
+            return Config.Values["endpoints:subEventInfo"].Replace("[CZ_GAME_ID]", czGameId);
         }
 
-        private static string GetEventMainInfoUrl(string czEventId)
+        private static string GetMainEventUrl(string czEventId)
         {
-            return Config.Values["endpoints:eventMainInfo"].Replace("CZ_EVENT_ID", czEventId);
+            return Config.Values["endpoints:mainEventInfo"].Replace("[CZ_EVENT_ID]", czEventId);
         }
 
         private static string GetHtml(string url)
@@ -42,9 +42,9 @@ namespace Crawler
 
         public static Event GetEvent(string czEventId)
         {
-            string eventJson = GetHtml(GetEventMainInfoUrl(czEventId));
-            
-            string json = GetHtml(GetEventInfoUrl(czEventId));
+            string eventJson = GetHtml(GetMainEventUrl(czEventId));
+            string czGameId = Parser.GetRandomGameIdFromMainEventJson(eventJson);
+            string json = GetHtml(GetSubEventUrl(czGameId));
             Event e = Parser.GetEventFromJson(json);
             return e;
         }

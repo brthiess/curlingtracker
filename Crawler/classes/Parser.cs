@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Crawler
 {
-    public static class Parser 
+    public static class Parser
     {
         // Gets the event ids (external IDs)
         public static List<string> GetCurrentEventIds(string html)
@@ -19,26 +19,27 @@ namespace Crawler
 
             IEnumerable<HtmlNode> links = document.QuerySelectorAll(Config.Values["selectors:homePageCurrentEventIds"]);
             var eventIds = new List<string>();
-            foreach(HtmlNode node in links)
+            foreach (HtmlNode node in links)
             {
                 string eventId = GetEventIdFromLink(node.Attributes["href"].Value);
                 if (!string.IsNullOrEmpty(eventId))
                 {
                     eventIds.Add(eventId.Trim());
                 }
-            }            
+            }
             return eventIds;
         }
 
         public static Event GetEventFromJson(string json)
         {
-            var api = new Api(json).SubEventInfo;
+            var api = Api.GetGameObject(json);
             int numberOfEnds = 8;
             int.TryParse(api.numberOfEnds, out numberOfEnds);
             Guid eventId = Guid.NewGuid();
+            //TODO More robust parsing for dates in case of error.
             Event e = new Event(
-                api.@event.displayName, 
-                DateTime.Parse(api.@event.startDate), 
+                api.@event.displayName,
+                DateTime.Parse(api.@event.startDate),
                 DateTime.Parse(api.@event.endDate),
                 api.@event.location,
                 new EventType(GetTeamTypeFromDivision(api.@event.division), numberOfEnds, eventId),
@@ -62,20 +63,28 @@ namespace Crawler
         }
         private static EventType.TeamType GetTeamTypeFromDivision(string division)
         {
-           if (division == "men")
-           {
-               return EventType.TeamType.MEN;
-           }
-           else if (division == "women")
-           {
-               return EventType.TeamType.WOMEN;
-           }
-           return EventType.TeamType.MEN;
+            if (division == "men")
+            {
+                return EventType.TeamType.MEN;
+            }
+            else if (division == "women")
+            {
+                return EventType.TeamType.WOMEN;
+            }
+            return EventType.TeamType.MEN;
         }
 
-        private static string GetRandomGameIdFromEventJson(string json)
+        public static string GetRandomGameIdFromMainEventJson(string json)
         {
-            var api = new Api(json).
+            var api = Api.GetEventObject(json);
+            if (api.Length > 0)
+            {
+                if (api[0].games.Count > 0)
+                {
+                    return api[0].games[0].gameId;
+                }
+            }
+            return null;
         }
 
     }

@@ -4,14 +4,17 @@ using Newtonsoft.Json;
 
 namespace Crawler
 {
-    public class Api
+    public static class Api
     {
-        public GameObject SubEventInfo { get; private set; }
-        public EventObject MainEventInfo {get; private set;}
-        public Api(string json)
+
+        public static GameObject GetGameObject(string json)
         {
-            SubEventInfo = JsonConvert.DeserializeObject<GameObject>(json);
-            MainEventInfo = JsonConvert.DeserializeObject<EventObject>(json);
+             return JsonConvert.DeserializeObject<GameObject>(json);
+        }
+
+        public static EventObject[] GetEventObject(string json)
+        {
+            return JsonConvert.DeserializeObject<EventObject[]>(json);
         }
 
         public class EventWeek

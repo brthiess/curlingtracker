@@ -38,7 +38,7 @@ namespace Crawler
             foreach(string czId in newEventIds)
             {
                 Event e = Request.GetEvent(czId);
-                
+                await _eventService.AddEventAsync(e);
             }
         }
 
