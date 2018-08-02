@@ -12,9 +12,9 @@ namespace Crawler
              return JsonConvert.DeserializeObject<GameObject>(json);
         }
 
-        public static EventObject[] GetEventObject(string json)
+        public static DrawObject[] GetDrawsObject(string json)
         {
-            return JsonConvert.DeserializeObject<EventObject[]>(json);
+            return JsonConvert.DeserializeObject<DrawObject[]>(json);
         }
 
         public class EventWeek
@@ -108,7 +108,7 @@ namespace Crawler
             public string statusText { get; set; }
         }
 
-        public class EventObject
+        public class DrawObject
         {
             public string displayName { get; set; }
             public string drawName { get; set; }
