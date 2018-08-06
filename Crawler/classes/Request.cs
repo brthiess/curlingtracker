@@ -63,7 +63,25 @@ namespace Crawler
             e.Draws = draws;
             return e;
         }
-
+        
+        public static Event UpdateEvent(Event e)
+        {
+            bool isOverAndFullyParsed = true;
+            for(int i = 0; i < e.draws.Count; i++) 
+            {
+                if(!e.draws[i].IsOver)
+                {
+                    isOverAndFullyParsed = false;
+                    e.draws[i] = UpdateDraw(e.draws[i]); 
+                }
+            }
+            return e;
+        }
+        
+        private static Draw UpdateDraw(Draw d)
+        {
+            
+        }
         public static string GetGameJson(string czGameId)
         {
             return GetHtml(GetSubEventUrl(czGameId));

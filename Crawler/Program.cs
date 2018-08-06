@@ -29,6 +29,7 @@ namespace Crawler
         {
             InitializeDB();
             AddNewEvents();
+            UpdateEvents();
         }
 
         public async static void AddNewEvents()
@@ -39,6 +40,16 @@ namespace Crawler
             {
                 Event e = Request.GetEvent(czId);
                 await _eventService.AddEventAsync(e);
+            }
+        }
+        
+        public async static void UpdateEvents()
+        {
+            Event[] events = await _eventService.GetUnfinishedEventsAsync();
+            foreach(Event event in events)
+            {
+              Event e = Request.UpdateEvent(event);
+              await _eventService.UpdateEventAsync(e);
             }
         }
 

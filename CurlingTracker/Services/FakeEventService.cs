@@ -12,8 +12,19 @@ namespace CurlingTracker.Services
         {
             return Task.FromResult(true);
         }
+        
+        public Task<bool> UpdateEventAsync(Event e)
+        {
+            return Task.FromResult(true);
+        }
 
         public Task<Event[]> GetAllEventsAsync()
+        {
+            Event[] events = GetRandomEvents(8).ToArray();
+            return Task.FromResult(events);
+        }
+        
+          public Task<Event[]> GetUnfinishedEventsAsync()
         {
             Event[] events = GetRandomEvents(8).ToArray();
             return Task.FromResult(events);
