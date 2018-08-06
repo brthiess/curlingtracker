@@ -23,11 +23,7 @@ namespace CurlingTracker.Models
         public EventType(TeamType teamType, int numberOfEnds, Guid eventId)
         {
             this.teamType = teamType;
-            this.NumberOfPlayers = 4;
-            if (teamType == TeamType.MIXED_DOUBLES)
-            {
-                this.NumberOfPlayers = 2;
-            }
+            this.NumberOfPlayers = GetNumberOfPlayersFromTeamType(teamType);
             this.Gender = GetGenderFromTeamType(this.teamType);
             this.NumberOfEnds = numberOfEnds;
             this.EventTypeId = Guid.NewGuid();
@@ -53,6 +49,16 @@ namespace CurlingTracker.Models
         public string GetTeamTypeToString()
         {
             return StringUtil.FirstLetterToUpper(teamType.ToString().Replace("_", " "));
+        }
+        
+        public static int GetNumberOfPlayersFromTeamType(TeamType teamType)
+        {
+            int numberOfPlayers = 4;
+            if (teamType == TeamType.MIXED_DOUBLES)
+            {
+                numberOfPlayers = 2;
+            }
+            return   numberOfPlayers;
         }
     }
 }

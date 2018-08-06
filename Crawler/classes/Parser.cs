@@ -150,6 +150,7 @@ namespace Crawler
         private static Team GetTeam(Api.GameObject apiGame, bool isHomeTeam)
         {
             EventType.TeamType teamType = GetTeamTypeFromDivision(apiGame.@event.division);
+           
             string html = "";
             if (isHomeTeam)
             {
@@ -160,12 +161,12 @@ namespace Crawler
                 html = Request.GetHtml(apiGame.homeTeamUrl);
             }
 
-            List<Player> players = GetPlayers(html);
+            List<Player> players = GetPlayers(html, teamType);
             Team team = new Team(teamType, players);
             return team;
         }
 
-        private static List<Player> GetPlayers(string html)
+        private static List<Player> GetPlayers(string html, EventType.TeamType teamType)
         {
             HtmlNode document = GetHtmlNode(html);
             List<HtmlNode> names = document.QuerySelectorAll(Config.Values["selectors:teamPagePlayerFullNames"]).ToList(); ;
@@ -173,12 +174,50 @@ namespace Crawler
             List<HtmlNode> positions = document.QuerySelectorAll(Config.Values["selectors:teamPagePlayerPositions"]).ToList();
 
             var players = new List<Player>();
+            bool addedSkip = false;
             for (var i = 0; i < names.Count; i++)
             {
                 Player p = GetPlayer(names[i].InnerHtml, (images.Count > i ? images[i].InnerHtml : null), (positions.Count > i ? positions[i].InnerHtml : null), 4 - i);
+                if (p.IsSkip)
+                {
+                    addedSkip = true;
+                }
+                players.Add(p);
+            }
+             int numberOfPlayers = EventType.GetNumberOfPlayersFromTeamType(teamType);
+            Queue<Player.Position> positionsLeft = GetEmptyPositions(players, teamType);
+            while (players.Count < numberOfPlayers)
+            {
+                Player.Position position = null;
+                if(positionsLeft.Count > 0){
+                     position = positionsLeft.Dequeue();
+                }
+                Player p = new Player(null, null, Gender.Unknown, position, (!addedSkip ? true : false));
+                addedSkip = true;
                 players.Add(p);
             }
             return players;
+        }
+        
+        private static Queue<Player.Position> GetEmptyPositions(List<Player> players, EvenType.TeamType teamType)
+        {
+            Player.Position[] positions = {Player.Position.Lead, Player.Position.Second, Player.Position.Third, Player.Position.Fourth};
+            var emptyPositions = new Queue<Player.Position>();
+            foreach(Player.Position position in positions)
+            {
+                bool foundPosition = false;
+                foreach(Player p in players)
+                {
+                    if(position == p.position)
+                    {
+                        foundPosition = true;
+                    }
+                }
+                if (!foundPosition)
+                {
+                        emptyPositions.Add(p.Position);
+                }
+            }
         }
         private static Player GetPlayer(string nameHtml, string imageHtml, string positionHtml, int positionNumber)
         {
@@ -248,7 +287,8 @@ namespace Crawler
             }
             else 
             {
-                throw new Exception("Unable to find position in GetPositionFromHtml.  number = " + positionNumber);
+                return null;
+            //    throw new Exception("Unable to find position in GetPositionFromHtml.  number = " + positionNumber);
             }
         }
 
