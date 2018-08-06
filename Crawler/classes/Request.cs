@@ -25,6 +25,7 @@ namespace Crawler
         {
             return Config.Values["endpoints:subEventInfo"].Replace("[CZ_GAME_ID]", czGameId);
         }
+        
 
         private static string GetMainEventUrl(string czEventId)
         {
@@ -33,11 +34,23 @@ namespace Crawler
 
         public static string GetHtml(string url)
         {
-            using (WebClient client = new WebClient())
+            int attemptNumber = 1;
+            while (attemptNumber <= 3)
             {
-                string htmlCode = client.DownloadString(url);
-                return htmlCode;
-            }            
+                try
+                {
+                     using (WebClient client = new WebClient())
+                    {
+                        string htmlCode = client.DownloadString(url);
+                        return htmlCode;
+                    }            
+                }
+                catch(Exception ex)
+                {
+                    //log exception
+                }
+                attemptNumber++;
+            }
         }
 
         public static Event GetEvent(string czEventId)
@@ -50,7 +63,25 @@ namespace Crawler
             e.Draws = draws;
             return e;
         }
-
+        
+        public static Event UpdateEvent(Event e)
+        {
+            bool isOverAndFullyParsed = true;
+            for(int i = 0; i < e.draws.Count; i++) 
+            {
+                if(!e.draws[i].IsOver)
+                {
+                    isOverAndFullyParsed = false;
+                    e.draws[i] = UpdateDraw(e.draws[i]); 
+                }
+            }
+            return e;
+        }
+        
+        private static Draw UpdateDraw(Draw d)
+        {
+            
+        }
         public static string GetGameJson(string czGameId)
         {
             return GetHtml(GetSubEventUrl(czGameId));

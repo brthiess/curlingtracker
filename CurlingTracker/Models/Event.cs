@@ -22,6 +22,8 @@ namespace CurlingTracker.Models
         public List<Draw> Draws {get;set;}
 
         public string CZId {get;set;}
+        
+        public bool IsOverAndFullyParsed {get; set;}
 
         public Event(){}
         public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null)
@@ -34,6 +36,7 @@ namespace CurlingTracker.Models
             this.EventId = (eventId.HasValue ? eventId.Value : Guid.NewGuid());
             this.Draws = draws;
             this.CZId = czId;
+            this.IsOverAndFullyParsed = false;
         }
        
 

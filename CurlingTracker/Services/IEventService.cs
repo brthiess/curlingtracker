@@ -10,6 +10,8 @@ namespace CurlingTracker.Services
         Task<Event[]> GetAllEventsAsync();
 
         Task<Event[]> GetCurrentEventsAsync();
+        
+        Task<Event[]> GetUnfinishedEventsAsync();
 
         Task<Event> GetEventAsync(string eventId);
 
@@ -20,5 +22,7 @@ namespace CurlingTracker.Services
         Task<Draw> GetDrawAsync(string drawId);
 
         Task<bool> AddEventAsync(Event e);
+        
+        Task<bool> UpdateEventAsync(Event e);
     }
 }

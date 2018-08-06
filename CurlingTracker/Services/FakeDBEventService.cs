@@ -25,6 +25,11 @@ namespace CurlingTracker.Services
         {
             return await _context.Events.Where(x => x.StartDate > DateTime.Now).ToArrayAsync();
         }
+        
+         public async Task<Event[]> GetUnfinishedEventsAsync()
+        {
+            return await _context.Events.Where(x => x.IsOverAndFullyParsed == true).ToArrayAsync();
+        }
 
         public async Task<Event> GetEventAsync(string eventId)
         {
@@ -68,6 +73,13 @@ namespace CurlingTracker.Services
         public async Task<bool> AddEventAsync(Event e)
         {
             _context.Events.Add(e);
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1;
+        }
+        
+        public async Task<bool> UpdateEventAsync(Event e)
+        {
+            _context.Events.Update(e);
             var saveResult = await _context.SaveChangesAsync();
             return saveResult == 1;
         }
