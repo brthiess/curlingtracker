@@ -33,6 +33,7 @@ namespace CurlingTracker.Models
             }
             this.Players = players;
             this.Name = GetTeamShortName();
+            this.TeamId = Guid.NewGuid();
         }
 
         private string GetTeamShortName()

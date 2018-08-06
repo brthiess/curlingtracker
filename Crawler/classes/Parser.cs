@@ -85,9 +85,12 @@ namespace Crawler
             var draws = Api.GetDrawsObject(json);
             if (draws.Length > 0)
             {
-                if (draws[0].games.Count > 0)
+                foreach(Api.DrawObject drawObject in draws)
                 {
-                    return draws[0].games[0].gameId;
+                    if (drawObject.games.Count > 0)
+                    {
+                        return drawObject.games[0].gameId;
+                    }
                 }
             }
             return null;
@@ -122,10 +125,10 @@ namespace Crawler
 
             Linescore linescore = new Linescore(numberOfEnds);
             bool team1Hammer = apiGame.homeHammer;
-            for(var endNumber = 1; endNumber <= numberOfEnds + 1; endNumber++)
+            for(var endNumber = 1; endNumber <= numberOfEnds + 1 && (endNumber - 1) < apiGame.homeScores.Count; endNumber++)
             {
-                int team1Score = Utility.ParseIntWithDefault(apiGame.homeScores[endNumber], 0);
-                int team2Score =Utility.ParseIntWithDefault(apiGame.awayScores[endNumber], 0);
+                int team1Score = Utility.ParseIntWithDefault(apiGame.homeScores[endNumber - 1], 0);
+                int team2Score =Utility.ParseIntWithDefault(apiGame.awayScores[endNumber - 1], 0);
 
                 var end = new End(
                     team1Score, 
@@ -157,7 +160,7 @@ namespace Crawler
             }
             else
             {
-                html = Request.GetHtml(apiGame.homeTeamUrl);
+                html = Request.GetHtml(apiGame.awayTeamUrl);
             }
 
             List<Player> players = GetPlayers(html);
