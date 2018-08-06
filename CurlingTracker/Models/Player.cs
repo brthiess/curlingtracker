@@ -24,7 +24,7 @@ namespace CurlingTracker.Models
         
         public Gender Gender {get;set;}
 
-        public enum Position{Lead, Second, Third, Fourth}
+        public enum Position{Lead, Second, Third, Fourth, Unknown}
 
         
         public Player(string firstName, string lastName, Gender gender, Position position, bool isSkip, string image = "default.png")

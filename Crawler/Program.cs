@@ -46,10 +46,10 @@ namespace Crawler
         public async static void UpdateEvents()
         {
             Event[] events = await _eventService.GetUnfinishedEventsAsync();
-            foreach(Event event in events)
+            foreach(Event e in events)
             {
-              Event e = Request.UpdateEvent(event);
-              await _eventService.UpdateEventAsync(e);
+              Event ev = Request.UpdateEvent(e);
+              await _eventService.UpdateEventAsync(ev);
             }
         }
 

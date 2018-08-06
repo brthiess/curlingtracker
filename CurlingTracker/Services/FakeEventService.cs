@@ -132,7 +132,7 @@ namespace CurlingTracker.Services
             var random = new Random();
             int numberOfPlayedEnds = random.Next(eventType.NumberOfEnds + 1);
             bool isFinal = GetTrueWithProbability((double)numberOfPlayedEnds / (double)eventType.NumberOfEnds);
-            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds, numberOfPlayedEnds), isFinal, Guid.NewGuid());
+            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds, numberOfPlayedEnds), isFinal, Guid.NewGuid(), isFinal);
             return game;
         }
 

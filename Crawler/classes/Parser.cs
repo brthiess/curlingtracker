@@ -103,7 +103,18 @@ namespace Crawler
             Team team1 = GetTeam(apiGame, true);
             Team team2 = GetTeam(apiGame, false);
             Linescore linescore = GetLinescore(apiGame);
-            Game game = new Game(team1, team2, linescore, GetIsFinal(apiGame.gameStatus), eventId);
+            bool isFinal = GetIsFinal(apiGame.gameStatus);
+
+            long drawStartTimeInUnixTimeStamp = long.Parse(apiGame.draw.startsAt);
+            DateTime drawStart = DateTimeOffset.FromUnixTimeSeconds(drawStartTimeInUnixTimeStamp).UtcDateTime;
+
+
+            bool isOverAndFullyParsed = false;
+            if (DateTime.Now.AddHours(-6) > drawStart && isFinal)
+            {
+                isOverAndFullyParsed = true;
+            }
+            Game game = new Game(team1, team2, linescore, isFinal, eventId, isOverAndFullyParsed);
             return game;
         }
 
@@ -191,7 +202,7 @@ namespace Crawler
             Queue<Player.Position> positionsLeft = GetEmptyPositions(players, teamType);
             while (players.Count < numberOfPlayers)
             {
-                Player.Position position = null;
+                Player.Position position = Player.Position.Unknown;
                 if(positionsLeft.Count > 0){
                      position = positionsLeft.Dequeue();
                 }
@@ -202,7 +213,7 @@ namespace Crawler
             return players;
         }
         
-        private static Queue<Player.Position> GetEmptyPositions(List<Player> players, EvenType.TeamType teamType)
+        private static Queue<Player.Position> GetEmptyPositions(List<Player> players, EventType.TeamType teamType)
         {
             Player.Position[] positions = {Player.Position.Lead, Player.Position.Second, Player.Position.Third, Player.Position.Fourth};
             var emptyPositions = new Queue<Player.Position>();
@@ -214,13 +225,15 @@ namespace Crawler
                     if(position == p.position)
                     {
                         foundPosition = true;
+                        break;
                     }
                 }
                 if (!foundPosition)
                 {
-                        emptyPositions.Add(p.Position);
+                        emptyPositions.Enqueue(position);
                 }
             }
+            return emptyPositions;
         }
         private static Player GetPlayer(string nameHtml, string imageHtml, string positionHtml, int positionNumber)
         {
@@ -290,7 +303,7 @@ namespace Crawler
             }
             else 
             {
-                return null;
+                return Player.Position.Unknown;
             //    throw new Exception("Unable to find position in GetPositionFromHtml.  number = " + positionNumber);
             }
         }
@@ -313,21 +326,52 @@ namespace Crawler
                 long drawStartTimeInUnixTimeStamp = long.Parse(draw.startsAt);
                 DateTime drawStart = DateTimeOffset.FromUnixTimeSeconds(drawStartTimeInUnixTimeStamp).UtcDateTime;
                 List<Game> games = new List<Game>();
+                bool isOverAndFullyParsed = true;
                 foreach (Api.Game apiGame in draw.games)
                 {
                     Game g = GetGame(apiGame.gameId, eventId);
+                    if (!g.IsOverAndFullyParsed)
+                    {
+                        isOverAndFullyParsed = false;
+                    }
                     games.Add(g);
+                }
+                if (DateTime.Now.AddHours(-12) < drawStart)//If game is not older than 12 hours old then 
+                {
+                    isOverAndFullyParsed = false;
                 }
                 Draw d = new Draw
                 (
                     drawStart,
                     draw.displayName,
                     games,
-                    eventId
+                    eventId,
+                    isOverAndFullyParsed
                 );
                 drawsList.Add(d);
             }
             return drawsList;
+        }
+
+        public static List<Game> GetGamesByDrawDisplayNameAndDate(string displayName, DateTime drawDate, string json, Guid eventId)
+        {
+            var draws = Api.GetDrawsObject(json);
+            List<Game> games = new List<Game>();
+            foreach (Api.DrawObject draw in draws)
+            {
+                long drawStartTimeInUnixTimeStamp = long.Parse(draw.startsAt);
+                DateTime drawStart = DateTimeOffset.FromUnixTimeSeconds(drawStartTimeInUnixTimeStamp).UtcDateTime;
+
+                if(draw.displayName == displayName && drawStart == drawDate)
+                {
+                    foreach(Api.Game apiGame in draw.games)
+                    {
+                        Game g = GetGame(apiGame.gameId, eventId);
+                        games.Add(g);
+                    }
+                }
+            }
+            return games;
         }
     }
 }

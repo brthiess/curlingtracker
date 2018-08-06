@@ -19,17 +19,17 @@ namespace CurlingTracker.Models
         [Required]
         public Guid EventId {get;set;}
         
-        public bool IsOver {get;set;}
+        public bool IsOverAndFullyParsed {get;set;}
 
         public Draw(){}
-        public Draw(DateTime date, string displayName, List<Game> games, Guid eventId, bool isOver = false)
+        public Draw(DateTime date, string displayName, List<Game> games, Guid eventId, bool isOverAndFullyParsed = false)
         {
             this.Date = date;
             this.DisplayName = displayName;
             this.Games = games;
             this.EventId = eventId;
             this.DrawId = Guid.NewGuid();
-            this.IsOver = isOver;
+            this.IsOverAndFullyParsed = isOverAndFullyParsed;
         }
 
         
