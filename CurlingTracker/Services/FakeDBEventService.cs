@@ -18,12 +18,25 @@ namespace CurlingTracker.Services
         }
 
         public async Task<Event[]> GetAllEventsAsync()
-        {
-            return await _context.Events.ToArrayAsync();
+        {                                               
+                return await _context.Events
+                .Include(e => e.Draws)
+                    .ThenInclude(d => d.Games)
+                        .ThenInclude(g => g.Linescore)
+                 .Include(e => e.Draws)
+                    .ThenInclude(d => d.Games)
+                        .ThenInclude(g => g.Team1)
+                            .ThenInclude(t => t.Players)
+                .Include(e => e.Draws)
+                    .ThenInclude(d => d.Games)
+                        .ThenInclude(g => g.Team2)    
+                             .ThenInclude(t => t.Players)    
+                .Include(e => e.Type).ToArrayAsync();
         }
         public async Task<Event[]> GetCurrentEventsAsync()
         {
-            return await _context.Events.Where(x => x.StartDate > DateTime.Now).ToArrayAsync();
+            Event[] events = await GetAllEventsAsync();
+            return events.Where(e => e.EndDate < DateTime.Now).ToArray();
         }
         
          public async Task<Event[]> GetUnfinishedEventsAsync()
@@ -33,7 +46,8 @@ namespace CurlingTracker.Services
 
         public async Task<Event> GetEventAsync(string eventId)
         {
-            Event[] events = await _context.Events.Where(x => x.EventId.ToString() == eventId).ToArrayAsync();
+            Event[] events = await GetAllEventsAsync();
+            events = events.Where(x => x.EventId.ToString() == eventId).ToArray();
             if (events.Count() > 0)
             {
                 return events[0];
@@ -52,7 +66,13 @@ namespace CurlingTracker.Services
         }
         public async Task<Game> GetGameAsync(string gameId)
         {
-            Game[] games = await _context.Games.Where(x => x.GameId.ToString() == gameId).ToArrayAsync();
+            Game[] games = await _context.Games
+                .Include(g => g.Linescore)
+                .Include(g => g.Team1)
+                    .ThenInclude(t => t.Players)
+                .Include(g => g.Team2)
+                    .ThenInclude(t => t.Players)
+                .Where(x => x.GameId.ToString() == gameId).ToArrayAsync();
             if (games.Count() > 0)
             {
                 return games[0];

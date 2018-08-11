@@ -5,13 +5,16 @@ namespace CurlingTracker.Models
 {
     public class Event 
     {
+        [Required]
         public Guid EventId {get; set;}
 
         [Required]
         public string Name {get;set;}
         
+        [Required]
         public DateTime StartDate {get;set;}
 
+        [Required]
         public DateTime EndDate {get;set;}   
 
         [Required]

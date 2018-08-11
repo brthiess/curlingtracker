@@ -2,6 +2,7 @@ using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using CurlingTracker.Models;
+using Newtonsoft.Json;
 
 namespace CurlingTracker.Utility
 {
@@ -37,19 +38,16 @@ namespace CurlingTracker.Utility
             }
         }
 
-        public static string ToXML(Dictionary<int, End> dictionary)
+        public static string ToJson(Dictionary<int, End> dictionary)
         {
-            var stringwriter = new System.IO.StringWriter();
-            var serializer = new XmlSerializer(dictionary.GetType());
-            serializer.Serialize(stringwriter, dictionary);
-            return stringwriter.ToString();
+            string serializedObject = JsonConvert.SerializeObject(dictionary);
+            return serializedObject;
         }
 
-        public static Dictionary<int, End> LoadFromXMLString(string xmlText)
+        public static Dictionary<int, End> LoadFromJsonString(string jsonText)
         {
-            var stringReader = new System.IO.StringReader(xmlText);
-            var serializer = new XmlSerializer(typeof(Dictionary<int, End>));
-            return serializer.Deserialize(stringReader) as Dictionary<int, End>;
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<int, End>>(jsonText);
+            return dictionary;
         }
     }
 }

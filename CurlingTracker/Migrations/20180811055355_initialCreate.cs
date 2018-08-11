@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CurlingTracker.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,8 @@ namespace CurlingTracker.Migrations
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: false),
-                    CZId = table.Column<string>(nullable: true)
+                    CZId = table.Column<string>(nullable: true),
+                    IsOverAndFullyParsed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +30,7 @@ namespace CurlingTracker.Migrations
                 {
                     LinescoreId = table.Column<Guid>(nullable: false),
                     NumberOfEnds = table.Column<int>(nullable: false),
-                    DictionaryAsXml = table.Column<string>(nullable: true)
+                    DictionaryAsJson = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +58,8 @@ namespace CurlingTracker.Migrations
                     DrawId = table.Column<Guid>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DisplayName = table.Column<string>(nullable: false),
-                    EventId = table.Column<Guid>(nullable: false)
+                    EventId = table.Column<Guid>(nullable: false),
+                    IsOverAndFullyParsed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,9 +99,9 @@ namespace CurlingTracker.Migrations
                 columns: table => new
                 {
                     PlayerId = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    Image = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
                     position = table.Column<int>(nullable: false),
                     IsSkip = table.Column<bool>(nullable: false),
                     Gender = table.Column<int>(nullable: false),
@@ -127,6 +129,7 @@ namespace CurlingTracker.Migrations
                     PercentagesAvailable = table.Column<bool>(nullable: false),
                     LinescoreId = table.Column<Guid>(nullable: false),
                     IsFinal = table.Column<bool>(nullable: false),
+                    IsOverAndFullyParsed = table.Column<bool>(nullable: false),
                     DrawId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>

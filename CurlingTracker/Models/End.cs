@@ -30,6 +30,7 @@ namespace CurlingTracker.Models
             this.Team2Hammer = !team1Hammer;
             this.EndNumber = endNumber;
             this.IsOver = isOver;
+            this.EndId = Guid.NewGuid();
         }                
     }
 }

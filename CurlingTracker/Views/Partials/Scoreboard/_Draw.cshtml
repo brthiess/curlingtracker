@@ -3,7 +3,7 @@
 @*ViewData["EventId"] *@
 @foreach(Game game in Model.Games)
 {
-    <div data-game-id='@game.GameId' class='game-container' onclick="showGame(@game.GameId, '@ViewData["EventId"]')">
+    <div data-game-id='@game.GameId' class='game-container' onclick="showGame('@game.GameId', '@ViewData["EventId"]')">
     <div class='scores-teams-container'>
         <div class='scores-team-container'>
             <div class='scores-team-name'>

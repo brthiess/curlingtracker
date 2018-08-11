@@ -123,7 +123,7 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("LinescoreId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DictionaryAsXml");
+                    b.Property<string>("DictionaryAsJson");
 
                     b.Property<int>("NumberOfEnds");
 
@@ -137,18 +137,15 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("PlayerId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName")
-                        .IsRequired();
+                    b.Property<string>("FirstName");
 
                     b.Property<int>("Gender");
 
-                    b.Property<string>("Image")
-                        .IsRequired();
+                    b.Property<string>("Image");
 
                     b.Property<bool>("IsSkip");
 
-                    b.Property<string>("LastName")
-                        .IsRequired();
+                    b.Property<string>("LastName");
 
                     b.Property<Guid?>("TeamId");
 

@@ -16,17 +16,17 @@ namespace CurlingTracker.Controllers
         {
             _eventService = eventService;
         }
-        public async Task<IActionResult> Scores(string eventId)
+        public async Task<IActionResult> Scores(string id)
         {
             ViewData["Layout"] = "_Blank";
-            var item = await _eventService.GetEventAsync(eventId);
+            var item = await _eventService.GetEventAsync(id);
             return View(item);
         }
 
-        public async Task<IActionResult> Game(string gameId)
+        public async Task<IActionResult> Game(string id)
         {
             ViewData["Layout"] = "_Blank";
-            var item = await _eventService.GetGameAsync(gameId);
+            var item = await _eventService.GetGameAsync(id);
             return View(item);
         }
 

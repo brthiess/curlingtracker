@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurlingTracker.Migrations
 {
     [DbContext(typeof(CurlingContext))]
-    [Migration("20180723030755_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180811055355_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,8 @@ namespace CurlingTracker.Migrations
 
                     b.Property<Guid>("EventId");
 
+                    b.Property<bool>("IsOverAndFullyParsed");
+
                     b.HasKey("DrawId");
 
                     b.HasIndex("EventId");
@@ -45,6 +47,8 @@ namespace CurlingTracker.Migrations
                     b.Property<string>("CZId");
 
                     b.Property<DateTime>("EndDate");
+
+                    b.Property<bool>("IsOverAndFullyParsed");
 
                     b.Property<string>("Location")
                         .IsRequired();
@@ -93,6 +97,8 @@ namespace CurlingTracker.Migrations
 
                     b.Property<bool>("IsFinal");
 
+                    b.Property<bool>("IsOverAndFullyParsed");
+
                     b.Property<Guid>("LinescoreId");
 
                     b.Property<bool>("PercentagesAvailable");
@@ -119,7 +125,7 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("LinescoreId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DictionaryAsXml");
+                    b.Property<string>("DictionaryAsJson");
 
                     b.Property<int>("NumberOfEnds");
 
@@ -133,18 +139,15 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("PlayerId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName")
-                        .IsRequired();
+                    b.Property<string>("FirstName");
 
                     b.Property<int>("Gender");
 
-                    b.Property<string>("Image")
-                        .IsRequired();
+                    b.Property<string>("Image");
 
                     b.Property<bool>("IsSkip");
 
-                    b.Property<string>("LastName")
-                        .IsRequired();
+                    b.Property<string>("LastName");
 
                     b.Property<Guid?>("TeamId");
 

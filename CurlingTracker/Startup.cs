@@ -34,7 +34,7 @@ namespace CurlingTracker
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<CurlingContext>();
-            services.AddSingleton<IEventService, FakeEventService>();
+            services.AddScoped<IEventService, FakeDBEventService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

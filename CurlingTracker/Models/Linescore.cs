@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using CurlingTracker.Utility;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace CurlingTracker.Models
 {
@@ -9,21 +11,22 @@ namespace CurlingTracker.Models
     {
         public Guid LinescoreId {get; set;}
         
+        [Required]
         public int NumberOfEnds {get;set;}
 
         [NotMapped]
         public Dictionary<int, End> Ends {get;set;}
 
 
-        public string DictionaryAsXml
+        public string DictionaryAsJson
         {
             get
             {
-                return StringUtil.ToXML(Ends);
+                return StringUtil.ToJson(Ends);
             }
             set
             {
-                Ends = StringUtil.LoadFromXMLString(value);
+                Ends = StringUtil.LoadFromJsonString(value);
             }
         }
 
