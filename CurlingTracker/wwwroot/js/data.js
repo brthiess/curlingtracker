@@ -6,7 +6,7 @@ function getDrawScoresJSON(competitionId, drawId, callback, error){
 			callback(data);
 		},
 		error: function(data){
-			error(data);
+			callback(data, "Error Loading Scores");
 		}
 	});
 }

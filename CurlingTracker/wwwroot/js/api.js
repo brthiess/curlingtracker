@@ -6,7 +6,7 @@ function getScoresView(competitionId, drawId, callback) {
 			callback(data);
 		},
 		error: function(data){
-			console.log(data);
+			callback(data, "Error Loading Scores");
 		}
 	})}, 1000);
 }
@@ -19,7 +19,7 @@ function getGameView(gameId, callback){
 			callback(data);
 		},
 		error: function(data){
-			console.log(data);
+			callback(data, "Error Loading Scores");
 		}
 	})}, 1000);
 }
@@ -32,7 +32,7 @@ function getDrawView(drawId, callback){
 			callback(data);
 		},
 		error: function(data){
-			console.log(data);
+			callback(data, "Error Loading Scores");
 		}
 	})}, 1000);
 }

@@ -82,7 +82,16 @@ namespace CurlingTracker.Services
 
         public async Task<Draw> GetDrawAsync(string drawId)
         {
-            Draw[] draws = await _context.Draws.Where(x => x.DrawId.ToString() == drawId).ToArrayAsync();
+            Draw[] draws = await _context.Draws
+                .Include(d => d.Games)
+                    .ThenInclude(g => g.Team1)
+                        .ThenInclude(t => t.Players)
+                .Include(d => d.Games)
+                    .ThenInclude(g => g.Team2)
+                        .ThenInclude(t => t.Players)
+                .Include(d => d.Games)
+                    .ThenInclude(g => g.Linescore)
+                .Where(x => x.DrawId.ToString() == drawId).ToArrayAsync();
             if (draws.Count() > 0)
             {
                 return draws[0];

@@ -7,31 +7,37 @@ function showEvent(eventId){
 	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
 	addLoadingToClass('scores-container-container');
 	makeScoresContainerActive();
-	getScoresView(eventId, null, function(viewHtml){
-		$('.scores-container-container').html(viewHtml);
-		currentCompetitionId = eventId;
-		currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
+	getScoresView(eventId, null, function(viewHtml, error){
+		if (typeof error == 'undefined'){
+			$('.scores-container-container').html(viewHtml);
+			currentCompetitionId = eventId;
+			currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
+			updateBackButton(true);
+		}
 		removeLoadingFromClass('scores-container-container');
-		updateBackButton(true);
 	});
 }
 
 function showGame(gameId, eventId){
 	makeScoresContainerActive();
 	addLoadingToClass('scores-container-container');
-	getGameView(gameId, function(viewHtml){
-		$('.scores-info-wrapper').html(viewHtml);
+	getGameView(gameId, function(viewHtml, error){
+		if (typeof error == 'undefined'){
+			$('.scores-info-wrapper').html(viewHtml);
+			updateBackButton(false, eventId);
+		}
 		removeLoadingFromClass('scores-container-container');
-		updateBackButton(false, eventId);
 	});
 }
 
 function showDraw(drawId){
 	console.log(drawId);
 	addLoadingToClass('scores-container-container');
-	getDrawView(drawId, function(viewHtml){
+	getDrawView(drawId, function(viewHtml, error){
+		if (typeof error == 'undefined'){
+			$('.scores-games-wrapper').html(viewHtml);
+		}
 		removeLoadingFromClass('scores-container-container');
-		$('.scores-games-wrapper').html(viewHtml);
 	})
 }
 
@@ -73,35 +79,6 @@ function makeScoresContainerInActive(){
 	$('body').css('overflow', '');
 }
 
-function refreshDrawScores(){
-	if(currentCompetitionId !== null &&  typeof(currentDrawId) != 'undefined' && currentDrawId !== null && currentDrawId != "" && currentCompetitionId > 0){
-		console.log('refreshing scores');
-		getDrawScoresJSON(currentCompetitionId, currentDrawId, function(data){
-			data = data[0];
-			for (var game in data.games){
-				if(data.games[game].statusText != "Upcoming") {
-					$("[data-game-id='" + data.games[game].gameId + "']").find("[data-score1]").html(data.games[game].homeScore);
-					$("[data-game-id='" + data.games[game].gameId + "']").find("[data-score2]").html(data.games[game].awayScore);
-					var end = (data.games[game].statusText.indexOf("Final") !== -1 ? "Final (" + data.games[game].currentEnd + ")" : ordinal_suffix_of(data.games[game].currentEnd) + " end");
-					$("[data-game-id='" + data.games[game].gameId + "']").find("[data-end]").html(end);
-					$("[data-game-id='" + data.games[game].gameId + "']").find("[data-hammer1]").html((data.games[game].homeHammer ? "<img src='/images/hammer.png'/>" : ""));
-					$("[data-game-id='" + data.games[game].gameId + "']").find("[data-hammer2]").html((data.games[game].awayHammer ? "<img src='/images/hammer.png'/>" : ""));
-					if(data.games[game].statusText.indexOf("Final") !== -1) {
-						$("[data-game-id='" + data.games[game].gameId + "']").find("[data-end]").addClass("scores-final");
-					}
-				}
-			}
-			setTimeout(refreshDrawScores, 100000);
-		}, function(err){
-			console.log("Error refreshing scores for " + currentDrawId);
-			setTimeout(refreshDrawScores, 100000);
-		});
-	}
-	else {
-		console.log('try again');
-		setTimeout(refreshDrawScores, 100000);
-	}
-}
 function showOnScoreboard(section) {
 	$("[data-scoreboard-section]").removeClass('active');
 	$("[data-scoreboard-section=" + section + "]").addClass('active');
