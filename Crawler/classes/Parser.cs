@@ -175,7 +175,7 @@ namespace Crawler
                 html = Request.GetHtml(apiGame.awayTeamUrl);
             }
 
-            List<Player> players = GetPlayers(html, teamType);
+            List<Player> players = GetPlayers(html, teamType, apiGame.homeTeamdisplayname);
             Team team = new Team(teamType, players);
             return team;
         }

@@ -11,12 +11,28 @@ namespace CurlingTracker.Models
         
         public Gender gender{get;set;}
 
-        public List<Player> Players {get;set;}
+        private bool _sorted = false;
+        private List<Player> _players;
+        
+        public List<Player> Players {
+            get
+            {
+                if (!_sorted)
+                {
+                    _players = _players.OrderBy(p=>(int)p.Position).ToList()
+                }
+                return _players;
+            }
+            set
+            {
+                _players = value;
+            }
+        }
 
         public string Name {get;set;}
 
         public Team(){}        
-        public Team(EventType.TeamType teamType, List<Player> players)
+        public Team(EventType.TeamType teamType, List<Player> players, string name = null)
         {
             this.TeamType= teamType;
             bool foundSkip = false;
@@ -32,7 +48,7 @@ namespace CurlingTracker.Models
                 throw new Exception("Created team without a skip!");
             }
             this.Players = players;
-            this.Name = GetTeamShortName();
+            this.Name = (name != null ? name : (GetTeamShortName() != null ? GetTeamShortName() : "Unknown"));
             this.TeamId = Guid.NewGuid();
         }
 
