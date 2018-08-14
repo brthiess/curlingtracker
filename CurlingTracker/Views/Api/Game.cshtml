@@ -39,7 +39,7 @@
 					<div class='game-team-details-team '>
 						<h3 class='game-team-details-header'>Team @Model.Team1.Name</h3>
 						<div class='game-team-details-player-container'>
-							@foreach (var player in @Model.Team1.Players) {
+							@foreach (var player in @Model.Team1.GetPlayersSorted()) {
 								<div class='game-team-details-player'>
 									<div class='game-team-details-position'>@player.GetPositionName()</div>
 									<div class='game-team-details-player-image'><img src='/images/players/@player.Image'/></div>
@@ -52,7 +52,7 @@
 					<div class='game-team-details-team '>
 						<h3 class='game-team-details-header'>Team @Model.Team2.Name</h3>
 						<div class='game-team-details-player-container'>
-							@foreach (var player in @Model.Team2.Players) {
+							@foreach (var player in @Model.Team2.GetPlayersSorted()) {
 								<div class='game-team-details-player'>
 									<div class='game-team-details-position'>@player.GetPositionName()</div>
 									<div class='game-team-details-player-image'><img src='/images/players/@player.Image'/></div>

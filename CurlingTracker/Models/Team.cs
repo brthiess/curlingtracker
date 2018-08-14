@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CurlingTracker.Models
 {
@@ -11,23 +12,9 @@ namespace CurlingTracker.Models
         
         public Gender gender{get;set;}
 
-        private bool _sorted = false;
-        private List<Player> _players;
         
-        public List<Player> Players {
-            get
-            {
-                if (!_sorted)
-                {
-                    _players = _players.OrderBy(p=>(int)p.Position).ToList()
-                }
-                return _players;
-            }
-            set
-            {
-                _players = value;
-            }
-        }
+        public List<Player> Players {get;set;}
+
 
         public string Name {get;set;}
 
@@ -50,6 +37,12 @@ namespace CurlingTracker.Models
             this.Players = players;
             this.Name = (name != null ? name : (GetTeamShortName() != null ? GetTeamShortName() : "Unknown"));
             this.TeamId = Guid.NewGuid();
+        }
+
+        public List<Player> GetPlayersSorted()
+        {
+            var players =  Players.OrderBy(p=> (int) p.position).ToList();
+            return players;
         }
 
         private string GetTeamShortName()

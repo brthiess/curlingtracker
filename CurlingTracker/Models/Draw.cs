@@ -22,13 +22,13 @@ namespace CurlingTracker.Models
         public bool IsOverAndFullyParsed {get;set;}
 
         public Draw(){}
-        public Draw(DateTime date, string displayName, List<Game> games, Guid eventId, bool isOverAndFullyParsed = false)
+        public Draw(DateTime date, string displayName, List<Game> games, Guid eventId, bool isOverAndFullyParsed, Guid drawId)
         {
             this.Date = date;
             this.DisplayName = displayName;
             this.Games = games;
             this.EventId = eventId;
-            this.DrawId = Guid.NewGuid();
+            this.DrawId = drawId;
             this.IsOverAndFullyParsed = isOverAndFullyParsed;
         }
 

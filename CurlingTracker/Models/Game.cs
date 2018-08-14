@@ -26,14 +26,17 @@ namespace CurlingTracker.Models
 
         public bool IsOverAndFullyParsed{get;set;}
 
+        public Guid DrawId {get;set;}
+
         public Game(){}
-        public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId, bool isOverAndFullyParsed){
+        public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId, bool isOverAndFullyParsed, Guid drawId){
             this.Team1 = team1;
             this.Team2 = team2;
             this.Linescore = linescore;
             this.IsFinal = isFinal;
             this.PercentagesAvailable = false;
             this.EventId = eventId;
+            this.DrawId = drawId;
             this.IsOverAndFullyParsed = isOverAndFullyParsed;
         }
         

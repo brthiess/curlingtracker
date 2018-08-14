@@ -21,7 +21,7 @@ namespace CurlingTracker.Models
         
         public Gender Gender {get;set;}
 
-        public enum Position{Lead = 1, Second = 2, Third = 3, Fourth = 4, Unknown = 5}
+        public enum Position{Lead = 1, Second = 2, Third = 3, Fourth = 4}
 
         
         public Player(string firstName, string lastName, Gender gender, Position position, bool isSkip, string image = "default.png")
@@ -30,6 +30,10 @@ namespace CurlingTracker.Models
             this.LastName = lastName;
             this.Gender = gender;
             this.position = position;
+            if (this.position == 0)
+            {
+                throw new Exception("Invalid Position");
+            }
             this.Image = image;
             this.IsSkip = isSkip;
         }

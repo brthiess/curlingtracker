@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurlingTracker.Migrations
 {
     [DbContext(typeof(CurlingContext))]
-    [Migration("20180811055355_initialCreate")]
+    [Migration("20180814020250_initialCreate")]
     partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,7 +91,7 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("GameId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("DrawId");
+                    b.Property<Guid>("DrawId");
 
                     b.Property<Guid>("EventId");
 
@@ -196,7 +196,8 @@ namespace CurlingTracker.Migrations
                 {
                     b.HasOne("CurlingTracker.Models.Draw")
                         .WithMany("Games")
-                        .HasForeignKey("DrawId");
+                        .HasForeignKey("DrawId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurlingTracker.Models.Linescore", "Linescore")
                         .WithMany()

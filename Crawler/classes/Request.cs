@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Collections.Generic;
 using CurlingTracker.Models;
+using System.Linq;
 
 
 namespace Crawler
@@ -81,17 +82,25 @@ namespace Crawler
                     e.Draws[i] = UpdateDraw(e.Draws[i], e.CZId); 
                 }
             }
+            e.Draws = RemoveEmptyAndDoneDraws(e.Draws);
             if (DateTime.Now.AddHours(-24) < e.EndDate)
             {
                 isOverAndFullyParsed = false;
             }
+
             e.IsOverAndFullyParsed = isOverAndFullyParsed;
             return e;
+        }
+
+        private static List<Draw> RemoveEmptyAndDoneDraws(List<Draw> draws)
+        {
+            draws = draws.Where(d => !d.IsOverAndFullyParsed || d.Games.Count > 0).ToList();
+            return draws;
         }
         
         private static Draw UpdateDraw(Draw d, string czId)
         {
-            List<Game> games = Parser.GetGamesByDrawDisplayNameAndDate(d.DisplayName, d.Date, GetHtml(GetMainEventUrl(czId)), d.EventId);
+            List<Game> games = Parser.GetGamesByDrawDisplayNameAndDate(d.DisplayName, d.Date, GetHtml(GetMainEventUrl(czId)), d.EventId, d.DrawId);
             bool isOverAndFullyParsed = true;
             foreach(Game g in games)
             {

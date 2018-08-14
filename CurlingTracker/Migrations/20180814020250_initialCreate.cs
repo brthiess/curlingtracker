@@ -130,7 +130,7 @@ namespace CurlingTracker.Migrations
                     LinescoreId = table.Column<Guid>(nullable: false),
                     IsFinal = table.Column<bool>(nullable: false),
                     IsOverAndFullyParsed = table.Column<bool>(nullable: false),
-                    DrawId = table.Column<Guid>(nullable: true)
+                    DrawId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,7 +140,7 @@ namespace CurlingTracker.Migrations
                         column: x => x.DrawId,
                         principalTable: "Draws",
                         principalColumn: "DrawId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Games_Linescore_LinescoreId",
                         column: x => x.LinescoreId,

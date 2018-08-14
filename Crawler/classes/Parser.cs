@@ -96,7 +96,7 @@ namespace Crawler
             return null;
         }
 
-        private static Game GetGame(string czGameId, Guid eventId)
+        private static Game GetGame(string czGameId, Guid eventId, Guid drawId)
         {
             string gameJson = Request.GetGameJson(czGameId);
             Api.GameObject apiGame = Api.GetGameObject(gameJson);
@@ -114,7 +114,7 @@ namespace Crawler
             {
                 isOverAndFullyParsed = true;
             }
-            Game game = new Game(team1, team2, linescore, isFinal, eventId, isOverAndFullyParsed);
+            Game game = new Game(team1, team2, linescore, isFinal, eventId, isOverAndFullyParsed, drawId);
             return game;
         }
 
@@ -166,17 +166,20 @@ namespace Crawler
             EventType.TeamType teamType = GetTeamTypeFromDivision(apiGame.@event.division);
            
             string html = "";
+            string teamDisplayName = "";
             if (isHomeTeam)
             {
                 html = Request.GetHtml(apiGame.homeTeamUrl);
+                teamDisplayName = apiGame.homeTeamDisplayName;
             }
             else
             {
                 html = Request.GetHtml(apiGame.awayTeamUrl);
+                teamDisplayName = apiGame.awayTeamDisplayName;
             }
 
-            List<Player> players = GetPlayers(html, teamType, apiGame.homeTeamdisplayname);
-            Team team = new Team(teamType, players);
+            List<Player> players = GetPlayers(html, teamType);
+            Team team = new Team(teamType, players, teamDisplayName);
             return team;
         }
 
@@ -202,7 +205,7 @@ namespace Crawler
             Queue<Player.Position> positionsLeft = GetEmptyPositions(players, teamType);
             while (players.Count < numberOfPlayers)
             {
-                Player.Position position = Player.Position.Unknown;
+                Player.Position position = 0;
                 if(positionsLeft.Count > 0){
                      position = positionsLeft.Dequeue();
                 }
@@ -215,7 +218,7 @@ namespace Crawler
         
         private static Queue<Player.Position> GetEmptyPositions(List<Player> players, EventType.TeamType teamType)
         {
-            Player.Position[] positions = {Player.Position.Lead, Player.Position.Second, Player.Position.Third, Player.Position.Fourth};
+            Player.Position[] positions = {Player.Position.Fourth, Player.Position.Third, Player.Position.Second, Player.Position.Lead};
             var emptyPositions = new Queue<Player.Position>();
             foreach(Player.Position position in positions)
             {
@@ -303,8 +306,8 @@ namespace Crawler
             }
             else 
             {
-                return Player.Position.Unknown;
-            //    throw new Exception("Unable to find position in GetPositionFromHtml.  number = " + positionNumber);
+                return 0;
+                //throw new Exception("Unable to find position in GetPositionFromHtml.  number = " + positionNumber);
             }
         }
 
@@ -327,9 +330,10 @@ namespace Crawler
                 DateTime drawStart = DateTimeOffset.FromUnixTimeSeconds(drawStartTimeInUnixTimeStamp).UtcDateTime;
                 List<Game> games = new List<Game>();
                 bool isOverAndFullyParsed = true;
+                Guid newDrawId = Guid.NewGuid();
                 foreach (Api.Game apiGame in draw.games)
                 {
-                    Game g = GetGame(apiGame.gameId, eventId);
+                    Game g = GetGame(apiGame.gameId, eventId, newDrawId);
                     if (!g.IsOverAndFullyParsed)
                     {
                         isOverAndFullyParsed = false;
@@ -340,20 +344,24 @@ namespace Crawler
                 {
                     isOverAndFullyParsed = false;
                 }
-                Draw d = new Draw
-                (
-                    drawStart,
-                    draw.displayName,
-                    games,
-                    eventId,
-                    isOverAndFullyParsed
-                );
-                drawsList.Add(d);
+                if (games.Count > 0 || !isOverAndFullyParsed)
+                {
+                    Draw d = new Draw
+                    (
+                        drawStart,
+                        draw.displayName,
+                        games,
+                        eventId,
+                        isOverAndFullyParsed,
+                        newDrawId
+                    );
+                    drawsList.Add(d);
+                }
             }
             return drawsList;
         }
 
-        public static List<Game> GetGamesByDrawDisplayNameAndDate(string displayName, DateTime drawDate, string json, Guid eventId)
+        public static List<Game> GetGamesByDrawDisplayNameAndDate(string displayName, DateTime drawDate, string json, Guid eventId, Guid drawId)
         {
             var draws = Api.GetDrawsObject(json);
             List<Game> games = new List<Game>();
@@ -366,7 +374,7 @@ namespace Crawler
                 {
                     foreach(Api.Game apiGame in draw.games)
                     {
-                        Game g = GetGame(apiGame.gameId, eventId);
+                        Game g = GetGame(apiGame.gameId, eventId, drawId);
                         games.Add(g);
                     }
                 }

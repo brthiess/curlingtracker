@@ -28,7 +28,7 @@ namespace Crawler
         static void Main(string[] args)
         {
             InitializeDB();
-            AddNewEvents();
+            //AddNewEvents();
             UpdateEvents();
         }
 

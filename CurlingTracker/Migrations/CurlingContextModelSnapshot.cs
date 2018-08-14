@@ -89,7 +89,7 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("GameId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("DrawId");
+                    b.Property<Guid>("DrawId");
 
                     b.Property<Guid>("EventId");
 
@@ -194,7 +194,8 @@ namespace CurlingTracker.Migrations
                 {
                     b.HasOne("CurlingTracker.Models.Draw")
                         .WithMany("Games")
-                        .HasForeignKey("DrawId");
+                        .HasForeignKey("DrawId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CurlingTracker.Models.Linescore", "Linescore")
                         .WithMany()

@@ -112,7 +112,7 @@ namespace CurlingTracker.Services
 
         private Draw GetRandomDraw(int drawNumber, EventType eventType)
         {
-            return new Draw(DateUtil.RandomDay(), "Draw " + (drawNumber + 1), GetGames(10, eventType), Guid.NewGuid());
+            return new Draw(DateUtil.RandomDay(), "Draw " + (drawNumber + 1), GetGames(10, eventType), Guid.NewGuid(), false, Guid.NewGuid());
         }
 
         private List<Game> GetGames(int amount, EventType eventType)
@@ -132,7 +132,7 @@ namespace CurlingTracker.Services
             var random = new Random();
             int numberOfPlayedEnds = random.Next(eventType.NumberOfEnds + 1);
             bool isFinal = GetTrueWithProbability((double)numberOfPlayedEnds / (double)eventType.NumberOfEnds);
-            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds, numberOfPlayedEnds), isFinal, Guid.NewGuid(), isFinal);
+            var game = new Game(team1, team2, GetRandomLineScore(eventType.NumberOfEnds, numberOfPlayedEnds), isFinal, Guid.NewGuid(), isFinal, Guid.NewGuid());
             return game;
         }
 

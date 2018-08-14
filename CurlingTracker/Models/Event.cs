@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+
 namespace CurlingTracker.Models
 {
     public class Event 
@@ -21,23 +23,8 @@ namespace CurlingTracker.Models
         public string Location {get;set;}     
 
         public EventType Type {get;set;}
-        
-        private bool _sorted;
-        private List<Draw> _draws;
-        public List<Draw> Draws {
-            get
-            {
-                if (!sorted)
-                {
-                     _draws = _draws.OrderBy(d=>d.Date).ToList()
-                }
-                return _draws;
-            }
-             set
-             {
-                 _draws = value;
-             }
-         }
+
+        public List<Draw> Draws {get;set;}
 
         public string CZId {get;set;}
         
@@ -75,6 +62,7 @@ namespace CurlingTracker.Models
                     if (timeBetween >= 0 && timeBetween < minTimeBetween)
                     {
                         currentDraw = d;
+                        minTimeBetween = timeBetween;
                     }
                 }
                 _currentDraw = currentDraw;

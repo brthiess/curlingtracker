@@ -18,21 +18,35 @@ namespace CurlingTracker.Services
         }
 
         public async Task<Event[]> GetAllEventsAsync()
-        {                                               
-                return await _context.Events
-                .Include(e => e.Draws)
-                    .ThenInclude(d => d.Games)
-                        .ThenInclude(g => g.Linescore)
-                 .Include(e => e.Draws)
-                    .ThenInclude(d => d.Games)
-                        .ThenInclude(g => g.Team1)
-                            .ThenInclude(t => t.Players)
-                .Include(e => e.Draws)
-                    .ThenInclude(d => d.Games)
-                        .ThenInclude(g => g.Team2)    
-                             .ThenInclude(t => t.Players)    
-                .Include(e => e.Type).ToArrayAsync();
+        {          
+            Event[] events = await _context.Events
+                .Include(e => e.Type)
+                .ToArrayAsync();    
+            for(var i = 0; i < events.Length; i++)
+            {
+                events[i].Draws = await GetAllDrawsByEventId(events[i].EventId);
+            }                              
+                return events;
         }
+
+        private async Task<List<Draw>> GetAllDrawsByEventId(Guid eventId)
+        {
+            Draw[] draws = await _context.Draws
+                .Where(d => d.EventId.ToString() == eventId.ToString())
+                .ToArrayAsync();
+            for (var i = 0; i < draws.Length; i++)
+            {
+                draws[i] = await GetDrawAsync(draws[i].DrawId.ToString());
+            }
+
+            if (draws != null)
+            {
+                return draws.OrderBy(d => d.Date).ToList();                
+            }
+            return null;
+        }
+
+        
         public async Task<Event[]> GetCurrentEventsAsync()
         {
             Event[] events = await GetAllEventsAsync();
@@ -41,7 +55,9 @@ namespace CurlingTracker.Services
         
          public async Task<Event[]> GetUnfinishedEventsAsync()
         {
-            return await _context.Events.Where(x => x.IsOverAndFullyParsed == true).ToArrayAsync();
+            Event[] events = await GetAllEventsAsync();
+            events = events.Where(e => e.IsOverAndFullyParsed == false).ToArray();
+            return events;
         }
 
         public async Task<Event> GetEventAsync(string eventId)
