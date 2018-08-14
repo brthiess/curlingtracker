@@ -12,6 +12,7 @@
 @non-touchscreens: ~"only screen and (min-width: 1030px)";
 @tablets:    ~"only screen and (max-width: 1029px)";
 @tablets-only:    ~"only screen and (max-width: 1029px) and (min-width: 720px)";
+@medium-large-tablets:    ~"only screen and (max-width: 929px)";
 @medium-tablets: ~"only screen and (max-width: 850px)";
 @mini-tablets:    ~"only screen and (max-width: 719px)";
 @not-mini-tablets: ~"only screen and (min-width: 720px)";
@@ -857,7 +858,7 @@ a.teams {
 	@media @laptops {
 		width: ~"calc(50% - 20px)";
 	}
-	@media @medium-tablets {
+	@media @medium-large-tablets {
 		width: 100%;
 	}
 	@media @tablets {
@@ -894,15 +895,18 @@ a.teams {
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.scores-hammer {
 	img {//hammer icon
 		opacity: 0.7;
 		width: 15px;
 		vertical-align: middle;
-		margin-left: 5px;
+		margin-right: 5px;
 	}
 }
 .scores-score {
-    margin: 0 0 0 10px;
+	display: flex;
+	margin: 0 0 0 10px;
 }
 .scores-info-container {
 	padding: 0 20px;

@@ -54,11 +54,11 @@ namespace CurlingTracker.Models
                     return _currentDraw;
                 }
 
-                int minTimeBetween = int.MaxValue;
+                double minTimeBetween = double.MaxValue;
                 Draw currentDraw = null;
                 foreach(Draw d in this.Draws)
                 {
-                    int timeBetween = DateTime.Compare(DateTime.Now, d.Date);
+                    double timeBetween = Math.Abs((DateTime.Now - d.Date).TotalMinutes);
                     if (timeBetween >= 0 && timeBetween < minTimeBetween)
                     {
                         currentDraw = d;

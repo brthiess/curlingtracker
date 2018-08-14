@@ -58,7 +58,7 @@ using Microsoft.Extensions.Configuration;
             WriteLiteral("\t");
             EndContext();
             BeginContext(1, 1741, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1666cf9972274fae9d82f87bee58e01d", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "25b6ab17f1d448f195471ec8531d4176", async() => {
                 BeginContext(7, 1728, true);
                 WriteLiteral(@"
 		<title>Curling Scores</title>
