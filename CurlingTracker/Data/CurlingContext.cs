@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using CurlingTracker.Models;
+using System.Linq;
 
 namespace CurlingTracker.Data
 {
@@ -15,13 +18,20 @@ namespace CurlingTracker.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
 
+        private readonly string ConnectionString;
+
         public CurlingContext(DbContextOptions<CurlingContext> options) : base(options)
         {
         }
 
+        public CurlingContext(string connectionString, DbContextOptions<CurlingContext> options) : base(options)
+        {
+            this.ConnectionString = connectionString;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("DataSource=app.db");
+            optionsBuilder.UseSqlite(ConnectionString);
         }
     }
 }

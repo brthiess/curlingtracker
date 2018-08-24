@@ -69,5 +69,14 @@ namespace CurlingTracker.Models
                 return currentDraw;
             }
         }
+
+        public string Print()
+        {
+            string resultString = "Name: " + this.Name + "\n";
+            resultString += "Type: " + this.Type + "\n";
+            resultString += "Location: " + this.Location + "\n";
+            resultString += "Date: " + this.StartDate.ToString() + "\n";
+            return resultString;
+        }
     }
 }

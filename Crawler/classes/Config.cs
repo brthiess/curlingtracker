@@ -12,13 +12,18 @@ namespace Crawler
         {
             get 
             {   
+                bool isDevelopment = false;
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                {
+                    isDevelopment = true;
+                }
                 if (_config != null)
                 {
                     return _config;
                 }
                 IConfigurationBuilder builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json");
+                    .AddJsonFile("appsettings." + (isDevelopment ? "Development." : "") + "json");
                 _config = builder.Build();  
                 return _config;
             }

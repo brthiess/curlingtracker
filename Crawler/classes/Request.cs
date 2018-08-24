@@ -12,8 +12,10 @@ namespace Crawler
     {       
         public static List<string> GetCurrentCZIDs()
         {
+            Program.Logger.Log("Getting Current CZIDs");
             string currentEventPageHtml = GetHtml(GetCurrentEventPageUrl());
             List<string> eventIds = Parser.GetCurrentEventIds(currentEventPageHtml);
+            Program.Logger.Log("Event IDs found", eventIds);
             return eventIds;
         }
 

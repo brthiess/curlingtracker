@@ -38,6 +38,7 @@ namespace CurlingTracker.Models
             this.EventId = eventId;
             this.DrawId = drawId;
             this.IsOverAndFullyParsed = isOverAndFullyParsed;
+            this.GameId = Guid.NewGuid();
         }
         
         [NotMapped]
@@ -110,6 +111,16 @@ namespace CurlingTracker.Models
         public int GetNumberOfEnds()
         {
             return Linescore.GetNumberOfEnds();
+        }
+
+        public string Print()
+        {
+            string resultString = "Game: " + this.GameId.ToString() + "\n";
+            resultString += "Team 1: " + this.Team1.Name + "\n";
+            resultString += "Team 2: " + this.Team2.Name + "\n";
+            resultString += "Score: " + this.Team1Score + " to " + this.Team2Score + "\n";
+            resultString += "IsOver: " + this.IsFinal.ToString();
+            return resultString;
         }
     }
 }
