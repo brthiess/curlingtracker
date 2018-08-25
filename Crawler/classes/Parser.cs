@@ -26,6 +26,7 @@ namespace Crawler
                     eventIds.Add(eventId.Trim());
                 }
             }
+            Program.Logger.Log("Event Ids found on CZ.com", eventIds);
             return eventIds;
         }
 
@@ -85,7 +86,7 @@ namespace Crawler
             var draws = Api.GetDrawsObject(json);
             if (draws.Length > 0)
             {
-                foreach(Api.DrawObject drawObject in draws)
+                foreach (Api.DrawObject drawObject in draws)
                 {
                     if (drawObject.games.Count > 0)
                     {
@@ -115,6 +116,7 @@ namespace Crawler
                 isOverAndFullyParsed = true;
             }
             Game game = new Game(team1, team2, linescore, isFinal, eventId, isOverAndFullyParsed, drawId);
+            Program.Logger.Log("Getting Game", game);
             return game;
         }
 
@@ -136,13 +138,13 @@ namespace Crawler
 
             Linescore linescore = new Linescore(numberOfEnds);
             bool team1Hammer = apiGame.homeHammer;
-            for(var endNumber = 1; endNumber <= numberOfEnds + 1 && (endNumber - 1) < apiGame.homeScores.Count; endNumber++)
+            for (var endNumber = 1; endNumber <= numberOfEnds + 1 && (endNumber - 1) < apiGame.homeScores.Count; endNumber++)
             {
                 int team1Score = Utility.ParseIntWithDefault(apiGame.homeScores[endNumber - 1], 0);
-                int team2Score =Utility.ParseIntWithDefault(apiGame.awayScores[endNumber - 1], 0);
+                int team2Score = Utility.ParseIntWithDefault(apiGame.awayScores[endNumber - 1], 0);
 
                 var end = new End(
-                    team1Score, 
+                    team1Score,
                     team2Score,
                     team1Hammer,
                     endNumber,
@@ -154,7 +156,7 @@ namespace Crawler
                 {
                     team1Hammer = false;
                 }
-                else if (team2Score > 0) 
+                else if (team2Score > 0)
                 {
                     team1Hammer = true;
                 }
@@ -164,7 +166,7 @@ namespace Crawler
         private static Team GetTeam(Api.GameObject apiGame, bool isHomeTeam)
         {
             EventType.TeamType teamType = GetTeamTypeFromDivision(apiGame.@event.division);
-           
+
             string html = "";
             string teamDisplayName = "";
             if (isHomeTeam)
@@ -201,31 +203,33 @@ namespace Crawler
                 }
                 players.Add(p);
             }
-             int numberOfPlayers = EventType.GetNumberOfPlayersFromTeamType(teamType);
+            int numberOfPlayers = EventType.GetNumberOfPlayersFromTeamType(teamType);
             Queue<Player.Position> positionsLeft = GetEmptyPositions(players, teamType);
             while (players.Count < numberOfPlayers)
             {
                 Player.Position position = 0;
-                if(positionsLeft.Count > 0){
-                     position = positionsLeft.Dequeue();
+                if (positionsLeft.Count > 0)
+                {
+                    position = positionsLeft.Dequeue();
                 }
                 Player p = new Player(null, null, Gender.Unknown, position, (!addedSkip ? true : false));
                 addedSkip = true;
+                Program.Logger.Log("Adding Player", p);
                 players.Add(p);
             }
             return players;
         }
-        
+
         private static Queue<Player.Position> GetEmptyPositions(List<Player> players, EventType.TeamType teamType)
         {
-            Player.Position[] positions = {Player.Position.Fourth, Player.Position.Third, Player.Position.Second, Player.Position.Lead};
+            Player.Position[] positions = { Player.Position.Fourth, Player.Position.Third, Player.Position.Second, Player.Position.Lead };
             var emptyPositions = new Queue<Player.Position>();
-            foreach(Player.Position position in positions)
+            foreach (Player.Position position in positions)
             {
                 bool foundPosition = false;
-                foreach(Player p in players)
+                foreach (Player p in players)
                 {
-                    if(position == p.position)
+                    if (position == p.position)
                     {
                         foundPosition = true;
                         break;
@@ -233,7 +237,7 @@ namespace Crawler
                 }
                 if (!foundPosition)
                 {
-                        emptyPositions.Enqueue(position);
+                    emptyPositions.Enqueue(position);
                 }
             }
             return emptyPositions;
@@ -241,10 +245,10 @@ namespace Crawler
         private static Player GetPlayer(string nameHtml, string imageHtml, string positionHtml, int positionNumber)
         {
             return new Player(
-                GetFirstNameFromNameHtml(nameHtml), 
-                GetLastNameFromNameHtml(nameHtml), 
-                GetGenderFromName(nameHtml), 
-                GetPositionFromHtml(positionHtml, positionNumber), 
+                GetFirstNameFromNameHtml(nameHtml),
+                GetLastNameFromNameHtml(nameHtml),
+                GetGenderFromName(nameHtml),
+                GetPositionFromHtml(positionHtml, positionNumber),
                 GetIsSkipFromHtml(positionHtml)
             );
         }
@@ -304,7 +308,7 @@ namespace Crawler
             {
                 return Player.Position.Fourth;
             }
-            else 
+            else
             {
                 return 0;
                 //throw new Exception("Unable to find position in GetPositionFromHtml.  number = " + positionNumber);
@@ -331,15 +335,18 @@ namespace Crawler
                 List<Game> games = new List<Game>();
                 bool isOverAndFullyParsed = true;
                 Guid newDrawId = Guid.NewGuid();
-                foreach (Api.Game apiGame in draw.games)
+                if (DateTime.Now > drawStart.AddHours(-1))
                 {
-                    Game g = GetGame(apiGame.gameId, eventId, newDrawId);
-                    if (!g.IsOverAndFullyParsed)
-                    {
-                        isOverAndFullyParsed = false;
-                    }
-                    games.Add(g);
+                    games = GetGames(draw.games, eventId, newDrawId);
+                    isOverAndFullyParsed = GamesAreAllOverAndFullyParsed(games);
                 }
+                else
+                {
+                    Program.Logger.Log("Skipping GetGames in GetEventDraws because it hasn't started yet.");
+                    Program.Logger.Log("Draw Start: " + drawStart.ToString());
+                    isOverAndFullyParsed = false;
+                }
+
                 if (DateTime.Now.AddHours(-12) < drawStart)//If game is not older than 12 hours old then 
                 {
                     isOverAndFullyParsed = false;
@@ -355,6 +362,7 @@ namespace Crawler
                         isOverAndFullyParsed,
                         newDrawId
                     );
+                    Program.Logger.Log("GetEventDraws. Add Draw", d);
                     drawsList.Add(d);
                 }
             }
@@ -370,9 +378,9 @@ namespace Crawler
                 long drawStartTimeInUnixTimeStamp = long.Parse(draw.startsAt);
                 DateTime drawStart = DateTimeOffset.FromUnixTimeSeconds(drawStartTimeInUnixTimeStamp).UtcDateTime;
 
-                if(draw.displayName == displayName && drawStart == drawDate)
+                if (draw.displayName == displayName && drawStart == drawDate)
                 {
-                    foreach(Api.Game apiGame in draw.games)
+                    foreach (Api.Game apiGame in draw.games)
                     {
                         Game g = GetGame(apiGame.gameId, eventId, drawId);
                         games.Add(g);
@@ -380,6 +388,31 @@ namespace Crawler
                 }
             }
             return games;
+        }
+        public static List<Game> GetGames(List<Api.Game> apiGames, Guid eventId, Guid newDrawId)
+        {
+            var games = new List<Game>();
+            foreach (Api.Game apiGame in apiGames)
+            {
+                Game g = GetGame(apiGame.gameId, eventId, newDrawId);
+                Program.Logger.Log("GetEventDraws. Adding Game", g);
+                games.Add(g);
+            }
+            return games;
+        }
+
+        public static bool GamesAreAllOverAndFullyParsed(List<Game> games)
+        {
+            bool isOverAndFullyParsed = true;
+            foreach (Game g in games)
+            {
+                if (!g.IsOverAndFullyParsed)
+                {
+                    isOverAndFullyParsed = false;
+                }
+            }
+
+            return isOverAndFullyParsed;
         }
     }
 }

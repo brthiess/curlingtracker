@@ -19,7 +19,7 @@ namespace CurlingTracker
 
         public void Log(string listTitle, List<string> strings)
         {
-            string resultString = listTitle + "\n";
+            string resultString = "\n\n********" + listTitle + "********\n";
             foreach(string s in strings)
             {
                 resultString += s + "\n";
@@ -27,14 +27,20 @@ namespace CurlingTracker
             Console.WriteLine(resultString);
         }
 
-        public void Log(string listTitle, List<Event> events)
+        public void Log(string listTitle, IEnumerable<IPrintable> iPrintables)
         {
-            string resultString = listTitle + "\n";
-            foreach(Event e in events)
+            string resultString = "\n\n********" + listTitle + "********\n";
+            foreach(IPrintable p in iPrintables)
             {
-                resultString += e.Print() + "\n";
+                resultString += p.Print() + "\n";
             }
             Console.WriteLine(resultString);
+        }
+
+        public void Log(string message, IPrintable iPrintable)
+        {
+            Console.WriteLine("\n" + message);
+            Console.WriteLine(iPrintable.Print());
         }
     }
 }

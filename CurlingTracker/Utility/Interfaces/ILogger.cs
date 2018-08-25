@@ -9,6 +9,7 @@ namespace CurlingTracker
         void Log(string message);
         void Log(System.Exception ex);
         void Log(string listTitle, List<string> strings);
-        void Log(string listTitle, List<Event> events);
+        void Log(string listTitle, IEnumerable<IPrintable> iPrintables);
+        void Log(string message, IPrintable iPrintable);
     }
 }

@@ -3,7 +3,7 @@ using CurlingTracker.Utility;
 
 namespace CurlingTracker.Models
 {
-    public class EventType
+    public class EventType : IPrintable
     {
         public Guid EventTypeId {get;set;}
 
@@ -59,6 +59,15 @@ namespace CurlingTracker.Models
                 numberOfPlayers = 2;
             }
             return   numberOfPlayers;
+        }
+
+        public string Print()
+        {
+            string resultString = "TeamType: " + this.teamType + "\n";
+            resultString += "Gender: " + this.Gender.ToString();
+            resultString += "Number of Players: " + this.NumberOfPlayers;
+            resultString += "Number of Ends: " + this.NumberOfEnds;
+            return resultString;
         }
     }
 }

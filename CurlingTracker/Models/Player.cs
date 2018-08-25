@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 namespace CurlingTracker.Models
 {
-    public class Player 
+    public class Player : IPrintable
     {
 
 
@@ -60,6 +60,12 @@ namespace CurlingTracker.Models
         {
             Random random = new Random();
             this.Image = "random" + random.Next(1,7) + ".jpeg";
+        }
+
+        public string Print()
+        {
+            string resultString = this.GetPositionName() + ": " + this.GetFullName();
+            return resultString;
         }
     }
 }

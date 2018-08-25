@@ -21,7 +21,7 @@ namespace Crawler
         {
             var optionsBuilder = new DbContextOptionsBuilder<CurlingContext>();
             optionsBuilder.UseSqlite(Config.Values.GetConnectionString("DefaultConnection"));
-
+            Logger.Log("Connecting to DB with connection string: " + Config.Values.GetConnectionString("DefaultConnection"));
             var context = new CurlingContext(Config.Values.GetConnectionString("DefaultConnection"), optionsBuilder.Options);
             _eventService = new FakeDBEventService(context);
             
@@ -52,6 +52,7 @@ namespace Crawler
             foreach(string czId in newEventIds)
             {
                 Event e = Request.GetEvent(czId);
+                Logger.Log("AddNewEvents", e);
                 await _eventService.AddEventAsync(e);
             }
         }
@@ -70,7 +71,7 @@ namespace Crawler
         async private static Task<List<string>> GetNewEventsFromEventList(List<string> czIds)
         {
             Event[] events = await _eventService.GetAllEventsAsync();
-            Logger.Log("All Events", events.ToList());
+            Logger.Log("All Events in DB", events.ToList());
             foreach (Event e in events)
             {
                 if (czIds.Contains(e.CZId))

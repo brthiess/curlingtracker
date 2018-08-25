@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CurlingTracker.Models
 {
-    public class Draw 
+    public class Draw : IPrintable
     {
         public Guid DrawId {get; set;}
 
@@ -32,6 +32,15 @@ namespace CurlingTracker.Models
             this.IsOverAndFullyParsed = isOverAndFullyParsed;
         }
 
-        
+        public string Print()
+        {
+            string resultString = "Display Name: " + this.DisplayName + "\n";
+            resultString += "Event Id: " + this.EventId + "\n";
+            resultString += "Draw Id: " + this.DrawId + "\n";
+            resultString += "IsOverAndFullyParsed: " + this.IsOverAndFullyParsed.ToString() + "\n";
+            resultString += "Date: " + this.Date + "\n";
+
+            return resultString;
+        }
     }
 }

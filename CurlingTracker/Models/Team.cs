@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CurlingTracker.Models
 {
-    public class Team 
+    public class Team : IPrintable
     {
         public Guid TeamId {get; set;}
         
@@ -85,5 +85,14 @@ namespace CurlingTracker.Models
             return teamName;
         }
 
+        public string Print()
+        {
+            string resultString = "Team: " + this.GetTeamShortName() + "\n";
+            foreach(Player p in this.Players)
+            {
+                resultString += p.Print() + "\n";
+            }
+            return resultString;
+        }
     }
 }

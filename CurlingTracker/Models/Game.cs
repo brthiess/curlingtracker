@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 namespace CurlingTracker.Models
 {
-    public class Game
+    public class Game : IPrintable
     {
         public Guid GameId {get; set;}
 

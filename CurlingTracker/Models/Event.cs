@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CurlingTracker.Models
 {
-    public class Event 
+    public class Event : IPrintable
     {
         [Required]
         public Guid EventId {get; set;}

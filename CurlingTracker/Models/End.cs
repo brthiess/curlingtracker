@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CurlingTracker.Models
 {
-    public class End
+    public class End : IPrintable
     {
         public Guid EndId {get; set;}
 
@@ -31,6 +31,12 @@ namespace CurlingTracker.Models
             this.EndNumber = endNumber;
             this.IsOver = isOver;
             this.EndId = Guid.NewGuid();
-        }                
+        }        
+
+        public string Print()
+        {
+            string resultString = this.Team1Score + " | " + this.Team2Score;
+            return resultString;
+        }        
     }
 }

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CurlingTracker.Models
 {
-    public class Linescore
+    public class Linescore : IPrintable
     {
         public Guid LinescoreId {get; set;}
         
@@ -174,6 +174,19 @@ namespace CurlingTracker.Models
             {
                 return !team1Hammer;
             }
+        }
+
+        public string Print()
+        {
+            string resultString = "Linescore:";
+            for(var endNumber = 1; endNumber <= this.NumberOfEnds; endNumber++)
+            {
+                if (this.Ends.ContainsKey(endNumber))
+                {
+                    resultString += this.Ends[endNumber].Print() + "\n";
+                }
+            }
+            return resultString;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Net;
 using System.Collections.Generic;
 using CurlingTracker.Models;
 using System.Linq;
-
+using System.Threading;
 
 namespace Crawler
 {
@@ -15,7 +15,6 @@ namespace Crawler
             Program.Logger.Log("Getting Current CZIDs");
             string currentEventPageHtml = GetHtml(GetCurrentEventPageUrl());
             List<string> eventIds = Parser.GetCurrentEventIds(currentEventPageHtml);
-            Program.Logger.Log("Event IDs found", eventIds);
             return eventIds;
         }
 
@@ -40,6 +39,9 @@ namespace Crawler
             int attemptNumber = 1;
             while (attemptNumber <= 3)
             {
+                Program.Logger.Log("Attempt #" + attemptNumber + " to get URL: " + url);
+                int crawlDelayInMilliseconds = int.Parse(Config.Values["misc:crawlDelay"]) * 1000;
+                Thread.Sleep(crawlDelayInMilliseconds);
                 try
                 {
                      using (WebClient client = new WebClient())
@@ -54,7 +56,6 @@ namespace Crawler
                     {
                         throw new Exception (ex.Message);
                     }
-                    //log exception
                 }
                 attemptNumber++;
             }
