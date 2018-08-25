@@ -335,7 +335,7 @@ namespace Crawler
                 List<Game> games = new List<Game>();
                 bool isOverAndFullyParsed = true;
                 Guid newDrawId = Guid.NewGuid();
-                if (DateTime.Now > drawStart.AddHours(-1))
+                if (ShouldUpdateDraw(drawStart))
                 {
                     games = GetGames(draw.games, eventId, newDrawId);
                     isOverAndFullyParsed = GamesAreAllOverAndFullyParsed(games);
@@ -413,6 +413,14 @@ namespace Crawler
             }
 
             return isOverAndFullyParsed;
+        }
+        public static bool ShouldUpdateDraw(DateTime drawStart)
+        {
+            if (DateTime.Now > drawStart.AddHours(-1))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

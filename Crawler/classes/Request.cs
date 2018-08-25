@@ -68,6 +68,7 @@ namespace Crawler
             string czGameId = Parser.GetRandomGameIdFromMainEventJson(drawsJson);
             string subEventJson = GetHtml(GetSubEventUrl(czGameId));
             Event e = Parser.GetEventInfoFromJson(subEventJson);
+            Program.Logger.Log("GetEvent", e);
             List<Draw> draws = Parser.GetEventDraws(drawsJson, e.EventId);
             e.Draws = draws;
             
@@ -103,15 +104,22 @@ namespace Crawler
         
         private static Draw UpdateDraw(Draw d, string czId)
         {
-            List<Game> games = Parser.GetGamesByDrawDisplayNameAndDate(d.DisplayName, d.Date, GetHtml(GetMainEventUrl(czId)), d.EventId, d.DrawId);
+            Program.Logger.Log("UpdateDraw", d);
+            List<Game> games = new List<Game>();
             bool isOverAndFullyParsed = true;
-            foreach(Game g in games)
+            if(Parser.ShouldUpdateDraw(d.Date))
             {
-                if (!g.IsOverAndFullyParsed)
-                {
-                    isOverAndFullyParsed = false;
-                }
+                games = Parser.GetGamesByDrawDisplayNameAndDate(d.DisplayName, d.Date, GetHtml(GetMainEventUrl(czId)), d.EventId, d.DrawId);
+                isOverAndFullyParsed = Parser.GamesAreAllOverAndFullyParsed(games);
             }
+            else
+            {
+                Program.Logger.Log("Skipping Draw because it hasn't started yet.");
+                Program.Logger.Log("DrawStart: " + d.Date.ToString());
+                isOverAndFullyParsed = false;
+            }
+            
+
             if (DateTime.Now.AddHours(-12) < d.Date)
             {
                 isOverAndFullyParsed = false;

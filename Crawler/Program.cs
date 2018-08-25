@@ -24,11 +24,11 @@ namespace Crawler
             Logger.Log("Connecting to DB with connection string: " + Config.Values.GetConnectionString("DefaultConnection"));
             var context = new CurlingContext(Config.Values.GetConnectionString("DefaultConnection"), optionsBuilder.Options);
             _eventService = new FakeDBEventService(context);
-            
+
         }
         static void Main(string[] args)
         {
-            try 
+            try
             {
                 Logger.Log("Starting Program");
                 InitializeDB();
@@ -38,7 +38,7 @@ namespace Crawler
                 UpdateEvents();
                 Logger.Log("Ending Program");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Log(ex);
             }
@@ -49,22 +49,23 @@ namespace Crawler
             List<string> czIds = Request.GetCurrentCZIDs();
             List<string> newEventIds = await GetNewEventsFromEventList(czIds);
             Logger.Log("New Event IDs", newEventIds);
-            foreach(string czId in newEventIds)
+            foreach (string czId in newEventIds)
             {
                 Event e = Request.GetEvent(czId);
                 Logger.Log("AddNewEvents", e);
                 await _eventService.AddEventAsync(e);
             }
         }
-        
+
         public async static void UpdateEvents()
         {
             Event[] events = await _eventService.GetUnfinishedEventsAsync();
             Logger.Log("Unfinished Events", events.ToList());
-            foreach(Event e in events)
+            foreach (Event e in events)
             {
-              Event ev = Request.UpdateEvent(e);
-              await _eventService.UpdateEventAsync(ev);
+                Logger.Log("Updating Event", e);
+                Event ev = Request.UpdateEvent(e);
+                await _eventService.UpdateEventAsync(ev);
             }
         }
 

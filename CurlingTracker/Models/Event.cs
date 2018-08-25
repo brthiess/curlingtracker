@@ -76,6 +76,7 @@ namespace CurlingTracker.Models
             resultString += "Type: " + this.Type + "\n";
             resultString += "Location: " + this.Location + "\n";
             resultString += "Date: " + this.StartDate.ToString() + "\n";
+            resultString += "CZID: " + this.CZId + "\n";
             return resultString;
         }
     }
