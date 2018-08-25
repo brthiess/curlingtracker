@@ -5,7 +5,7 @@ var fullScreenScoreboardWidth = 719;
 function showEvent(eventId){
 	$('.competition-list-item').removeClass('active');
 	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
-	addLoadingToClass('scores-container-container');
+	addLoadingToClass('scores-container');
 	makeScoresContainerActive();
 	getScoresView(eventId, null, function(viewHtml, error){
 		if (typeof error == 'undefined'){
@@ -14,30 +14,30 @@ function showEvent(eventId){
 			currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
 			updateBackButton(true);
 		}
-		removeLoadingFromClass('scores-container-container');
+		removeLoadingFromClass('scores-container');
 	});
 }
 
 function showGame(gameId, eventId){
 	makeScoresContainerActive();
-	addLoadingToClass('scores-container-container');
+	addLoadingToClass('scores-container');
 	getGameView(gameId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-info-wrapper').html(viewHtml);
 			updateBackButton(false, eventId);
 		}
-		removeLoadingFromClass('scores-container-container');
+		removeLoadingFromClass('scores-container');
 	});
 }
 
 function showDraw(drawId){
 	console.log(drawId);
-	addLoadingToClass('scores-container-container');
+	addLoadingToClass('scores-container');
 	getDrawView(drawId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-games-wrapper').html(viewHtml);
 		}
-		removeLoadingFromClass('scores-container-container');
+		removeLoadingFromClass('scores-container');
 	})
 }
 
