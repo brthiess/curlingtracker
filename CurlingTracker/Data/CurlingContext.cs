@@ -18,7 +18,7 @@ namespace CurlingTracker.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
 
-        private readonly string ConnectionString;
+        private string ConnectionString;
 
         public CurlingContext(DbContextOptions<CurlingContext> options) : base(options)
         {
@@ -31,6 +31,7 @@ namespace CurlingTracker.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            ConnectionString = (ConnectionString != null ? ConnectionString : "DataSource=app.db");
             optionsBuilder.UseSqlite(ConnectionString);
         }
     }

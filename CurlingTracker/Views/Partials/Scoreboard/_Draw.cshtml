@@ -25,7 +25,7 @@
         </div>
     </div>
     <div data-end class='scores-end-container @(game.IsFinal ? " scores-final " : "")'>
-        @(DateTime.Now < Model.Date ? Model.Date.ToString() : (game.IsFinal ? "Final (" + game.CurrentEnd + ")" : StringUtil.AddOrdinal(game.CurrentEnd) + " end"))
+        @(DateTime.Now < Model.Date.ToLocalTime() ? Model.Date.ToLocalTime().ToString() : (game.IsFinal ? "Final (" + game.CurrentEnd + ")" : StringUtil.AddOrdinal(game.CurrentEnd) + " end"))
     </div>						
 </div>
 }

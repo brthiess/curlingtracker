@@ -14,7 +14,7 @@
 					<td class='linescore-table-data t-left no-padding'>@Model.Team1.Name</td>
 					<td class='linescore-table-data t-left'>@Html.Raw(Model.Team1Hammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "")</td>
 					@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
-						<td class='linescore-table-data t-center'>@Html.Raw(endNumber < Model.CurrentEnd ? @Model.GetScoreForEnd(1, endNumber) : "<span class='faded'>X</span>")</td>
+						<td class='linescore-table-data t-center'>@Html.Raw(endNumber < Model.CurrentEnd ? @Model.GetScoreForEnd(1, endNumber) : (Model.IsFinal ?  "<span class='faded'>X</span>" : "<span class='faded'>-</span>"))</td>
                     }
 					<td class='linescore-table-data t-center'>@Model.Team1Score</strong></td>
 				</tr>
@@ -22,7 +22,7 @@
 					<td class='linescore-table-data t-left no-padding'>@Model.Team2.Name</td>
 					<td class='linescore-table-data t-left'>@Html.Raw(Model.Team2Hammer ? "<img class='linescore-hammer' src='/images/hammer.png'/>" : "")</td>
 					@for(var endNumber = 1; endNumber <= Model.GetNumberOfEnds(); endNumber++){
-						<td class='linescore-table-data t-center'>@Html.Raw(endNumber < Model.CurrentEnd ? @Model.GetScoreForEnd(2, endNumber) : "<span class='faded'>X</span>")</td>
+						<td class='linescore-table-data t-center'>@Html.Raw(endNumber < Model.CurrentEnd ? @Model.GetScoreForEnd(2, endNumber) : (Model.IsFinal ?  "<span class='faded'>X</span>" : "<span class='faded'>-</span>"))</td>
                     }
 					<td class='linescore-table-data t-center'><strong>@Model.Team2Score</strong></td>
 				</tr>

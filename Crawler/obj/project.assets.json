@@ -13089,11 +13089,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/brad/Documents/websites/CurlingTracker/Crawler/Crawler.csproj",
+      "projectUniqueName": "/home/brad/Documents/websites/curlingtracker/Crawler/Crawler.csproj",
       "projectName": "Crawler",
-      "projectPath": "/home/brad/Documents/websites/CurlingTracker/Crawler/Crawler.csproj",
+      "projectPath": "/home/brad/Documents/websites/curlingtracker/Crawler/Crawler.csproj",
       "packagesPath": "/home/brad/.nuget/packages/",
-      "outputPath": "/home/brad/Documents/websites/CurlingTracker/Crawler/obj/",
+      "outputPath": "/home/brad/Documents/websites/curlingtracker/Crawler/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"
@@ -13110,8 +13110,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/CurlingTracker.csproj": {
-              "projectPath": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/CurlingTracker.csproj"
+            "/home/brad/Documents/websites/curlingtracker/CurlingTracker/CurlingTracker.csproj": {
+              "projectPath": "/home/brad/Documents/websites/curlingtracker/CurlingTracker/CurlingTracker.csproj"
             }
           }
         }

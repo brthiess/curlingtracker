@@ -416,7 +416,7 @@ namespace Crawler
         }
         public static bool ShouldUpdateDraw(DateTime drawStart)
         {
-            if (DateTime.Now > drawStart.AddHours(-1))
+            if (DateTime.Now.ToUniversalTime() > drawStart.AddHours(-2))
             {
                 return true;
             }

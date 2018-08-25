@@ -58,8 +58,8 @@ namespace CurlingTracker.Models
                 Draw currentDraw = null;
                 foreach(Draw d in this.Draws)
                 {
-                    double timeBetween = Math.Abs((DateTime.Now - d.Date).TotalMinutes);
-                    if (timeBetween >= 0 && timeBetween < minTimeBetween)
+                    double timeBetween = (DateTime.Now - d.Date.ToLocalTime()).TotalMinutes;
+                    if ((timeBetween >= 0 && timeBetween < minTimeBetween) || (timeBetween < 0 && timeBetween > -15))
                     {
                         currentDraw = d;
                         minTimeBetween = timeBetween;

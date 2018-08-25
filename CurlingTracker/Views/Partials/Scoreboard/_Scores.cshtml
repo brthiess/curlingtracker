@@ -5,7 +5,7 @@
 			<div class='select-wrapper scores-draw-wrapper'>
 				<select class='game-time-name' onchange="showDraw($(this).val());">
 					@for(var i = 0; i < Model.Draws.Count; i++) {
-						<option value='@Model.Draws[i].DrawId' class='game-time-name-option' selected="@(Model.Draws[i].DrawId == Model.CurrentDraw.DrawId ? "selected" : "")"> @Model.Draws[i].Date.ToString("MMMM d h:mmtt", System.Globalization.CultureInfo.InvariantCulture) - @Model.Draws[i].DisplayName</option>
+						<option value='@Model.Draws[i].DrawId' class='game-time-name-option' selected="@(Model.Draws[i].DrawId == Model.CurrentDraw.DrawId ? "selected" : null)"> @Model.Draws[i].Date.ToLocalTime().ToString("MMMM d h:mmtt", System.Globalization.CultureInfo.InvariantCulture) - @Model.Draws[i].DisplayName</option>
 					}  
 					</select>
 			</div>

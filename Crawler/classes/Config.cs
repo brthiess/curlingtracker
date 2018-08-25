@@ -12,14 +12,14 @@ namespace Crawler
         {
             get 
             {   
+                if (_config != null)
+                {
+                    return _config;
+                }
                 bool isDevelopment = false;
                 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
                 {
                     isDevelopment = true;
-                }
-                if (_config != null)
-                {
-                    return _config;
                 }
                 IConfigurationBuilder builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())

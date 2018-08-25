@@ -156,6 +156,7 @@ namespace CurlingTracker.Models
             {
                 if (this.Ends.ContainsKey(endNumber))
                 {
+                    //This is here to determine who has hammer before anyone has scored
                     if (this.Ends[endNumber].Team1Hammer)
                     {
                         team1Hammer = true;
@@ -163,6 +164,15 @@ namespace CurlingTracker.Models
                     else
                     {
                         team1Hammer = false;
+                    }
+                    //If team scored, switch hammer
+                    if (this.Ends[endNumber].Team1Score > 0)
+                    {
+                        team1Hammer = false;
+                    }
+                    else if (this.Ends[endNumber].Team2Score > 0)
+                    {
+                        team1Hammer = true;
                     }
                 }
             }
