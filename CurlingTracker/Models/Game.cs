@@ -7,11 +7,10 @@ namespace CurlingTracker.Models
     {
         public Guid GameId {get; set;}
 
-        [NotMapped]
+        [Required]
         public Team Team1 {get;set;}
 
-
-        [NotMapped]
+        [Required]
         public Team Team2 {get;set;}
 
 

@@ -8,7 +8,7 @@ namespace CurlingTracker.Models
 {
     public class Team : IPrintable
     {
-        public Guid TeamId {get; set;}
+        public string TeamId {get; set;}
         
         public EventType.TeamType TeamType {get;set;}
         
@@ -19,12 +19,6 @@ namespace CurlingTracker.Models
 
 
         public string Name {get;set;}
-
-        [Required]
-        [ForeignKey("GameId")]
-        public Game Game {get;set;}
-
-        public Guid GameId {get;set;}
 
         public Team(){}        
         public Team(EventType.TeamType teamType, List<Player> players, string name = null)
@@ -44,7 +38,7 @@ namespace CurlingTracker.Models
             }
             this.Players = players;
             this.Name = (name != null ? name : (GetTeamShortName() != null ? GetTeamShortName() : "Unknown"));
-            this.TeamId = Guid.NewGuid();
+            this.TeamId = GetTeamId();
         }
 
         public List<Player> GetPlayersSorted()
@@ -101,6 +95,18 @@ namespace CurlingTracker.Models
                 resultString += p.Print() + "\n";
             }
             return resultString;
+        }
+        private string GetTeamId()
+        {
+            string teamId = "";
+            foreach(Player p in this.Players)
+            {
+                teamId += p.FirstName + p.LastName;
+            }
+            teamId += this.gender.ToString();
+            teamId += this.TeamType.ToString();
+            teamId = Utility.StringUtil.CreateMD5(teamId);
+            return teamId;
         }
     }
 }

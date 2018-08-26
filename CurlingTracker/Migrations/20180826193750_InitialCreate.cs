@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CurlingTracker.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,6 +22,20 @@ namespace CurlingTracker.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.EventId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    TeamId = table.Column<string>(nullable: false),
+                    TeamType = table.Column<int>(nullable: false),
+                    gender = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.TeamId);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,10 +82,37 @@ namespace CurlingTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Players",
+                columns: table => new
+                {
+                    PlayerId = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    position = table.Column<int>(nullable: false),
+                    IsSkip = table.Column<bool>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    TeamId = table.Column<Guid>(nullable: false),
+                    TeamId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.PlayerId);
+                    table.ForeignKey(
+                        name: "FK_Players_Teams_TeamId1",
+                        column: x => x.TeamId1,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
                 {
                     GameId = table.Column<Guid>(nullable: false),
+                    Team1TeamId = table.Column<string>(nullable: false),
+                    Team2TeamId = table.Column<string>(nullable: false),
                     EventId = table.Column<Guid>(nullable: false),
                     PercentagesAvailable = table.Column<bool>(nullable: false),
                     IsFinal = table.Column<bool>(nullable: false),
@@ -86,6 +127,18 @@ namespace CurlingTracker.Migrations
                         column: x => x.DrawId,
                         principalTable: "Draws",
                         principalColumn: "DrawId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Games_Teams_Team1TeamId",
+                        column: x => x.Team1TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Games_Teams_Team2TeamId",
+                        column: x => x.Team2TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -109,51 +162,6 @@ namespace CurlingTracker.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Teams",
-                columns: table => new
-                {
-                    TeamId = table.Column<Guid>(nullable: false),
-                    TeamType = table.Column<int>(nullable: false),
-                    gender = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    GameId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.TeamId);
-                    table.ForeignKey(
-                        name: "FK_Teams_Games_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Games",
-                        principalColumn: "GameId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Players",
-                columns: table => new
-                {
-                    PlayerId = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    position = table.Column<int>(nullable: false),
-                    IsSkip = table.Column<bool>(nullable: false),
-                    Gender = table.Column<int>(nullable: false),
-                    TeamId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Players", x => x.PlayerId);
-                    table.ForeignKey(
-                        name: "FK_Players_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Draws_EventId",
                 table: "Draws",
@@ -171,20 +179,25 @@ namespace CurlingTracker.Migrations
                 column: "DrawId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Games_Team1TeamId",
+                table: "Games",
+                column: "Team1TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_Team2TeamId",
+                table: "Games",
+                column: "Team2TeamId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Linescore_GameId",
                 table: "Linescore",
                 column: "GameId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_TeamId",
+                name: "IX_Players_TeamId1",
                 table: "Players",
-                column: "TeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Teams_GameId",
-                table: "Teams",
-                column: "GameId");
+                column: "TeamId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -199,13 +212,13 @@ namespace CurlingTracker.Migrations
                 name: "Players");
 
             migrationBuilder.DropTable(
-                name: "Teams");
-
-            migrationBuilder.DropTable(
                 name: "Games");
 
             migrationBuilder.DropTable(
                 name: "Draws");
+
+            migrationBuilder.DropTable(
+                name: "Teams");
 
             migrationBuilder.DropTable(
                 name: "Events");
