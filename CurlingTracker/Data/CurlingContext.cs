@@ -34,5 +34,6 @@ namespace CurlingTracker.Data
             ConnectionString = (ConnectionString != null ? ConnectionString : "DataSource=app.db");
             optionsBuilder.UseSqlite(ConnectionString);
         }
+
     }
 }

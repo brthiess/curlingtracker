@@ -7,11 +7,13 @@ namespace CurlingTracker.Models
     {
         public Guid GameId {get; set;}
 
-        [Required]
+        [NotMapped]
         public Team Team1 {get;set;}
 
-        [Required]
+
+        [NotMapped]
         public Team Team2 {get;set;}
+
 
         [Required]
         public Guid EventId {get;set;}
@@ -26,6 +28,7 @@ namespace CurlingTracker.Models
 
         public bool IsOverAndFullyParsed{get;set;}
 
+        [Required]
         public Guid DrawId {get;set;}
 
         public Game(){}

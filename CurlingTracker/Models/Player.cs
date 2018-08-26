@@ -23,6 +23,8 @@ namespace CurlingTracker.Models
 
         public enum Position{Lead = 1, Second = 2, Third = 3, Fourth = 4}
 
+        [Required]
+        public Guid TeamId {get;set;}
         
         public Player(string firstName, string lastName, Gender gender, Position position, bool isSkip, string image = "default.png")
         {

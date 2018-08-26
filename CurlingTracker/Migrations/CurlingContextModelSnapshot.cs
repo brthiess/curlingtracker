@@ -97,23 +97,11 @@ namespace CurlingTracker.Migrations
 
                     b.Property<bool>("IsOverAndFullyParsed");
 
-                    b.Property<Guid>("LinescoreId");
-
                     b.Property<bool>("PercentagesAvailable");
-
-                    b.Property<Guid>("Team1TeamId");
-
-                    b.Property<Guid>("Team2TeamId");
 
                     b.HasKey("GameId");
 
                     b.HasIndex("DrawId");
-
-                    b.HasIndex("LinescoreId");
-
-                    b.HasIndex("Team1TeamId");
-
-                    b.HasIndex("Team2TeamId");
 
                     b.ToTable("Games");
                 });
@@ -125,9 +113,14 @@ namespace CurlingTracker.Migrations
 
                     b.Property<string>("DictionaryAsJson");
 
+                    b.Property<Guid>("GameId");
+
                     b.Property<int>("NumberOfEnds");
 
                     b.HasKey("LinescoreId");
+
+                    b.HasIndex("GameId")
+                        .IsUnique();
 
                     b.ToTable("Linescore");
                 });
@@ -147,7 +140,7 @@ namespace CurlingTracker.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<Guid?>("TeamId");
+                    b.Property<Guid>("TeamId");
 
                     b.Property<int>("position");
 
@@ -163,6 +156,8 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("TeamId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("GameId");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("TeamType");
@@ -170,6 +165,8 @@ namespace CurlingTracker.Migrations
                     b.Property<int>("gender");
 
                     b.HasKey("TeamId");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("Teams");
                 });
@@ -196,20 +193,13 @@ namespace CurlingTracker.Migrations
                         .WithMany("Games")
                         .HasForeignKey("DrawId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("CurlingTracker.Models.Linescore", "Linescore")
-                        .WithMany()
-                        .HasForeignKey("LinescoreId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CurlingTracker.Models.Team", "Team1")
-                        .WithMany()
-                        .HasForeignKey("Team1TeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CurlingTracker.Models.Team", "Team2")
-                        .WithMany()
-                        .HasForeignKey("Team2TeamId")
+            modelBuilder.Entity("CurlingTracker.Models.Linescore", b =>
+                {
+                    b.HasOne("CurlingTracker.Models.Game")
+                        .WithOne("Linescore")
+                        .HasForeignKey("CurlingTracker.Models.Linescore", "GameId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -217,7 +207,16 @@ namespace CurlingTracker.Migrations
                 {
                     b.HasOne("CurlingTracker.Models.Team")
                         .WithMany("Players")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CurlingTracker.Models.Team", b =>
+                {
+                    b.HasOne("CurlingTracker.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

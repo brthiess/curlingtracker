@@ -17,6 +17,8 @@ namespace CurlingTracker.Models
         [NotMapped]
         public Dictionary<int, End> Ends {get;set;}
 
+        [Required]
+        public Guid GameId{get;set;}
 
         public string DictionaryAsJson
         {

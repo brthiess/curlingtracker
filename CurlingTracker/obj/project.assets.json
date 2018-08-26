@@ -19212,11 +19212,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/brad/Documents/websites/curlingtracker/CurlingTracker/CurlingTracker.csproj",
+      "projectUniqueName": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/CurlingTracker.csproj",
       "projectName": "CurlingTracker",
-      "projectPath": "/home/brad/Documents/websites/curlingtracker/CurlingTracker/CurlingTracker.csproj",
+      "projectPath": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/CurlingTracker.csproj",
       "packagesPath": "/home/brad/.nuget/packages/",
-      "outputPath": "/home/brad/Documents/websites/curlingtracker/CurlingTracker/obj/",
+      "outputPath": "/home/brad/Documents/websites/CurlingTracker/CurlingTracker/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"

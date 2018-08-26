@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace CurlingTracker.Models
 {
@@ -17,6 +19,12 @@ namespace CurlingTracker.Models
 
 
         public string Name {get;set;}
+
+        [Required]
+        [ForeignKey("GameId")]
+        public Game Game {get;set;}
+
+        public Guid GameId {get;set;}
 
         public Team(){}        
         public Team(EventType.TeamType teamType, List<Player> players, string name = null)
