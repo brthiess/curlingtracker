@@ -12,7 +12,7 @@ namespace CurlingTracker.Models
         public Guid LinescoreId {get; set;}
         
         [Required]
-        public int NumberOfEnds {get;set;}
+        public int NumberOfEnds {get; set;}
 
         [NotMapped]
         public Dictionary<int, End> Ends {get;set;}
@@ -36,7 +36,7 @@ namespace CurlingTracker.Models
         public Linescore(int numberOfEnds)
         {
             this.Ends = new Dictionary<int, End>();
-            this.NumberOfEnds = numberOfEnds + 1; //Add one for extra end
+            this.NumberOfEnds = numberOfEnds; 
         }
         public Linescore(Dictionary<int, End> ends){
             this.Ends = ends;
@@ -132,7 +132,7 @@ namespace CurlingTracker.Models
 
         public int GetNumberOfEnds()
         {
-            return this.NumberOfEnds;
+            return this.NumberOfEnds + 1;
         }
         private int GetTeamXScore(int x)
         {
