@@ -50,7 +50,7 @@ namespace CurlingTracker.Services
         public async Task<Event[]> GetCurrentEventsAsync()
         {
             Event[] events = await GetAllEventsAsync();
-            Event[] currentEvents = events.Where(e => e.StartDate < DateTime.Now.AddDays(1) && e.EndDate > DateTime.Now.AddDays(-1)).ToArray();
+            Event[] currentEvents = events.Where(e => e.StartDate < DateTime.Now.AddDays(1) && e.EndDate > DateTime.Now.AddDays(-3)).ToArray();
             if (currentEvents.Length > 0)
             {
                 return currentEvents;

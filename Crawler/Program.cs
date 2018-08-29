@@ -33,9 +33,9 @@ namespace Crawler
                 Logger.Log("Starting Program");
                 InitializeDB();
                 Logger.Log("Adding New Events");
-                AddNewEvents();
+                AddNewEvents().Wait();
                 Logger.Log("Updating Events");
-                UpdateEvents();
+                UpdateEvents().Wait();
                 Logger.Log("Ending Program");
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace Crawler
             }
         }
 
-        public async static void AddNewEvents()
+        public async static Task AddNewEvents()
         {
             List<string> czIds = Request.GetCurrentCZIDs();
             List<string> newEventIds = await GetNewEventsFromEventList(czIds);
@@ -57,7 +57,7 @@ namespace Crawler
             }
         }
 
-        public async static void UpdateEvents()
+        public async static Task UpdateEvents()
         {
             Logger.Log("UpdateEvents()");
             Event[] events = await _eventService.GetUnfinishedEventsAsync();
