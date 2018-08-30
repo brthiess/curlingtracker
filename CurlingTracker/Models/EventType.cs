@@ -46,6 +46,13 @@ namespace CurlingTracker.Models
             }
         }
 
+        public void SetTeamType(TeamType teamType)
+        {
+            this.teamType = teamType;
+            this.NumberOfPlayers = GetNumberOfPlayersFromTeamType(teamType);
+            this.Gender = GetGenderFromTeamType(teamType);
+        }
+
         public string GetTeamTypeToString()
         {
             return StringUtil.FirstLetterToUpper(teamType.ToString().Replace("_", " "));

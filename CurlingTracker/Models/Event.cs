@@ -77,6 +77,7 @@ namespace CurlingTracker.Models
             resultString += "Location: " + this.Location + "\n";
             resultString += "Date: " + this.StartDate.ToString() + "\n";
             resultString += "CZID: " + this.CZId + "\n";
+            resultString += "IsOverAndFullyParsed: " + this.IsOverAndFullyParsed.ToString();
             return resultString;
         }
     }

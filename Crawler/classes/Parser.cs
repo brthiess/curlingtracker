@@ -30,32 +30,45 @@ namespace Crawler
             return eventIds;
         }
 
-        private static HtmlNode GetHtmlNode(string html)
-        {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(html);
-            return htmlDoc.DocumentNode;
-        }
-
-        public static Event GetEventInfoFromJson(string json)
+        public static Event GetEventInfoFromJson(string json, Event e = null)
         {
             var game = Api.GetGameObject(json);
             int numberOfEnds = 8;
             int.TryParse(game.numberOfEnds, out numberOfEnds);
             Guid eventId = Guid.NewGuid();
             //TODO More robust parsing for dates in case of error.
-            Event e = new Event(
-                game.@event.displayName,
-                DateTime.Parse(game.@event.startDate),
-                DateTime.Parse(game.@event.endDate),
-                game.@event.location,
-                new EventType(GetTeamTypeFromDivision(game.@event.division), numberOfEnds, eventId),
-                czId: game.@event.eventId,
-                eventId: eventId
-            );
+            if (e == null)
+            {
+                e = new Event(
+                   game.@event.displayName,
+                   DateTime.Parse(game.@event.startDate),
+                   DateTime.Parse(game.@event.endDate),
+                   game.@event.location,
+                   new EventType(GetTeamTypeFromDivision(game.@event.division), numberOfEnds, eventId),
+                   czId: game.@event.eventId,
+                   eventId: eventId
+               );
+            }
+            else 
+            {
+                e.Name = game.@event.displayName;
+                e.StartDate = DateTime.Parse(game.@event.startDate);
+                e.EndDate = DateTime.Parse(game.@event.endDate);
+                e.Location = game.@event.location;
+                e.Type.SetTeamType(GetTeamTypeFromDivision(game.@event.division));
+                e.Type.NumberOfEnds = numberOfEnds; 
+            }
             return e;
         }
 
+        
+
+        private static HtmlNode GetHtmlNode(string html)
+        {
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(html);
+            return htmlDoc.DocumentNode;
+        }
 
         private static string GetEventIdFromLink(string link)
         {
@@ -77,6 +90,10 @@ namespace Crawler
             else if (division == "women")
             {
                 return EventType.TeamType.WOMEN;
+            }
+            else if (division == "mixed doubles")
+            {
+                return EventType.TeamType.MIXED_DOUBLES;
             }
             return EventType.TeamType.MEN;
         }

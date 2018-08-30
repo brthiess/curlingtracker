@@ -64,7 +64,7 @@ namespace Crawler
 
         public static Event GetEvent(string czEventId)
         {
-            string drawsJson = GetHtml(GetMainEventUrl(czEventId));
+            string drawsJson =  GetDrawsJsonFromCZId(czEventId);
             string czGameId = Parser.GetRandomGameIdFromMainEventJson(drawsJson);
             string subEventJson = GetHtml(GetSubEventUrl(czGameId));
             Event e = Parser.GetEventInfoFromJson(subEventJson);
@@ -74,9 +74,32 @@ namespace Crawler
             
             return e;
         }
+
+
+        private static string GetDrawsJsonFromCZId(string czEventId)
+        {
+            string drawsJson = GetHtml(GetMainEventUrl(czEventId));
+            return drawsJson;
+        }
+        public static string GetSubEventJsonFromCZId(string czEventId)
+        {
+            string drawsJson = GetHtml(GetMainEventUrl(czEventId));
+            string czGameId = Parser.GetRandomGameIdFromMainEventJson(drawsJson);
+            string subEventJson = GetHtml(GetSubEventUrl(czGameId));
+            return subEventJson;
+        }
+
+        public static Event UpdateEventInfo(Event e)
+        {
+            string subEventJson = Request.GetSubEventJsonFromCZId(e.CZId);
+            e = Parser.GetEventInfoFromJson(subEventJson, e);
+            return e;
+        }
         
         public static Event UpdateEvent(Event e)
         {
+            e = UpdateEventInfo(e);
+            
             bool isOverAndFullyParsed = true;
             for(int i = 0; i < e.Draws.Count; i++) 
             {
@@ -93,6 +116,7 @@ namespace Crawler
             }
 
             e.IsOverAndFullyParsed = isOverAndFullyParsed;
+            Program.Logger.Log("Updated Event Info", e);
             return e;
         }
 
