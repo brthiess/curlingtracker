@@ -44,7 +44,7 @@ namespace CurlingTracker.Models
                 
         public void AddEnd(End end)
         {
-            if (Ends.Count == this.NumberOfEnds)
+            if (Ends.Count == this.GetNumberOfEnds())
             {
                 throw new Exception("Cannot add another end.  Already reached the maximum number of ends");
             }
