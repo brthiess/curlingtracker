@@ -89,6 +89,14 @@ namespace Crawler
             return subEventJson;
         }
 
+        public static Event GetEventInfo(string czId)
+        {
+            string subEventJson = Request.GetSubEventJsonFromCZId(czId);
+            Event e = Parser.GetEventInfoFromJson(subEventJson);
+            return e;
+
+        }
+
         public static Event UpdateEventInfo(Event e)
         {
             string subEventJson = Request.GetSubEventJsonFromCZId(e.CZId);

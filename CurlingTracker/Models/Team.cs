@@ -37,7 +37,7 @@ namespace CurlingTracker.Models
                 throw new Exception("Created team without a skip!");
             }
             this.Players = players;
-            this.Name = (name != null ? name : (GetTeamShortName() != null ? GetTeamShortName() : "Unknown"));
+            this.Name = GetTeamName(name, teamType);
             this.TeamId = GetTeamId();
         }
 
@@ -47,7 +47,31 @@ namespace CurlingTracker.Models
             return players;
         }
 
-        private string GetTeamShortName()
+        private string GetTeamName(string name, EventType.TeamType teamType)
+        {   
+            string teamName = "";
+
+            teamName = name;
+            if (teamType == EventType.TeamType.MIXED_DOUBLES)
+            {
+                teamName = GetMixedDoublesTeamShortNameFromTeam();
+                if (string.IsNullOrEmpty(teamName))
+                {
+                    teamName = name;
+                }
+            }
+            if (string.IsNullOrEmpty(teamName))
+            {
+                teamName = GetTeamShortName();
+            }  
+            if (string.IsNullOrEmpty(teamName))
+            {
+                teamName = "Unknown";
+            }
+            return teamName;                
+        }
+
+        public string GetTeamShortName()
         {
             if (this.TeamType == EventType.TeamType.MIXED_DOUBLES)
             {

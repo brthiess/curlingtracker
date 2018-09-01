@@ -114,7 +114,7 @@ namespace Crawler
             return null;
         }
 
-        private static Game GetGame(string czGameId, Guid eventId, Guid drawId)
+        public static Game GetGame(string czGameId, Guid eventId, Guid drawId)
         {
             string gameJson = Request.GetGameJson(czGameId);
             Api.GameObject apiGame = Api.GetGameObject(gameJson);
@@ -180,7 +180,7 @@ namespace Crawler
             }
             return linescore;
         }
-        private static Team GetTeam(Api.GameObject apiGame, bool isHomeTeam)
+        public static Team GetTeam(Api.GameObject apiGame, bool isHomeTeam)
         {
             EventType.TeamType teamType = GetTeamTypeFromDivision(apiGame.@event.division);
 
