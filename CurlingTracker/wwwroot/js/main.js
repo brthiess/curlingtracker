@@ -2,7 +2,7 @@
 var fullScreenScoreboardWidth = 719;
 
 
-function showEvent(eventId){
+function showEvent(eventId, newUrl){
 	$('.competition-list-item').removeClass('active');
 	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
 	addLoadingToClass('scores-container');
@@ -13,6 +13,9 @@ function showEvent(eventId){
 			currentCompetitionId = eventId;
 			currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
 			updateBackButton(true);
+			if (typeof newUrl !=="undefined"){
+			    history.pushState({action : "showEvent", eventId: eventId}, "", newUrl);
+			}
 		}
 		removeLoadingFromClass('scores-container');
 	});
@@ -30,14 +33,16 @@ function showGame(gameId, eventId){
 	});
 }
 
-function showDraw(drawId){
-	console.log(drawId);
+function showDraw(drawId, newUrl){
 	addLoadingToClass('scores-container');
 	getDrawView(drawId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-games-wrapper').html(viewHtml);
 		}
 		removeLoadingFromClass('scores-container');
+		if(typeof newUrl !== "undefined"){
+		    history.pushState({action : "showDraw", drawId: drawId}, "", newUrl);
+		}
 	})
 }
 
@@ -99,25 +104,24 @@ function toggleHtml(element, text1, text2) {
 	}
 }
 
-$(document).ready(function(){
-	if($('competition-list').scrollLeft() <= 1){
-		$('.left-arrow').addClass('hidden');
-	}
-	else if ($('.competition-list').length > 0 && ($('competition-list').scrollLeft() + $(window).width()) >= $('.competition-list')[0].scrollWidth) {
-		$('.right-arrow').addClass('hidden');
-	}
-	$('.competition-list').scroll(function(){
-		var scrollLeft = $(this).scrollLeft();
-		if (scrollLeft <= 1){
-			$('.left-arrow').addClass('hidden');
-			$('.right-arrow').removeClass('hidden');
-		}
-		else if ((scrollLeft + $(window).width()) >= $('.competition-list')[0].scrollWidth) {
-			$('.right-arrow').addClass('hidden');
-			$('.left-arrow').removeClass('hidden');
-		}
-	});
+window.onpopstate = function(event) {
+  handlePopState(event.state);
+};
+
+
+
+$("body").on("click", "[data-pop-history]", function(event){
+	history.popState();
 });
+
+function handlePopState(state) {
+	if (event.state == "showDraw") {
+		showDraw(state.drawId);
+    }
+   else if (event.state == "showEvent") {
+		showDraw(state.eventId);
+    }
+}
 
 /*modal*/
 var modalOpen = false;
