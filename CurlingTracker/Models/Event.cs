@@ -70,6 +70,10 @@ namespace CurlingTracker.Models
             }
         }
 
+        public string GetUrl()
+        {
+            return "/events/"
+        }
         public string Print()
         {
             string resultString = "Name: " + this.Name + "\n";

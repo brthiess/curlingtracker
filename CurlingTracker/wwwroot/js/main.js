@@ -41,7 +41,7 @@ function showDraw(drawId, newUrl){
 		}
 		removeLoadingFromClass('scores-container');
 		if(typeof newUrl !== "undefined"){
-		    history.pushState({action : "showDraw", drawId: drawId}, "", newUrl);
+		    history.replaceState({action : "showDraw", drawId: drawId}, "", newUrl);
 		}
 	})
 }
