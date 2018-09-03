@@ -21,7 +21,7 @@ function showEvent(eventId, newUrl){
 	});
 }
 
-function showGame(gameId, eventId){
+function showGame(gameId, eventId, newUrl){
 	makeScoresContainerActive();
 	addLoadingToClass('scores-container');
 	getGameView(gameId, function(viewHtml, error){
@@ -30,6 +30,9 @@ function showGame(gameId, eventId){
 			updateBackButton(false, eventId);
 		}
 		removeLoadingFromClass('scores-container');
+		if (typeof newUrl !=="undefined"){
+			history.pushState({action : "showGame", gameId: gameId, eventId: eventId}, "", newUrl);
+		}
 	});
 }
 
@@ -111,16 +114,25 @@ window.onpopstate = function(event) {
 
 
 $("body").on("click", "[data-pop-history]", function(event){
-	history.popState();
+	history.back();
+});
+
+$("body").on("click", "[data-pop-all-history]", function(event){
+	while (history.state != null){
+		history.back();
+	}
 });
 
 function handlePopState(state) {
 	if (event.state == "showDraw") {
 		showDraw(state.drawId);
     }
-   else if (event.state == "showEvent") {
+    else if (event.state == "showEvent") {
 		showDraw(state.eventId);
-    }
+	}
+	else if (event.state == "showGame") {
+		showGame(state.gameId, state.eventId);
+	}
 }
 
 /*modal*/

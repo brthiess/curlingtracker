@@ -30,6 +30,9 @@ namespace CurlingTracker.Models
         [Required]
         public Guid DrawId {get;set;}
 
+        [Required]
+        public string Url{get;set;}
+
         public Game(){}
         public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId, bool isOverAndFullyParsed, Guid drawId){
             this.Team1 = team1;
@@ -41,6 +44,7 @@ namespace CurlingTracker.Models
             this.DrawId = drawId;
             this.IsOverAndFullyParsed = isOverAndFullyParsed;
             this.GameId = Guid.NewGuid();
+            this.Url = GenerateUrl();
         }
         
         [NotMapped]
@@ -104,6 +108,15 @@ namespace CurlingTracker.Models
             }
         }
 
+        private string GenerateUrl()
+        {
+            return Utility.StringUtil.ConvertToUrl(this.GameId.ToString());
+        }
+
+        public string GetUrl()
+        {
+            return "/games/" + this.Url + "/";
+        }
 
         public int GetScoreForEnd(int teamNumber, int endNumber)
         {
