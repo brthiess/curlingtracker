@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CurlingTracker.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,11 +17,13 @@ namespace CurlingTracker.Migrations
                     EndDate = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: false),
                     CZId = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: false),
                     IsOverAndFullyParsed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.EventId);
+                    table.UniqueConstraint("Unique_Url", x => x.Url);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,7 +48,8 @@ namespace CurlingTracker.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     DisplayName = table.Column<string>(nullable: false),
                     EventId = table.Column<Guid>(nullable: false),
-                    IsOverAndFullyParsed = table.Column<bool>(nullable: false)
+                    IsOverAndFullyParsed = table.Column<bool>(nullable: false),
+                    Url = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

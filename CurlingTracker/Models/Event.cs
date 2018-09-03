@@ -2,35 +2,39 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CurlingTracker.Models
 {
     public class Event : IPrintable
     {
         [Required]
-        public Guid EventId {get; set;}
+        public Guid EventId { get; set; }
 
         [Required]
-        public string Name {get;set;}
-        
-        [Required]
-        public DateTime StartDate {get;set;}
+        public string Name { get; set; }
 
         [Required]
-        public DateTime EndDate {get;set;}   
+        public DateTime StartDate { get; set; }
 
         [Required]
-        public string Location {get;set;}     
+        public DateTime EndDate { get; set; }
 
-        public EventType Type {get;set;}
+        [Required]
+        public string Location { get; set; }
 
-        public List<Draw> Draws {get;set;}
+        public EventType Type { get; set; }
 
-        public string CZId {get;set;}
-        
-        public bool IsOverAndFullyParsed {get; set;}
+        public List<Draw> Draws { get; set; }
 
-        public Event(){}
+        public string CZId { get; set; }
+
+        [Required]
+        public string Url { get; set; }
+
+        public bool IsOverAndFullyParsed { get; set; }
+
+        public Event() { }
         public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null)
         {
             this.Name = name;
@@ -39,14 +43,16 @@ namespace CurlingTracker.Models
             this.Location = location;
             this.Type = type;
             this.EventId = (eventId.HasValue ? eventId.Value : Guid.NewGuid());
+            this.Url = GenerateUrl();
             this.Draws = draws;
             this.CZId = czId;
             this.IsOverAndFullyParsed = false;
         }
-       
+
 
         private Draw _currentDraw = null;
-        public Draw CurrentDraw {
+        public Draw CurrentDraw
+        {
             get
             {
                 if (_currentDraw != null)
@@ -56,7 +62,7 @@ namespace CurlingTracker.Models
 
                 double minTimeBetween = double.MaxValue;
                 Draw currentDraw = null;
-                foreach(Draw d in this.Draws)
+                foreach (Draw d in this.Draws)
                 {
                     double timeBetween = (DateTime.Now - d.Date.ToLocalTime()).TotalMinutes;
                     if ((timeBetween >= 0 && timeBetween < minTimeBetween) || (timeBetween < 0 && timeBetween > -15))
@@ -72,11 +78,20 @@ namespace CurlingTracker.Models
 
         public string GetUrl()
         {
-            return "/events/"
+            return "/events/" + this.Url + "/";
+        }
+
+        private string GenerateUrl()
+        {
+            string url = "";
+            url = Utility.StringUtil.ConvertToUrl(this.Name);
+            url = this.StartDate.Year.ToString() + "-" + url + "-" + Utility.StringUtil.ConvertToUrl(this.Type.Gender.ToString());
+            return url;
         }
         public string Print()
         {
             string resultString = "Name: " + this.Name + "\n";
+            resultString += "Url: " + this.Url;
             resultString += "Type: " + this.Type + "\n";
             resultString += "Location: " + this.Location + "\n";
             resultString += "Date: " + this.StartDate.ToString() + "\n";

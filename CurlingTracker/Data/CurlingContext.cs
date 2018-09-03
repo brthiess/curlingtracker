@@ -34,5 +34,12 @@ namespace CurlingTracker.Data
             ConnectionString = (ConnectionString != null ? ConnectionString : "DataSource=app.db");
             optionsBuilder.UseSqlite(ConnectionString);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>()
+                .HasAlternateKey(e => e.Url)
+                .HasName("Unique_Url");
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace CurlingTracker.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
+                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932");
 
             modelBuilder.Entity("CurlingTracker.Models.Draw", b =>
                 {
@@ -29,6 +29,9 @@ namespace CurlingTracker.Migrations
                     b.Property<Guid>("EventId");
 
                     b.Property<bool>("IsOverAndFullyParsed");
+
+                    b.Property<string>("Url")
+                        .IsRequired();
 
                     b.HasKey("DrawId");
 
@@ -56,7 +59,13 @@ namespace CurlingTracker.Migrations
 
                     b.Property<DateTime>("StartDate");
 
+                    b.Property<string>("Url")
+                        .IsRequired();
+
                     b.HasKey("EventId");
+
+                    b.HasAlternateKey("Url")
+                        .HasName("Unique_Url");
 
                     b.ToTable("Events");
                 });

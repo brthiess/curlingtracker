@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using CurlingTracker.Models;
 using Newtonsoft.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CurlingTracker.Utility
 {
@@ -67,6 +68,14 @@ namespace CurlingTracker.Utility
                 }
                 return sb.ToString();
             }
+        }
+
+        public static string ConvertToUrl(string s)
+        {
+            string url = s.ToLower().Trim().Replace(" ", "-").Replace("_", "-");
+            Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+            url = rgx.Replace(url, "");
+            return url;
         }
     }
 }
