@@ -2,7 +2,7 @@
 var fullScreenScoreboardWidth = 719;
 
 
-function showEvent(eventId, newUrl){
+function showEvent(eventId, newMobileUrl){
 	$('.competition-list-item').removeClass('active');
 	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
 	addLoadingToClass('scores-container');
@@ -13,15 +13,15 @@ function showEvent(eventId, newUrl){
 			currentCompetitionId = eventId;
 			currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
 			updateBackButton(true);
-			if (typeof newUrl !=="undefined"){
-			    history.pushState({action : "showEvent", eventId: eventId}, "", newUrl);
+			if (typeof newMobileUrl !=="undefined" && $(window).width() < fullScreenScoreboardWidth){
+			    history.pushState({action : "showEvent", eventId: eventId}, "", newMobileUrl);
 			}
 		}
 		removeLoadingFromClass('scores-container');
 	});
 }
 
-function showGame(gameId, eventId, newUrl){
+function showGame(gameId, eventId, newMobileUrl){
 	makeScoresContainerActive();
 	addLoadingToClass('scores-container');
 	getGameView(gameId, function(viewHtml, error){
@@ -30,21 +30,21 @@ function showGame(gameId, eventId, newUrl){
 			updateBackButton(false, eventId);
 		}
 		removeLoadingFromClass('scores-container');
-		if (typeof newUrl !=="undefined"){
-			history.pushState({action : "showGame", gameId: gameId, eventId: eventId}, "", newUrl);
+		if (typeof newMobileUrl !=="undefined" && $(window).width() < fullScreenScoreboardWidth){
+			history.pushState({action : "showGame", gameId: gameId, eventId: eventId}, "", newMobileUrl);
 		}
 	});
 }
 
-function showDraw(drawId, newUrl){
+function showDraw(drawId, newMobileUrl){
 	addLoadingToClass('scores-container');
 	getDrawView(drawId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-games-wrapper').html(viewHtml);
 		}
 		removeLoadingFromClass('scores-container');
-		if(typeof newUrl !== "undefined"){
-		    history.replaceState({action : "showDraw", drawId: drawId}, "", newUrl);
+		if(typeof newMobileUrl !== "undefined" && $(window).width() < fullScreenScoreboardWidth){
+		    history.replaceState({action : "showDraw", drawId: drawId}, "", newMobileUrl);
 		}
 	})
 }
@@ -114,7 +114,9 @@ window.onpopstate = function(event) {
 
 
 $("body").on("click", "[data-pop-history]", function(event){
-	history.back();
+	if (history.state != null){
+		history.back();
+	}
 });
 
 $("body").on("click", "[data-pop-all-history]", function(event){
@@ -124,87 +126,13 @@ $("body").on("click", "[data-pop-all-history]", function(event){
 });
 
 function handlePopState(state) {
-	if (event.state == "showDraw") {
+	if (state.action == "showDraw") {
 		showDraw(state.drawId);
     }
-    else if (event.state == "showEvent") {
+    else if (state.action == "showEvent") {
 		showDraw(state.eventId);
 	}
-	else if (event.state == "showGame") {
+	else if (state.action == "showGame") {
 		showGame(state.gameId, state.eventId);
 	}
 }
-
-/*modal*/
-var modalOpen = false;
-function showModalWithGameView(gameId, modalTitle) {
-	showModal(modalTitle);
-	modalLoad(true);
-	getGameModalView(gameId, function(html, err){
-		modalLoad(false);
-		if(err == undefined) {
-			$("#modal-content").html(html);
-			if(!modalHistoryShowsItsOpen()) {
-				history.pushState({modal: "open", title: modalTitle, gameId: gameId}, "", "#score");
-			}
-		}
-		else {
-			//error
-		}
-		
-	});	
-}
-function showModal(modalTitle){
-	$("#modal-overlay").addClass("visible");
-	$("#modal-title").text(modalTitle);
-	$("body").css("overflow", "hidden");
-	modalOpen = true;
-}
-function closeModal(){
-	$("#modal-overlay").removeClass("visible");
-	$("body").css("overflow", "");
-	if(modalHistoryShowsItsOpen()){
-		history.back();
-	}
-	$("#modal-content").html("");
-	modalOpen = false;
-}
-function modalLoad(showLoading){
-	if(showLoading){
-		$("#modal-content-container").addClass("loading");
-	}
-	else {
-		$("#modal-content-container").removeClass("loading");
-	}
-}
-//return true if the current history state suggests that the modal is open
-function modalHistoryShowsItsOpen(){
-	if(history.state !== null && history.state.modal == 'open') {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-window.onpopstate = function(event) {
-	if(modalOpen == true){
-		closeModal();
-	}
-	console.log(history.state);
-	if(modalOpen == false && modalHistoryShowsItsOpen()){
-		showModalWithGameView(history.state.gameId, history.state.modalTitle);
-	}
-
-}
-
-
-function updateDrawId(competitionId, drawId){
-	$('.scores-info-container').addClass('loading');
-	getScoresGamesView(competitionId, drawId, function(viewHtml){
-		$('.scores-games-wrapper').replaceWith(viewHtml);
-		currentCompetitionId = competitionId;
-		currentDrawId = $('.scores-container [data-draw-id]').attr('data-draw-id');
-		$('.scores-info-container').removeClass('loading');
-	});
-}
-
