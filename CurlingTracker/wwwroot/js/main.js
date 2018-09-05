@@ -1,8 +1,8 @@
 /* Scoreboard */
 var fullScreenScoreboardWidth = 719;
+const originalPath = window.location.pathname;
 
-
-function showEvent(eventId, newMobileUrl){
+function showEvent(eventId, drawId, newMobileUrl){
 	$('.competition-list-item').removeClass('active');
 	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
 	addLoadingToClass('scores-container');
@@ -13,7 +13,7 @@ function showEvent(eventId, newMobileUrl){
 			currentCompetitionId = eventId;
 			currentDrawId = $('.scores-container-container [data-draw-id]').attr('data-draw-id');
 			updateBackButton(true);
-			if (typeof newMobileUrl !=="undefined" && $(window).width() < fullScreenScoreboardWidth){
+			if (typeof newMobileUrl !=="undefined"){
 			    history.pushState({action : "showEvent", eventId: eventId}, "", newMobileUrl);
 			}
 		}
@@ -30,41 +30,41 @@ function showGame(gameId, eventId, newMobileUrl){
 			updateBackButton(false, eventId);
 		}
 		removeLoadingFromClass('scores-container');
-		if (typeof newMobileUrl !=="undefined" && $(window).width() < fullScreenScoreboardWidth){
+		if (typeof newMobileUrl !=="undefined"){
 			history.pushState({action : "showGame", gameId: gameId, eventId: eventId}, "", newMobileUrl);
 		}
 	});
 }
 
-function showDraw(drawId, newMobileUrl){
+function showDraw(eventId, drawId, newMobileUrl){
 	addLoadingToClass('scores-container');
 	getDrawView(drawId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-games-wrapper').html(viewHtml);
 		}
 		removeLoadingFromClass('scores-container');
-		if(typeof newMobileUrl !== "undefined" && $(window).width() < fullScreenScoreboardWidth){
-		    history.replaceState({action : "showDraw", drawId: drawId}, "", newMobileUrl);
+		if(typeof newMobileUrl !== "undefined"){
+		    history.replaceState({action : "showDraw", drawId: drawId, eventId: eventId}, "", newMobileUrl);
 		}
 	})
 }
 
+
 function updateBackButton(isClosing, eventId){
-	var onClickAttr = "";
 	var backButton = $("[data-back-button]");
 	if (isClosing){
-		onClickAttr = "closeScores()";
 		backButton.attr("data-back-action", "close");
 	}
 	else {
-		onClickAttr = "showEvent('" + eventId + "');";
 		backButton.attr("data-back-action", "back");
 	}
-	backButton.attr("onclick", onClickAttr);
 }
 
-function closeScores(){
+function closeScores(newUrl){
 	makeScoresContainerInActive();
+	if (typeof(newUrl) !== "undefined"){
+		history.pushState({action: "closeScores"}, "", newUrl);
+	}
 }
 
 function removeLoadingFromClass(className){
@@ -119,18 +119,12 @@ $("body").on("click", "[data-pop-history]", function(event){
 	}
 });
 
-$("body").on("click", "[data-pop-all-history]", function(event){
-	while (history.state != null){
-		history.back();
-	}
-});
-
 function handlePopState(state) {
-	if (state == null){
+	if (typeof(state) === "undefined" || state == null || state.action == "closeScores"){
 		closeScores();
 	}
-	if (state.action == "showDraw") {
-		showDraw(state.drawId);
+	else if (state.action == "showDraw") {
+		showEvent(state.eventId, state.drawId);
     }
     else if (state.action == "showEvent") {
 		showEvent(state.eventId);

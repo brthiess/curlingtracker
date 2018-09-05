@@ -1,8 +1,9 @@
 @*Model = Event *@
+@using System.Net.Http;
 <div class='scores-top-header'>
-	<div class="scores-top-header-back-button back" onclick="closeScores();" data-back-button data-pop-history data-back-action="close"></div>
+	<div class="scores-top-header-back-button back" data-back-button data-pop-history data-back-action="close"></div>
 		<h2 class='scores-top-header-title'>@Model.Name</h2> 
-	<div class="scores-top-header-back-button close" onclick="closeScores();" data-pop-all-history data-close-button></div>
+	<div class="scores-top-header-back-button close" onclick="closeScores(originalPath);" data-close-button></div>
 </div>
 <div class='scores-container' data-competition-id='@Model.EventId'>
 		<div class='scores-header'>
