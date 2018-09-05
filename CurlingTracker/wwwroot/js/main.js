@@ -7,7 +7,7 @@ function showEvent(eventId, drawId, newMobileUrl){
 	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
 	addLoadingToClass('scores-container');
 	makeScoresContainerActive();
-	getScoresView(eventId, null, function(viewHtml, error){
+	getScoresView(eventId, drawId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-container-container').html(viewHtml);
 			currentCompetitionId = eventId;
