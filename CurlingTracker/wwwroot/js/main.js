@@ -126,11 +126,14 @@ $("body").on("click", "[data-pop-all-history]", function(event){
 });
 
 function handlePopState(state) {
+	if (state == null){
+		closeScores();
+	}
 	if (state.action == "showDraw") {
 		showDraw(state.drawId);
     }
     else if (state.action == "showEvent") {
-		showDraw(state.eventId);
+		showEvent(state.eventId);
 	}
 	else if (state.action == "showGame") {
 		showGame(state.gameId, state.eventId);
