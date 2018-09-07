@@ -1,11 +1,11 @@
 @*Model = Event *@
 <div class='scores-info-container active' data-scoreboard-section='scores'>
 	<div class='scores'>
-		<div data-draw-id='@Model.CurrentDraw.DrawId' class='games-container'>
+		<div data-draw-id='@ViewData["DrawId"]' class='games-container'>
 			<div class='select-wrapper scores-draw-wrapper'>
 				<select class='game-time-name' onchange="showDraw('@Model.EventId', $(this).val(), $('option:selected', this).attr('data-url'));">
 					@for(var i = 0; i < Model.Draws.Count; i++) {
-						<option value='@Model.Draws[i].DrawId' data-url='@Model.Draws[i].GetUrl(@Model)' class='game-time-name-option' selected="@(Model.Draws[i].DrawId == Model.CurrentDraw.DrawId ? "selected" : null)"> @Model.Draws[i].Date.ToLocalTime().ToString("MMMM d h:mmtt", System.Globalization.CultureInfo.InvariantCulture) - @Model.Draws[i].DisplayName</option>
+						<option value='@Model.Draws[i].DrawId' data-url='@Model.Draws[i].GetUrl(@Model)' class='game-time-name-option' selected="@(Model.Draws[i].DrawId.ToString() == @ViewData["DrawId"] ? "selected" : null)"> @Model.Draws[i].Date.ToLocalTime().ToString("MMMM d h:mmtt", System.Globalization.CultureInfo.InvariantCulture) - @Model.Draws[i].DisplayName</option>
 					}  
 					</select>
 			</div>

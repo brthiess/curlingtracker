@@ -19,11 +19,17 @@ namespace CurlingTracker.Controllers
         public async Task<IActionResult> Scores(string eventId, string drawId)
         {
             ViewData["Layout"] = "_Blank";
+            var item = await _eventService.GetEventAsync(eventId);
+
             if (drawId != null)
             {
                 ViewData["DrawId"] = drawId;
             }
-            var item = await _eventService.GetEventAsync(eventId);
+            else 
+            {
+                ViewData["DrawId"] = item.CurrentDraw.DrawId.ToString();
+            }
+
             return View(item);
         }
 

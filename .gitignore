@@ -29,5 +29,3 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-
-app.db

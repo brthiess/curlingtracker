@@ -51,9 +51,17 @@ namespace Crawler
             Logger.Log("New Event IDs", newEventIds);
             foreach (string czId in newEventIds)
             {
-                Event e = Request.GetEvent(czId);
-                Logger.Log("AddNewEvents", e);
-                await _eventService.AddEventAsync(e);
+                try
+                {
+                    Logger.Log("Get event with CZId: " + czId);
+                    Event e = Request.GetEvent(czId);
+                    Logger.Log("AddNewEvents", e);
+                    await _eventService.AddEventAsync(e);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex);
+                }
             }
         }
 
@@ -64,9 +72,16 @@ namespace Crawler
             Logger.Log("Unfinished Events", events.ToList());
             foreach (Event e in events)
             {
-                Logger.Log("Updating Event", e);
-                Event ev = Request.UpdateEvent(e);
-                await _eventService.UpdateEventAsync(ev);
+                try
+                {
+                    Logger.Log("Updating Event", e);
+                    Event ev = Request.UpdateEvent(e);
+                    await _eventService.UpdateEventAsync(ev);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex);
+                }
             }
         }
 

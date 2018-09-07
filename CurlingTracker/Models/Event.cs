@@ -76,6 +76,18 @@ namespace CurlingTracker.Models
             }
         }
 
+        public Draw GetDraw(string drawId)
+        {
+            foreach(Draw d in this.Draws)
+            {
+                if (d.DrawId.ToString() == drawId)
+                {
+                    return d;
+                }
+            }
+            return null;
+        }
+
         public string GetUrl()
         {
             return "/events/" + this.Url + "/";

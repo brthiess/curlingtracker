@@ -1,8 +1,8 @@
 @*Model = Event *@
 <div class='scores-games-wrapper'>
-	@if (Model.CurrentDraw != null) 
+	@if (Model.GetDraw(@ViewData["DrawId"].ToString()) != null) 
 	{
-		@Html.RenderPartialAsync("_Draw.cshtml", (Draw)Model.CurrentDraw, new ViewDataDictionary(this.ViewData)
+		@Html.RenderPartialAsync("_Draw.cshtml", (Draw)Model.GetDraw(@ViewData["DrawId"].ToString()), new ViewDataDictionary(this.ViewData)
                                  {
                                      { "EventId", Model.EventId }
                                  });
