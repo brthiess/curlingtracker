@@ -40,6 +40,11 @@ namespace CurlingTracker.Models
             return e.GetUrl() + "draws/" + this.Url;
         }
 
+        public string GetQueryString(Event e)
+        {
+            return "eventId=" + e.EventId.ToString() + "&drawId=" + this.DrawId.ToString();
+        }
+
         private string GenerateUrl()
         {
             return Utility.StringUtil.ConvertToUrl(this.DisplayName) + "-" + Utility.StringUtil.ConvertToUrl(this.DrawId.ToString().Substring(0,6));

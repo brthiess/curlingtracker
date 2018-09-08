@@ -62,7 +62,7 @@ namespace CurlingTracker
             {
                 routes.MapRoute(
                     name: "scores",
-                    template: "api/scores/{eventId}/{drawId}",
+                    template: "api/scores/{eventId}/{drawId?}",
                     defaults: new { controller = "Api", Action = "Scores" });
                 routes.MapRoute(
                     name: "api",

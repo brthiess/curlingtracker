@@ -19,6 +19,13 @@ namespace CurlingTracker.Controllers
         public async Task<IActionResult> Index()
         {
             var items = await _eventService.GetCurrentEventsAsync();
+            ViewData["DefaultEvent"] = null;
+            if (items.Count() > 0)
+            {
+                ViewData["DefaultEvent"] = items[0];
+                ViewData["DrawId"] = items[0].CurrentDraw.DrawId.ToString();
+            }
+            
             return View(items);
         }
 

@@ -93,6 +93,11 @@ namespace CurlingTracker.Models
             return "/events/" + this.Url + "/";
         }
 
+        public string GetQueryString()
+        {
+            return "eventId=" + this.EventId.ToString();
+        }
+
         private string GenerateUrl()
         {
             string url = "";

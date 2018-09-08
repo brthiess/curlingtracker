@@ -3,7 +3,7 @@
 @*ViewData["EventId"] *@
 @foreach(Game game in Model.Games)
 {
-    <div data-game-id='@game.GameId' class='game-container' onclick="showGame('@game.GameId', '@ViewData["EventId"]', '@game.GetUrl()')">
+    <div data-game-id='@game.GameId' class='game-container' onclick="showGame('@game.GameId', '@ViewData["EventId"]', window.location.pathname + '?@game.GetQueryString()')">
     <div class='scores-teams-container'>
         <div class='scores-team-container'>
             <div class='scores-team-name'>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div data-end class='scores-end-container @(game.IsFinal ? " scores-final " : "")'>
-        @(DateTime.Now < Model.Date.ToLocalTime() ? Model.Date.ToLocalTime().ToString() : (game.IsFinal ? "Final (" + (game.CurrentEnd - 1) + ")" : StringUtil.AddOrdinal(game.CurrentEnd) + " end"))
+        @(DateTime.Now < Model.Date.ToLocalTime() ? (Model.Date.Date == DateTime.Today ? Model.Date.ToLocalTime().ToString("h:mm tt")  : Model.Date.ToLocalTime().ToString("MMM d, h:mm tt") ) : (game.IsFinal ? "Final (" + (game.CurrentEnd - 1) + ")" : StringUtil.AddOrdinal(game.CurrentEnd) + " end"))
     </div>						
 </div>
 }

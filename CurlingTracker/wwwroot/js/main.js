@@ -4,9 +4,12 @@ const originalPath = window.location.pathname;
 
 function showEvent(eventId, drawId, newMobileUrl){
 	$('.competition-list-item').removeClass('active');
-	$('.competition-list-item[data-id=' + eventId + ']').addClass('active');
+	var eventObject = $('.competition-list-item[data-id=' + eventId + ']');
+	eventObject.addClass('active');
 	addLoadingToClass('scores-container');
 	makeScoresContainerActive();
+	var eventName = eventObject.attr("data-event-name");
+	SetScoreboardTitle(eventName);
 	getScoresView(eventId, drawId, function(viewHtml, error){
 		if (typeof error == 'undefined'){
 			$('.scores-container-container').html(viewHtml);
@@ -90,6 +93,10 @@ function makeScoresContainerInActive(){
 function showOnScoreboard(section) {
 	$("[data-scoreboard-section]").removeClass('active');
 	$("[data-scoreboard-section=" + section + "]").addClass('active');
+}
+
+function SetScoreboardTitle(title) {
+	$(".scores-top-header-title").html(title);
 }
 
 function toggleMobileMenu(element) {

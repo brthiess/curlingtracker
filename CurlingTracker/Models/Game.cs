@@ -118,6 +118,10 @@ namespace CurlingTracker.Models
             return "/games/" + this.Url + "/";
         }
 
+        public string GetQueryString()
+        {
+            return "gameId=" + this.GameId.ToString();
+        }
         public int GetScoreForEnd(int teamNumber, int endNumber)
         {
             return Linescore.GetTeamXScoreInEnd(teamNumber, endNumber);
