@@ -1,0 +1,22 @@
+Remove all attr:
+width
+height
+align
+
+Remove tags:
+<b>
+<br>
+<a href="event.php?view=Team&amp;...">  --Keep image tag inside and/or team name
+remove most extraneous columns
+remove last <tr> explaining columns
+
+Rename
+"menu-blue" -> 'standings-header'
+"tourLarge tourTitle" -> standings-pool-name-row"
+"tourBold tourData1" => standings-pool-teams-row
+tourEndCell -> standings-pool-teams-flag
+tourLeft -> standings-pool-team
+tourLarge -> standings-pool-team-name
+tourLarge -> standings-pool-stat
+"tourWatermark tourMedium tourNoBold" => standings-pool-team-location
+img src tags to appropriate images

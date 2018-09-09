@@ -36,6 +36,7 @@ namespace Crawler
             int numberOfEnds = 8;
             int.TryParse(game.numberOfEnds, out numberOfEnds);
             Guid eventId = Guid.NewGuid();
+            EventFormat eventFormat = GetEventFormat(game.@event.eventId);
             //TODO More robust parsing for dates in case of error.
             if (e == null)
             {
@@ -44,24 +45,45 @@ namespace Crawler
                    DateTime.Parse(game.@event.startDate),
                    DateTime.Parse(game.@event.endDate),
                    game.@event.location,
-                   new EventType(GetTeamTypeFromDivision(game.@event.division), numberOfEnds, eventId),
+                   new EventType(GetTeamTypeFromDivision(game.@event.division), numberOfEnds, eventId, eventFormat),
                    czId: game.@event.eventId,
                    eventId: eventId
                );
             }
-            else 
+            else
             {
                 e.Name = game.@event.displayName;
                 e.StartDate = DateTime.Parse(game.@event.startDate);
                 e.EndDate = DateTime.Parse(game.@event.endDate);
                 e.Location = game.@event.location;
                 e.Type.SetTeamType(GetTeamTypeFromDivision(game.@event.division));
-                e.Type.NumberOfEnds = numberOfEnds; 
+                e.Type.NumberOfEnds = numberOfEnds;
             }
             return e;
         }
 
-        
+        private static EventFormat GetEventFormat(string czId)
+        {
+            string czEventPageHtml = Request.GetCZEventPage(czId);
+            HtmlNode document = GetHtmlNode(czEventPageHtml);
+
+            IEnumerable<HtmlNode> bracketLinks = document.QuerySelectorAll(Config.Values["selectors:bracketLinks"]);
+            IEnumerable<HtmlNode> standingsLink = document.QuerySelectorAll(Config.Values["selectors:roundRobinLink"]);
+            if (bracketLinks.Count() == 0 && standingsLink.Count() == 0)
+            {
+                throw new Exception("Unable to find event format for CZID: " + czId);
+            }
+            else if (bracketLinks.Count() == 0 && standingsLink.Count() == 1)
+            {
+                Program.Logger.Log("Found Round Robin for CZID: " + czId);
+                return EventFormat.ROUND_ROBIN;
+            }
+            else 
+            {
+                Program.Logger.Log("Found Knockout for CZID: " + czId);
+                return EventFormat.KNOCKOUT;
+            }
+        }
 
         private static HtmlNode GetHtmlNode(string html)
         {

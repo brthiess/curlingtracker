@@ -34,6 +34,11 @@ namespace Crawler
             return Config.Values["endpoints:drawsInfo"].Replace("[CZ_EVENT_ID]", czEventId);
         }
 
+        private static string GetCZEventUrl(string czEventId)
+        {
+            return Config.Values["endpoints:czMainEventPage"].Replace("[CZ_EVENT_ID]", czEventId);
+        }
+
         public static string GetHtml(string url)
         {
             int attemptNumber = 1;
@@ -75,6 +80,10 @@ namespace Crawler
             return e;
         }
 
+        public static string GetCZEventPage(string czEventId)
+        {
+            return GetHtml(GetCZEventUrl(czEventId));
+        }
 
         private static string GetDrawsJsonFromCZId(string czEventId)
         {
