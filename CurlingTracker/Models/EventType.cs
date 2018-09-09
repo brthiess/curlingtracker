@@ -11,6 +11,8 @@ namespace CurlingTracker.Models
 
         public TeamType teamType {get;set;}
 
+        public EventFormat EventFormat {get;set;}
+
         public int NumberOfPlayers {get;set;}
 
         public Gender Gender {get;set;}
@@ -20,7 +22,7 @@ namespace CurlingTracker.Models
         public enum TeamType {MEN, WOMEN, MIXED_DOUBLES, MIXED}
         
         public EventType(){}
-        public EventType(TeamType teamType, int numberOfEnds, Guid eventId)
+        public EventType(TeamType teamType, int numberOfEnds, Guid eventId, EventFormat eventFormat)
         {
             this.teamType = teamType;
             this.NumberOfPlayers = GetNumberOfPlayersFromTeamType(teamType);
@@ -28,6 +30,7 @@ namespace CurlingTracker.Models
             this.NumberOfEnds = numberOfEnds;
             this.EventTypeId = Guid.NewGuid();
             this.EventId = eventId;
+            this.EventFormat = eventFormat;
         }
 
         private Gender GetGenderFromTeamType(TeamType teamType)

@@ -73,16 +73,39 @@ namespace CurlingTracker.Services
         {
             EventType eventType = GetRandomEventType();
             string location = GetRandomLocation();
-            return new Event(GetRandomEventName(location), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), location, eventType, GetDraws(7, eventType));
+            Standings standings = GetRandomStandings();
+            List<Bracket> brackets = GetRandomBrackets();
+            return new Event(GetRandomEventName(location), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), location, eventType, GetDraws(7, eventType), standings: standings, brackets: brackets);
         }
 
+        private Standings GetRandomStandings()
+        {
+            var standings = new Standings(System.IO.File.ReadAllText("Misc/Standings.html"));
+            return standings;
+        }
+
+        private List<Bracket> GetRandomBrackets()
+        {
+            var brackets = new List<Bracket>();
+            brackets.Add(new Bracket("Event A", System.IO.File.ReadAllText("Misc/Bracket-A.html")));
+            brackets.Add(new Bracket("Event B", System.IO.File.ReadAllText("Misc/Bracket-B.html")));
+            brackets.Add(new Bracket("Event C", System.IO.File.ReadAllText("Misc/Bracket-C.html")));
+            return brackets;
+        }
         private EventType GetRandomEventType()
         {
             Random random = new Random();
             int numberOfEnds = (random.Next(0,2) == 1 ? 8 : 10);
             Array values = Enum.GetValues(typeof (EventType.TeamType));
-            EventType randomEventType = new EventType((EventType.TeamType)values.GetValue(random.Next(values.Length)), numberOfEnds, Guid.NewGuid());
+            EventType randomEventType = new EventType((EventType.TeamType)values.GetValue(random.Next(values.Length)), numberOfEnds, Guid.NewGuid(), GetRandomEventFormat());
             return randomEventType;
+        }
+
+        private EventFormat GetRandomEventFormat()
+        {
+            Random random = new Random();
+            int r  = random.Next(0,2);
+            return (r == 1 ? EventFormat.KNOCKOUT : EventFormat.ROUND_ROBIN);
         }
 
         private string GetRandomEventName(string location)

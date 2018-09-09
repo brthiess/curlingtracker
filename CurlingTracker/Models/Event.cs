@@ -34,8 +34,13 @@ namespace CurlingTracker.Models
 
         public bool IsOverAndFullyParsed { get; set; }
 
+        public Standings Standings {get;set;}
+
+        public List<Bracket> Brackets {get;set;}
+
+
         public Event() { }
-        public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null)
+        public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null, Standings standings = null, List<Bracket> brackets = null)
         {
             this.Name = name;
             this.StartDate = startDate;
@@ -47,6 +52,8 @@ namespace CurlingTracker.Models
             this.Draws = draws;
             this.CZId = czId;
             this.IsOverAndFullyParsed = false;
+            this.Standings = standings;
+            this.Brackets = brackets;
         }
 
 
@@ -86,6 +93,24 @@ namespace CurlingTracker.Models
                 }
             }
             return null;
+        }
+
+        public string GetEventFormatToString()
+        {
+            if (this.Type.EventFormat == EventFormat.KNOCKOUT)
+            {
+                return "Bracket";
+            }
+            else 
+            {
+                return "Standings";
+            }
+        }
+
+        public string GetStandingsOrBracketsHtml()
+        {
+            //TODO
+            return this.Standings.Html; 
         }
 
         public string GetUrl()
