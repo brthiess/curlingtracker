@@ -952,27 +952,49 @@ a.teams {
     text-align: center;
 	margin-top: -10px;
 }
-.standings-table-header {
-	border-bottom: 1px solid #555;
+.standings-header {
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+    margin: 0px;
+    padding: 15px 0 5px;
 }
-.standings-table-header-item {
-	padding-top: 15px;
+tr.standings-pool-teams-row td {
+    padding: 5px 0;
 }
-.standings-table-data {
+.standings-table-stat {
 	padding: 10px;	
 	border-bottom: 1px solid #ddd;
 	@media @mini-tablets {
 		padding: 10px 5px;
 	}
 }
-.standings-team-flag {
+.standings-pool-team {
+	text-align: left;
+}
+.standings-pool-teams-flag {
+	text-align: left;
+    width: 45px;
 	img {
-		width: 70px;
+		width: 30px;
 		height: auto;
-		@media @mini-tablets {
-			width: 50px;
-		}
+		height: 30px;
+		object-position: center;
+		object-fit: cover;
+		border-radius: 15px;
+		vertical-align: middle;
 	}
+}
+.standings-pool-name-data {
+    text-align: left;
+}
+.standings-pool-team-name {
+    display: block;
+    font-size: 15px;
+}
+.standings-pool-team-location {
+    display: block;
+    color: #666;
+    font-size: 13px;
 }
 
 /* SOCIAL */

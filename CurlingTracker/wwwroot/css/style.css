@@ -175,7 +175,7 @@ select {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index:99;
+  z-index: 99;
   background: white;
 }
 .spinner {
@@ -732,7 +732,7 @@ select {
 }
 .scores-container {
   padding: 10px 0 40px;
-  position:relative;
+  position: relative;
 }
 .scores-container .scores-info-container {
   display: none;
@@ -1004,29 +1004,51 @@ a.teams {
   text-align: center;
   margin-top: -10px;
 }
-.standings-table-header {
-  border-bottom: 1px solid #555;
+.standings-header {
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+  margin: 0px;
+  padding: 15px 0 5px;
 }
-.standings-table-header-item {
-  padding-top: 15px;
+tr.standings-pool-teams-row td {
+  padding: 5px 0;
 }
-.standings-table-data {
+.standings-table-stat {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
 @media only screen and (max-width: 719px) {
-  .standings-table-data {
+  .standings-table-stat {
     padding: 10px 5px;
   }
 }
-.standings-team-flag img {
-  width: 70px;
-  height: auto;
+.standings-pool-team {
+  text-align: left;
 }
-@media only screen and (max-width: 719px) {
-  .standings-team-flag img {
-    width: 50px;
-  }
+.standings-pool-teams-flag {
+  text-align: left;
+  width: 45px;
+}
+.standings-pool-teams-flag img {
+  width: 30px;
+  height: auto;
+  height: 30px;
+  object-position: center;
+  object-fit: cover;
+  border-radius: 15px;
+  vertical-align: middle;
+}
+.standings-pool-name-data {
+  text-align: left;
+}
+.standings-pool-team-name {
+  display: block;
+  font-size: 15px;
+}
+.standings-pool-team-location {
+  display: block;
+  color: #666;
+  font-size: 13px;
 }
 /* SOCIAL */
 .social-section {
