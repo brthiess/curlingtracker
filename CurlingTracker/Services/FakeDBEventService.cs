@@ -21,6 +21,8 @@ namespace CurlingTracker.Services
         {          
             Event[] events = await _context.Events
                 .Include(e => e.Type)
+                .Include(e => e.Standings)
+                .Include(e => e.Brackets)
                 .ToArrayAsync();    
             for(var i = 0; i < events.Length; i++)
             {

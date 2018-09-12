@@ -107,10 +107,32 @@ namespace CurlingTracker.Models
             }
         }
 
-        public string GetStandingsOrBracketsHtml()
+        public bool IsRoundRobin()
         {
-            //TODO
-            return this.Standings.Html; 
+            if (this.Type.EventFormat == EventFormat.ROUND_ROBIN)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsKnockout()
+        {
+            if (this.Type.EventFormat == EventFormat.KNOCKOUT)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public string GetStandingsHtml()
+        {
+            return this.Standings.Html;    
+        }
+
+        public List<Bracket> GetBrackets()
+        {
+            return this.Brackets;
         }
 
         public string GetUrl()

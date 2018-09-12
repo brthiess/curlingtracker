@@ -1,6 +1,22 @@
 @*Model = Event *@
 <div class='scores-info-container' data-scoreboard-section='standings'>
-	<div class='standings'>
-		@Html.Raw(Model.GetStandingsOrBracketsHtml());
-	</div>
+	@if (Model.IsRoundRobin())
+	{
+		<div class='standings'>
+			@Html.Raw(Model.GetStandingsHtml());
+		</div>
+	}
+	else if (Model.IsKnockout())
+	{
+		<div class='brackets-container-container'>
+			@foreach(Bracket bracket in Model.Brackets) 
+			{
+				<div class='bracket-container'>
+					<h2 class='bracket-name'>@bracket.Name</h2>
+					@Html.Raw(bracket.Html);
+				</div>
+			} 
+		</div>
+	}
+	
 </div>

@@ -3,27 +3,20 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CurlingTracker.Migrations
 {
-    public partial class InitalCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Standings",
                 columns: table => new
                 {
-                    EventId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
-                    Location = table.Column<string>(nullable: false),
-                    CZId = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: false),
-                    IsOverAndFullyParsed = table.Column<bool>(nullable: false)
+                    StandingsId = table.Column<Guid>(nullable: false),
+                    Html = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.EventId);
-                    table.UniqueConstraint("Unique_Url", x => x.Url);
+                    table.PrimaryKey("PK_Standings", x => x.StandingsId);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,6 +31,77 @@ namespace CurlingTracker.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teams", x => x.TeamId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    EventId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    Location = table.Column<string>(nullable: false),
+                    CZId = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: false),
+                    IsOverAndFullyParsed = table.Column<bool>(nullable: false),
+                    StandingsId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.EventId);
+                    table.UniqueConstraint("Unique_Url", x => x.Url);
+                    table.ForeignKey(
+                        name: "FK_Events_Standings_StandingsId",
+                        column: x => x.StandingsId,
+                        principalTable: "Standings",
+                        principalColumn: "StandingsId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Players",
+                columns: table => new
+                {
+                    PlayerId = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    position = table.Column<int>(nullable: false),
+                    IsSkip = table.Column<bool>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    TeamId = table.Column<Guid>(nullable: false),
+                    TeamId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.PlayerId);
+                    table.ForeignKey(
+                        name: "FK_Players_Teams_TeamId1",
+                        column: x => x.TeamId1,
+                        principalTable: "Teams",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bracket",
+                columns: table => new
+                {
+                    BracketId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Html = table.Column<string>(nullable: false),
+                    EventId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bracket", x => x.BracketId);
+                    table.ForeignKey(
+                        name: "FK_Bracket_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "EventId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,6 +133,7 @@ namespace CurlingTracker.Migrations
                     EventTypeId = table.Column<Guid>(nullable: false),
                     EventId = table.Column<Guid>(nullable: false),
                     teamType = table.Column<int>(nullable: false),
+                    EventFormat = table.Column<int>(nullable: false),
                     NumberOfPlayers = table.Column<int>(nullable: false),
                     Gender = table.Column<int>(nullable: false),
                     NumberOfEnds = table.Column<int>(nullable: false)
@@ -85,31 +150,6 @@ namespace CurlingTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Players",
-                columns: table => new
-                {
-                    PlayerId = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    position = table.Column<int>(nullable: false),
-                    IsSkip = table.Column<bool>(nullable: false),
-                    Gender = table.Column<int>(nullable: false),
-                    TeamId = table.Column<Guid>(nullable: false),
-                    TeamId1 = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Players", x => x.PlayerId);
-                    table.ForeignKey(
-                        name: "FK_Players_Teams_TeamId1",
-                        column: x => x.TeamId1,
-                        principalTable: "Teams",
-                        principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
                 {
@@ -120,7 +160,8 @@ namespace CurlingTracker.Migrations
                     PercentagesAvailable = table.Column<bool>(nullable: false),
                     IsFinal = table.Column<bool>(nullable: false),
                     IsOverAndFullyParsed = table.Column<bool>(nullable: false),
-                    DrawId = table.Column<Guid>(nullable: false)
+                    DrawId = table.Column<Guid>(nullable: false),
+                    Url = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,9 +207,19 @@ namespace CurlingTracker.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bracket_EventId",
+                table: "Bracket",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Draws_EventId",
                 table: "Draws",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_StandingsId",
+                table: "Events",
+                column: "StandingsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventType_EventId",
@@ -206,6 +257,9 @@ namespace CurlingTracker.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Bracket");
+
+            migrationBuilder.DropTable(
                 name: "EventType");
 
             migrationBuilder.DropTable(
@@ -225,6 +279,9 @@ namespace CurlingTracker.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Standings");
         }
     }
 }

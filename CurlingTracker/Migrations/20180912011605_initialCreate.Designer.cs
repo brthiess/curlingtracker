@@ -9,14 +9,34 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CurlingTracker.Migrations
 {
     [DbContext(typeof(CurlingContext))]
-    [Migration("20180903212626_addGameUrl")]
-    partial class addGameUrl
+    [Migration("20180912011605_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.2-rtm-30932");
+
+            modelBuilder.Entity("CurlingTracker.Models.Bracket", b =>
+                {
+                    b.Property<Guid>("BracketId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("EventId");
+
+                    b.Property<string>("Html")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("BracketId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Bracket");
+                });
 
             modelBuilder.Entity("CurlingTracker.Models.Draw", b =>
                 {
@@ -59,6 +79,8 @@ namespace CurlingTracker.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<Guid?>("StandingsId");
+
                     b.Property<DateTime>("StartDate");
 
                     b.Property<string>("Url")
@@ -69,6 +91,8 @@ namespace CurlingTracker.Migrations
                     b.HasAlternateKey("Url")
                         .HasName("Unique_Url");
 
+                    b.HasIndex("StandingsId");
+
                     b.ToTable("Events");
                 });
 
@@ -76,6 +100,8 @@ namespace CurlingTracker.Migrations
                 {
                     b.Property<Guid>("EventTypeId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("EventFormat");
 
                     b.Property<Guid>("EventId");
 
@@ -177,6 +203,19 @@ namespace CurlingTracker.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("CurlingTracker.Models.Standings", b =>
+                {
+                    b.Property<Guid>("StandingsId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Html")
+                        .IsRequired();
+
+                    b.HasKey("StandingsId");
+
+                    b.ToTable("Standings");
+                });
+
             modelBuilder.Entity("CurlingTracker.Models.Team", b =>
                 {
                     b.Property<string>("TeamId")
@@ -193,12 +232,26 @@ namespace CurlingTracker.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("CurlingTracker.Models.Bracket", b =>
+                {
+                    b.HasOne("CurlingTracker.Models.Event")
+                        .WithMany("Brackets")
+                        .HasForeignKey("EventId");
+                });
+
             modelBuilder.Entity("CurlingTracker.Models.Draw", b =>
                 {
                     b.HasOne("CurlingTracker.Models.Event")
                         .WithMany("Draws")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CurlingTracker.Models.Event", b =>
+                {
+                    b.HasOne("CurlingTracker.Models.Standings", "Standings")
+                        .WithMany()
+                        .HasForeignKey("StandingsId");
                 });
 
             modelBuilder.Entity("CurlingTracker.Models.EventType", b =>
