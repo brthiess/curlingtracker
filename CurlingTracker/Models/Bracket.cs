@@ -19,6 +19,7 @@ namespace CurlingTracker.Models
         {
             this.Name = name;
             this.Html = html;
+            this.BracketId = Guid.NewGuid();
         }
 
         public string Print()

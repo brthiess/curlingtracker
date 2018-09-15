@@ -52,6 +52,11 @@ function showDraw(eventId, drawId, newMobileUrl){
 	})
 }
 
+function showBracket(bracketId){
+	$("[data-bracket-id]").removeClass("active");
+	$("[data-bracket-id='" + bracketId + "']").addClass("active");
+}
+
 
 function updateBackButton(isClosing, eventId){
 	var backButton = $("[data-back-button]");
@@ -63,6 +68,36 @@ function updateBackButton(isClosing, eventId){
 	}
 }
 
+function updateBracket(bracketLevel){
+	if (bracketLevel.checked == true){
+		showBracket($(bracketLevel).attr("data-bracket-id"));
+	}
+}
+
+function scrollBracketLeft(){
+	scrollBracket(-800);
+	setTimeout(function(){
+		$(".brackets-container-arrow").removeClass("active");
+		$(".brackets-container-arrow-right").addClass("active");
+	}, 200)
+}
+
+function scrollBracketRight(){
+	scrollBracket(800);
+	setTimeout(function(){
+		$(".brackets-container-arrow").removeClass("active");
+		$(".brackets-container-arrow-left").addClass("active");
+	}, 200)
+	
+}
+
+function scrollBracket(amount){
+	document.querySelector('.bracket-container').scroll({
+		top: 0, 
+		left: amount, 
+		behavior: 'smooth' 
+	});
+}
 function closeScores(newUrl){
 	makeScoresContainerInActive();
 	if (typeof(newUrl) !== "undefined"){
@@ -140,3 +175,4 @@ function handlePopState(state) {
 		showGame(state.gameId, state.eventId);
 	}
 }
+

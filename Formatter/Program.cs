@@ -50,6 +50,7 @@ namespace Formatter
             htmlDoc = Brackets.ModifyBracketNumbers(htmlDoc);
             htmlDoc = RemoveBadAttributes(htmlDoc, new List<string> { "src", "valign", "bgcolor", "style", "width", "height", "align", "border" });
             htmlDoc = RemoveUnwantedTags(htmlDoc, new List<string> {"b", "a", "font", "img"});
+            htmlDoc = Brackets.ModifyBracketInformation(htmlDoc);
 
             return htmlDoc.DocumentNode.OuterHtml;
         }

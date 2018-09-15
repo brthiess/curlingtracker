@@ -28,6 +28,7 @@ namespace Formatter
             classesToAdd.Add(Tuple.Create("[bgcolor=\"#0000CC\"][colspan]", "horizontal-bracket-line bracket-line"));
             classesToAdd.Add(Tuple.Create("[colspan=\"2\"]", "bracket-team-container"));
             classesToAdd.Add(Tuple.Create(".date", "bracket-info"));
+            classesToAdd.Add(Tuple.Create(".teams", "bracket-team"));
             classesToAdd.Add(Tuple.Create(".brackets", "bracket"));
             foreach (var classToAdd in classesToAdd)
             {
@@ -49,6 +50,22 @@ namespace Formatter
                 {
                     td.SetAttributeValue("class", "bracket-number");
                 }
+            }
+            return htmlDoc;
+        }
+
+        public static HtmlDocument ModifyBracketInformation(HtmlDocument htmlDoc)
+        {
+            IEnumerable<HtmlNode> bracketInfos = htmlDoc.DocumentNode.QuerySelectorAll(".bracket-info");
+            foreach(var bracketInfo in bracketInfos)
+            {
+                string[] bracketInfoSplit =  bracketInfo.InnerHtml.Split("<br>");
+                string modifiedBracketInfo = "";
+                foreach(string bracketInfoPart in bracketInfoSplit)
+                {
+                    modifiedBracketInfo += "<span class=\"bracket-info-part\">" + bracketInfoPart + "</span>";
+                }
+                bracketInfo.InnerHtml = modifiedBracketInfo;
             }
             return htmlDoc;
         }
