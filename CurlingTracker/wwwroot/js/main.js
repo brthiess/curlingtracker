@@ -52,11 +52,19 @@ function showDraw(eventId, drawId, newMobileUrl){
 	})
 }
 
+function showOnScoreboard(section) {
+	$("[data-scoreboard-section]").removeClass('active');
+	$("[data-scoreboard-section=" + section + "]").addClass('active');
+	if (section == 'standings'){
+		updateBracketScrollListeners();
+	}
+}
+
+
 function showBracket(bracketId){
 	$("[data-bracket-id]").removeClass("active");
 	$("[data-bracket-id='" + bracketId + "']").addClass("active");
 }
-
 
 function updateBackButton(isClosing, eventId){
 	var backButton = $("[data-back-button]");
@@ -72,32 +80,58 @@ function updateBracket(bracketLevel){
 	if (bracketLevel.checked == true){
 		showBracket($(bracketLevel).attr("data-bracket-id"));
 	}
+	updateBracketScrollListeners();
 }
 
+/* bracket arrow/scroll functions */
+function updateBracketScrollListeners(){
+	handleBracketScroll();
+	document.querySelector('.bracket-container').removeEventListener('scroll', handleBracketScroll)
+	document.querySelector('.bracket-container.active').addEventListener('scroll', handleBracketScroll);
+}
+
+function handleBracketScroll(){
+	obj = document.querySelector('.bracket-container.active');
+	if( obj.scrollLeft === (obj.scrollWidth - obj.offsetWidth))
+	{
+		showLeftBracketArrow();
+		hideRightBracketArrow();
+	}
+	else if (obj.scrollLeft <= 1) {
+		showRightBracketArrow();
+		hideLeftBracketArrow();
+	}
+}
 function scrollBracketLeft(){
 	scrollBracket(-800);
-	setTimeout(function(){
-		$(".brackets-container-arrow").removeClass("active");
-		$(".brackets-container-arrow-right").addClass("active");
-	}, 200)
 }
 
 function scrollBracketRight(){
 	scrollBracket(800);
-	setTimeout(function(){
-		$(".brackets-container-arrow").removeClass("active");
-		$(".brackets-container-arrow-left").addClass("active");
-	}, 200)
-	
+}
+
+function showRightBracketArrow(){
+	$(".brackets-container-arrow-right").addClass("active");
+}
+function showLeftBracketArrow(){
+	$(".brackets-container-arrow-left").addClass("active");
+}
+function hideLeftBracketArrow(){
+	$(".brackets-container-arrow-left").removeClass("active");
+}
+function hideRightBracketArrow(){
+	$(".brackets-container-arrow-right").removeClass("active");
 }
 
 function scrollBracket(amount){
-	document.querySelector('.bracket-container').scroll({
+	document.querySelector('.bracket-container.active').scroll({
 		top: 0, 
 		left: amount, 
 		behavior: 'smooth' 
 	});
 }
+/* end bracket scroll/arrow functions */ 
+
 function closeScores(newUrl){
 	makeScoresContainerInActive();
 	if (typeof(newUrl) !== "undefined"){
@@ -123,11 +157,6 @@ function makeScoresContainerActive(){
 function makeScoresContainerInActive(){
 	$('.scores-container-container').removeClass('active');
 	$('body').css('overflow', '');
-}
-
-function showOnScoreboard(section) {
-	$("[data-scoreboard-section]").removeClass('active');
-	$("[data-scoreboard-section=" + section + "]").addClass('active');
 }
 
 function SetScoreboardTitle(title) {
