@@ -52,10 +52,11 @@ function showDraw(eventId, drawId, newMobileUrl){
 	})
 }
 
-function showOnScoreboard(section) {
+function showOnScoreboard(section, subSection) {
+	let dataScoreBoardSection = $("[data-scoreboard-section=" + section + "]");
 	$("[data-scoreboard-section]").removeClass('active');
-	$("[data-scoreboard-section=" + section + "]").addClass('active');
-	if (section == 'standings'){
+	dataScoreBoardSection.addClass('active');
+	if (section == 'standings' && subSection == 'bracket'){
 		updateBracketScrollListeners();
 	}
 }

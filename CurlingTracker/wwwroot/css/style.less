@@ -773,6 +773,9 @@ input[type=radio]{
 		display: block;
 	}
 }
+.bracket-name {
+	padding-left: 40px;
+}
 .brackets-container-arrow {
 	display: none;
 	position: absolute;
@@ -783,6 +786,9 @@ input[type=radio]{
 	cursor: pointer;
 	&:hover {
 		background: rgba(0,0,0,0.5);
+		.top-bracket-arrow {
+			background: @main;
+		}
 	}
 	&.active {
 		display: block;
@@ -800,13 +806,22 @@ input[type=radio]{
 .brackets-container-arrow-right {
 	right: 0;
 }
-.top-bracket-arrow {
+.top-bracket-arrow {   
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 60px;
-    background: #6a9cc3;
+	background: fade(@main, 30%);
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	img {
+		height: 30px;
+		&.left-arrow-img {
+			transform: rotate(180deg);
+		}
+	}
 }
 .vertical-bracket-line {
 	border-left: 1px solid #aaa;	
@@ -991,6 +1006,9 @@ input[type="radio"]:checked+.bracket-level-label{
 }
 
 /* standings */
+.standings {
+	padding: 0 20px;
+}
 .standings-table {
     width: 100%;
     text-align: center;
