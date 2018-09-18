@@ -9,7 +9,7 @@
 		<div class='scores-header'>
 			<div class='tabs'>
 				<h3 class='tab-title active' data-scoreboard-section='scores' onclick='showOnScoreboard("scores");'>Scores</h3>
-				<h3 class='tab-title' data-scoreboard-section='standings' onclick='showOnScoreboard("standings");'>@Model.GetEventFormatToString()</h3>
+				<h3 class='tab-title' data-scoreboard-section='standings' onclick='showOnScoreboard("standings", "@Model.GetEventFormatToString().ToLower()");'>@Model.GetEventFormatToString()</h3>
 				<!--<h3 class='tab-title' data-scoreboard-section='standings' onclick='showOnScoreboard("standings");'><%- (competition.type == null || competition.type == "round-robin" ? "Standings" : "Bracket") %></h3>
 				<h3 class='tab-title' data-scoreboard-section='playoffs' onclick='showOnScoreboard("playoffs");'>Playoffs</h3>-->
 			</div>
