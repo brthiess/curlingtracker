@@ -37,6 +37,15 @@ namespace Crawler
             int.TryParse(game.numberOfEnds, out numberOfEnds);
             Guid eventId = Guid.NewGuid();
             EventFormat eventFormat = GetEventFormat(game.@event.eventId);
+            if (eventFormat == EventFormat.ROUND_ROBIN)
+            {
+                Standings standings = GetEventStandings(game.@event.eventId);
+            }
+            else if (eventFormat == EventFormat.KNOCKOUT)
+            {
+                List<Bracket> brackets = GetEventBrackets(game.@event.eventId);
+            }
+            
             //TODO More robust parsing for dates in case of error.
             if (e == null)
             {
@@ -58,10 +67,68 @@ namespace Crawler
                 e.Location = game.@event.location;
                 e.Type.SetTeamType(GetTeamTypeFromDivision(game.@event.division));
                 e.Type.NumberOfEnds = numberOfEnds;
+                e.Type.EventFormat = eventFormat;
+                
             }
             return e;
         }
 
+        private static List<Bracket> GetBrackets(string czId)
+        {
+            List<Bracket> brackets = new List<Bracket>();
+            List<string> bracketPageLinks = GetBracketsPageLinks(czId);
+            foreach(string link in bracketPageLinks)
+            {
+                brackets.Add(GetBracketFromUrl(link));
+            }
+            return brackets;
+        }
+
+        private static Bracket GetBracketFromUrl(string url)
+        {
+            string html = Request.GetHtml(url);
+            HtmlNode document = GetHtmlNode(html);
+            string bracketsHtml = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]).First().InnerHtml;
+            string formmattedStandingsHtml = Formatter.Format.FormatBracket(bracketsHtml);
+            return new Bracket(null, formmattedStandingsHtml);
+        }
+
+        private static List<string> GetBracketsPageLinks(string czId)
+        {
+            string html = GetBracketsPageHtml(czId);
+            HtmlNode document = GetHtmlNode(html);
+            List<HtmlNode> bracketLinks = document.QuerySelectorAll(Config.Values["selectors:bracketPageBracketLinks"]).ToList();
+            List<string> links = new List<string>();
+            foreach(HtmlNode bracketLink in bracketLinks)
+            {
+                string link = bracketLink.GetAttributeValue("href", "");
+                if (link != "")
+                {
+                    links.Add(link);
+                }
+            }
+            return links;
+        }
+
+        private static string GetBracketsPageHtml(string czId)
+        {
+            return Request.GetHtml(Config.Values["endpoints:czBracketsPage"].Replace("[CZ_EVENT_ID]", czId));
+        }
+
+        private static Standings GetEventStandings(string czId)
+        {
+            string standingsHtml = GetStandingsHtml(czId);
+            return new Standings(standingsHtml);
+        }
+
+        private static string GetStandingsHtml(string czId)
+        {
+            string html = Request.GetHtml(Config.Values["endpoints:czStandingsPage"].Replace("[CZ_EVENT_ID]", czId));
+            HtmlNode document = GetHtmlNode(html);
+            string standingsHtml = document.QuerySelectorAll(Config.Values["selectors:standingsHtml"]).First().InnerHtml;
+            string formmattedStandingsHtml = Formatter.Format.FormatStandings(standingsHtml);
+            return formmattedStandingsHtml;
+        }
         private static EventFormat GetEventFormat(string czId)
         {
             string czEventPageHtml = Request.GetCZEventPage(czId);

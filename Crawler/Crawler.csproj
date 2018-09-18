@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CurlingTracker\CurlingTracker.csproj" />
+    <ProjectReference Include="..\Formatter\Formatter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
