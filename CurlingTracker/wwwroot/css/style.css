@@ -170,13 +170,14 @@ select {
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 99;
   background: white;
+  padding-top: 10%;
 }
 .spinner {
   border-top: 3px solid rgba(0, 0, 0, 0.5);
@@ -1024,7 +1025,8 @@ input[type="radio"]:checked + .bracket-level-label {
 .scores-info-container {
   padding: 0 20px;
 }
-.scores-info-container[data-scoreboard-section='standings'] {
+.scores-info-container[data-scoreboard-section='standings'],
+.scores-info-container[data-scoreboard-section='playoff'] {
   padding: 0;
 }
 .scores-end-container {
@@ -1077,6 +1079,9 @@ input[type="radio"]:checked + .bracket-level-label {
   border-bottom: 1px solid #ccc;
   margin: 0px;
   padding: 15px 0 5px;
+}
+.standings-header:nth-child(6) {
+  display: none;
 }
 tr.standings-pool-teams-row td {
   padding: 5px 0;

@@ -9,25 +9,21 @@
 	else if (Model.IsKnockout())
 	{
 		<div class='brackets-title-container'>
-			@{int i = 0;}
 			@foreach(Bracket bracket in Model.Brackets) 
 			{
 				<div class="bracket-level-button">
-					<input onchange="updateBracket(this)" @(i == 0 ? "checked" : "") id="@bracket.BracketId" data-bracket-id="@bracket.BracketId" type="radio" name="bracket-level" class='bracket-title'>
+					<input onchange="updateBracket(this)" id="@bracket.BracketId" data-bracket-id="@bracket.BracketId" type="radio" name="bracket-level" class='bracket-title'>
 					<label class='bracket-level-label' for="@bracket.BracketId">@bracket.Name</label>
 				</div>
-				i++;
 			}
 		</div> 
 		<div class='brackets-container-container'>
-			@{int j = 0;}
 			@foreach(Bracket bracket in Model.Brackets) 
 			{
-				<div data-bracket-id="@bracket.BracketId" class='bracket-container @(j == 0 ? "active" : "")'>
+				<div data-bracket-id="@bracket.BracketId" class='bracket-container'>
 					<h2 class='bracket-name'>@bracket.Name</h2>
 					@Html.Raw(bracket.Html);
 				</div>
-				j++;
 			} 
 			<div onclick="scrollBracketLeft()" class='brackets-container-arrow brackets-container-arrow-left'><div class='top-bracket-arrow'><img class='left-arrow-img' src='/images/chevron-white.png'></div></div>
 			<div onclick="scrollBracketRight()" class='brackets-container-arrow brackets-container-arrow-right active'><div class='top-bracket-arrow'><img src='/images/chevron-white.png'></div></div>

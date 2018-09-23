@@ -37,15 +37,17 @@ namespace Crawler
             int.TryParse(game.numberOfEnds, out numberOfEnds);
             Guid eventId = Guid.NewGuid();
             EventFormat eventFormat = GetEventFormat(game.@event.eventId);
+            Standings standings = null;
+            List<Bracket> brackets = null;
             if (eventFormat == EventFormat.ROUND_ROBIN)
             {
-                Standings standings = GetEventStandings(game.@event.eventId);
+                standings = GetEventStandings(game.@event.eventId);
             }
             else if (eventFormat == EventFormat.KNOCKOUT)
             {
-                List<Bracket> brackets = GetEventBrackets(game.@event.eventId);
+                brackets = GetBrackets(game.@event.eventId);
             }
-            
+
             //TODO More robust parsing for dates in case of error.
             if (e == null)
             {
@@ -56,7 +58,9 @@ namespace Crawler
                    game.@event.location,
                    new EventType(GetTeamTypeFromDivision(game.@event.division), numberOfEnds, eventId, eventFormat),
                    czId: game.@event.eventId,
-                   eventId: eventId
+                   eventId: eventId,
+                   standings: standings,
+                   brackets: brackets
                );
             }
             else
@@ -68,7 +72,8 @@ namespace Crawler
                 e.Type.SetTeamType(GetTeamTypeFromDivision(game.@event.division));
                 e.Type.NumberOfEnds = numberOfEnds;
                 e.Type.EventFormat = eventFormat;
-                
+                e.Standings = standings;
+                e.Brackets = brackets;
             }
             return e;
         }
@@ -77,20 +82,22 @@ namespace Crawler
         {
             List<Bracket> brackets = new List<Bracket>();
             List<string> bracketPageLinks = GetBracketsPageLinks(czId);
-            foreach(string link in bracketPageLinks)
+            foreach (string link in bracketPageLinks)
             {
                 brackets.Add(GetBracketFromUrl(link));
             }
             return brackets;
         }
 
-        private static Bracket GetBracketFromUrl(string url)
+        public static Bracket GetBracketFromUrl(string url)
         {
             string html = Request.GetHtml(url);
             HtmlNode document = GetHtmlNode(html);
             string bracketsHtml = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]).First().InnerHtml;
             string formmattedStandingsHtml = Formatter.Format.FormatBracket(bracketsHtml);
-            return new Bracket(null, formmattedStandingsHtml);
+            Uri uri = new Uri(url);
+            string bracketName = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("pdraw");
+            return new Bracket(bracketName, formmattedStandingsHtml);
         }
 
         private static List<string> GetBracketsPageLinks(string czId)
@@ -99,15 +106,31 @@ namespace Crawler
             HtmlNode document = GetHtmlNode(html);
             List<HtmlNode> bracketLinks = document.QuerySelectorAll(Config.Values["selectors:bracketPageBracketLinks"]).ToList();
             List<string> links = new List<string>();
-            foreach(HtmlNode bracketLink in bracketLinks)
+            foreach (HtmlNode bracketLink in bracketLinks)
             {
                 string link = bracketLink.GetAttributeValue("href", "");
                 if (link != "")
                 {
-                    links.Add(link);
+                    links.Add(FormatLink(link));
                 }
             }
             return links;
+        }
+
+        public static string FormatLink(string link)
+        {
+            string formattedLink = link;
+            if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
+            {
+                Program.Logger.Log("Found relative link: " + link);
+                formattedLink = Config.Values["endpoints:baseCZUrl"]  + link;
+                Program.Logger.Log("Formatted Link: " + formattedLink);
+                if (!Uri.IsWellFormedUriString(formattedLink, UriKind.Absolute))
+                {
+                    throw new Exception("Invalid link: " + formattedLink);
+                }
+            }
+            return formattedLink;
         }
 
         private static string GetBracketsPageHtml(string czId)
@@ -121,15 +144,15 @@ namespace Crawler
             return new Standings(standingsHtml);
         }
 
-        private static string GetStandingsHtml(string czId)
+        public static string GetStandingsHtml(string czId)
         {
             string html = Request.GetHtml(Config.Values["endpoints:czStandingsPage"].Replace("[CZ_EVENT_ID]", czId));
             HtmlNode document = GetHtmlNode(html);
-            string standingsHtml = document.QuerySelectorAll(Config.Values["selectors:standingsHtml"]).First().InnerHtml;
+            string standingsHtml = document.QuerySelectorAll(Config.Values["selectors:standingsHtml"]).First().OuterHtml;           
             string formmattedStandingsHtml = Formatter.Format.FormatStandings(standingsHtml);
             return formmattedStandingsHtml;
         }
-        private static EventFormat GetEventFormat(string czId)
+        public static EventFormat GetEventFormat(string czId)
         {
             string czEventPageHtml = Request.GetCZEventPage(czId);
             HtmlNode document = GetHtmlNode(czEventPageHtml);
@@ -140,12 +163,12 @@ namespace Crawler
             {
                 throw new Exception("Unable to find event format for CZID: " + czId);
             }
-            else if (bracketLinks.Count() == 0 && standingsLink.Count() == 1)
+            else if (bracketLinks.Count() == 0 && standingsLink.Count() >= 1)
             {
                 Program.Logger.Log("Found Round Robin for CZID: " + czId);
                 return EventFormat.ROUND_ROBIN;
             }
-            else 
+            else
             {
                 Program.Logger.Log("Found Knockout for CZID: " + czId);
                 return EventFormat.KNOCKOUT;

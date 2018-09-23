@@ -41,6 +41,7 @@ namespace Crawler
 
         public static string GetHtml(string url)
         {
+            url = (url.LastIndexOf("#") > 0 ? url.Substring(0,url.LastIndexOf("#")) : url);
             int attemptNumber = 1;
             while (attemptNumber <= 3)
             {

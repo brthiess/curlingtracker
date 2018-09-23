@@ -38,9 +38,10 @@ namespace CurlingTracker.Models
 
         public List<Bracket> Brackets {get;set;}
 
+        public Playoff Playoff {get;set;}
 
         public Event() { }
-        public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null, Standings standings = null, List<Bracket> brackets = null)
+        public Event(string name, DateTime startDate, DateTime endDate, string location, EventType type, List<Draw> draws = null, string czId = null, Guid? eventId = null, Standings standings = null, List<Bracket> brackets = null, Playoff playoff = null)
         {
             this.Name = name;
             this.StartDate = startDate;
@@ -54,6 +55,7 @@ namespace CurlingTracker.Models
             this.IsOverAndFullyParsed = false;
             this.Standings = standings;
             this.Brackets = brackets;
+            this.Playoff = playoff;
         }
 
 
@@ -72,7 +74,7 @@ namespace CurlingTracker.Models
                 foreach (Draw d in this.Draws)
                 {
                     double timeBetween = (DateTime.Now - d.Date.ToLocalTime()).TotalMinutes;
-                    if ((timeBetween >= 0 && timeBetween < minTimeBetween) || (timeBetween < 0 && timeBetween > -15))
+                    if ((timeBetween >= 0 && timeBetween < minTimeBetween) || (timeBetween < 0 && timeBetween > -1))
                     {
                         currentDraw = d;
                         minTimeBetween = timeBetween;
@@ -135,6 +137,10 @@ namespace CurlingTracker.Models
             return this.Brackets;
         }
 
+        public Playoff GetPlayoff()
+        {
+            return this.Playoff;
+        }
         public string GetUrl()
         {
             return "/events/" + this.Url + "/";

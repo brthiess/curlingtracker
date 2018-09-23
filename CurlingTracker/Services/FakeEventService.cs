@@ -75,7 +75,8 @@ namespace CurlingTracker.Services
             string location = GetRandomLocation();
             Standings standings = GetRandomStandings();
             List<Bracket> brackets = GetRandomBrackets();
-            return new Event(GetRandomEventName(location), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), location, eventType, GetDraws(7, eventType), standings: standings, brackets: brackets);
+            var playoff = GetRandomPlayoff();
+            return new Event(GetRandomEventName(location), DateTime.Now.AddDays(-3), DateTime.Now.AddDays(2), location, eventType, GetDraws(7, eventType), standings: standings, brackets: brackets, playoff: playoff);
         }
 
         private Standings GetRandomStandings()
@@ -91,6 +92,12 @@ namespace CurlingTracker.Services
             brackets.Add(new Bracket("Event B", System.IO.File.ReadAllText("Misc/Bracket-B.html")));
             brackets.Add(new Bracket("Event C", System.IO.File.ReadAllText("Misc/Bracket-C.html")));
             return brackets;
+        }
+
+        public Playoff GetRandomPlayoff()
+        {
+            var playoff = new Playoff(System.IO.File.ReadAllText("Misc/Playoff.html"));
+            return playoff;
         }
         private EventType GetRandomEventType()
         {

@@ -31,7 +31,7 @@ namespace Formatter
             return htmlDoc.DocumentNode.OuterHtml;
         }
 
-        public static string FormatBracket(string html)
+        public static string FormatBracket(string html, bool isPlayoffBracket = false)
         {
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
@@ -39,11 +39,25 @@ namespace Formatter
             htmlDoc = Brackets.RenameTags(htmlDoc);
             htmlDoc = Brackets.AddClasses(htmlDoc);
             htmlDoc = Brackets.ModifyBracketNumbers(htmlDoc);
-            htmlDoc = RemoveBadAttributes(htmlDoc, new List<string> { "src", "valign", "bgcolor", "style", "width", "height", "align", "border" });
+            if (!isPlayoffBracket)
+            {
+                htmlDoc = RemoveBadAttributes(htmlDoc, new List<string> { "src", "valign", "bgcolor", "style", "width", "height", "align", "border" });
+            }
+            else 
+            {
+                htmlDoc = RemoveBadAttributes(htmlDoc, new List<string> { "src", "bgcolor", "style", "border" });
+            }
+            
             htmlDoc = RemoveUnwantedTags(htmlDoc, new List<string> { "b", "a", "font", "img" });
             htmlDoc = Brackets.ModifyBracketInformation(htmlDoc);
 
             return htmlDoc.DocumentNode.OuterHtml;
+        }
+
+        public static string FormatPlayoff(string html)
+        {
+            string formattedHtml = FormatBracket(html, true);
+            return formattedHtml;
         }
 
         public static HtmlDocument RemoveBadAttributes(HtmlDocument doc, List<string> badAttributes)

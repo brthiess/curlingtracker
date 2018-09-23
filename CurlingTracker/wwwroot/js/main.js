@@ -56,7 +56,15 @@ function showOnScoreboard(section, subSection) {
 	let dataScoreBoardSection = $("[data-scoreboard-section=" + section + "]");
 	$("[data-scoreboard-section]").removeClass('active');
 	dataScoreBoardSection.addClass('active');
-	if (section == 'standings' && subSection == 'bracket'){
+	if (section == 'playoff'){
+		showBracket('playoff');
+	}
+	if (subSection == 'bracket'){
+		let bracketButton = document.querySelector('.bracket-level-button:first-child input');
+		bracketButton.checked = true
+		updateBracket(bracketButton);
+	}
+	if ((section == 'standings' && subSection == 'bracket') || (section == 'playoff')){
 		updateBracketScrollListeners();
 	}
 }
@@ -93,7 +101,12 @@ function updateBracketScrollListeners(){
 
 function handleBracketScroll(){
 	obj = document.querySelector('.bracket-container.active');
-	if( obj.scrollLeft === (obj.scrollWidth - obj.offsetWidth))
+	if( obj.scrollLeft === (obj.scrollWidth - obj.offsetWidth) && (obj.scrollLeft <= 1))
+	{
+		hideLeftBracketArrow();
+		hideRightBracketArrow();
+	}
+	else if( obj.scrollLeft === (obj.scrollWidth - obj.offsetWidth))
 	{
 		showLeftBracketArrow();
 		hideRightBracketArrow();
