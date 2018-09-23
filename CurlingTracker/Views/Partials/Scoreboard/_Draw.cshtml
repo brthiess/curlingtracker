@@ -3,29 +3,5 @@
 @*ViewData["EventId"] *@
 @foreach(Game game in Model.Games)
 {
-    <div data-game-id='@game.GameId' class='game-container' onclick="showGame('@game.GameId', '@ViewData["EventId"]', window.location.pathname + '?@game.GetQueryString()')">
-    <div class='scores-teams-container'>
-        <div class='scores-team-container'>
-            <div class='scores-team-name'>
-                @game.Team1ShortName 
-            </div>
-            <div data-score1 class='scores-score'>
-                <span class='scores-hammer' data-hammer1>@Html.Raw(game.Team1Hammer ? "<img src='/images/hammer.png'/>" : "")</span>
-                @game.Team1Score
-            </div>
-        </div>
-        <div class='scores-team-container'>
-            <div class='scores-team-name'>
-                @game.Team2ShortName 
-            </div>
-            <div data-score2 class='scores-score'>
-                <span class='scores-hammer' data-hammer2>@Html.Raw(game.Team2Hammer ? "<img src='/images/hammer.png'/>" : "")</span>
-                @game.Team2Score
-            </div>
-        </div>
-    </div>
-    <div data-end class='scores-end-container @(game.IsFinal ? " scores-final " : "")'>
-        @(DateTime.Now < Model.Date.ToLocalTime() ? (Model.Date.Date == DateTime.Today ? Model.Date.ToLocalTime().ToString("h:mm tt")  : Model.Date.ToLocalTime().ToString("MMM d, h:mm tt") ) : (game.IsFinal ? "Final (" + (game.CurrentEnd - 1) + ")" : StringUtil.AddOrdinal(game.CurrentEnd) + " end"))
-    </div>						
-</div>
+    await Html.RenderPartialAsync("/Views/Partials/Scoreboard/_Game.cshtml", game);
 }

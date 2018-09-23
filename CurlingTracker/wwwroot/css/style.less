@@ -316,13 +316,16 @@ input[type=radio]{
 @keyframes live-indicator-length-animation {0%{-webkit-transform:translateX(-100%)}5%{-webkit-transform:translateX(0%)}10%{-webkit-transform:translateX(100%)}15%{-webkit-transform:translateX(100%)}20%{-webkit-transform:translateX(0%)}25%{-webkit-transform:translateX(-100%)}100%{-webkit-transform:translateX(-100%)}}
 /* Navigation Bar */
 .nav-logo-container {
-    width: 100%;
+	width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    background: @main;
-	
+    justify-content: space-between;
+    padding: 0px 20px;
+    height: 70px;
+	background: @main;
+	box-shadow: 0px 3px 3px rgba(0,0,0,0.4);
+	z-index: 99;
+	position: relative;
 }
 .nav-title {
 	font-size: 0;
@@ -339,118 +342,36 @@ input[type=radio]{
 .nav-list {
 	list-style:none;
 }
-.nav-list-item {
-	display:inline-block;
-	font-weight: bold;
-	text-transform: uppercase;
-	font-size: 16px;
-	color: @black;
+.navigation-items-list-container {
+	height: 100%;
+}
+.navigation-items-list {
+	list-style: none;
+    display: flex;
+    height: 100%;
+}
+.navigation-item {
+    padding: 0 10px;
+}
+.navigation-link {
+	color: white;
+    height: 100%;
+    display: block;
+    display: flex;
+	align-items: center;
+	font-size: 18px;
+	padding: 0 10px;
+	border-bottom: 2px solid rgba(0,0,0,0,0);
+	&.active, &:hover {
+		color: white;
+		border-bottom: 2px solid white;
+	}
 }
 .nav-list-item-link {
 	padding: 5px 0;
 	margin: 0 5px;
 	&:hover {
 		color: @main;
-	}
-}
-.mobile-nav-icon {
-	font-size: 20px;
-    border: 1px solid #444;
-    padding: 5px 10px;
-    border-radius: 5px;
-	cursor: pointer;
-	margin: 0 0 0 15px;
-}
-.mobile-nav-container {
-    position: fixed;
-    top: 90px;
-    bottom: 0;
-    z-index: 99;
-    background: #f3f3f3;
-    left: 0;
-    width: 100%;
-	height: ~"calc(100vh - 90px)";
-	@media @smartphones {
-		top: 60px;
-		height: ~"calc(100vh - 60px)";
-	}
-}
-.mobile-nav-list{ 
-    display: flex;
-    flex-wrap: wrap;
-	height: 100%;
-	background: darken(@main, 25%);
-	padding: 20px;
-}
-.mobile-nav-list-item {
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 18px;
-    color: #333;
-    text-align: center;
-    flex: 0 0 25%;
-	@media @mini-tablets {
-		flex: 0 0 50%;
-	}
-    display: flex;
-    align-items: center;
-    justify-content: center;
-	
-}
-.mobile-nav-list-item-link {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-	color: white;
-	&:hover {
-		color: white;
-	}
-	@media @smartphones {
-		font-size: 16px;
-	}
-}
-.fa.mobile-nav-list-item-link-icon {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    font-size: 44px;
-    color: darken(@main, 25%);
-	margin-bottom: 7px;
-	&.white {
-		background: white;
-	}
-	&.green {
-		background: #53a253;
-	}
-	&.blue {
-		background: #6277ec;
-	}
-	&.grey {
-		background: #888;
-	}
-	&.orange {
-		background: #FF9800;
-	}
-	&.red {
-		background: #F44336;
-	}
-	@media @smartphones {
-		font-size: 34px;
-		width: 80px;
-		height: 80px
-	}
-}
-.logo-container {
-	font-size: 0;
-	img {
-		width: 175px;
-		@media @smartphones {
-			width: 100px;
-		}
 	}
 }
 /* Banner */
@@ -574,7 +495,42 @@ input[type=radio]{
 	}
 }
 
-
+/* Score Ticker */
+.score-ticker-section {
+	display: flex;
+	overflow: hidden;
+	flex-flow: column;
+}
+.score-ticker-header-container {
+	display: flex;
+	justify-content: space-between
+}
+.score-ticker-events-container {
+    display: flex;
+}
+.score-ticker-event {
+	display: flex;
+}
+.score-ticker-event-name {
+	background: #ddd;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+.score-ticker-game-container {
+    width: 250px;
+}
+.score-ticker-game-container .game-container {
+	width: 100%;
+    margin: 0;
+    box-shadow: none;
+	border-right: 1px solid #999;
+	&:hover {
+		box-shadow: none;
+		transform: none;
+	}
+}
 /* Scores */
 /* SCOREBOARD */
 .no-games-text {

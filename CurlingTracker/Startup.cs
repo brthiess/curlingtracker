@@ -61,7 +61,7 @@ namespace CurlingTracker
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "scores",
+                    name: "apiScores",
                     template: "api/scores/{eventId}/{drawId?}",
                     defaults: new { controller = "Api", Action = "Scores" });
                 routes.MapRoute(
@@ -69,9 +69,16 @@ namespace CurlingTracker
                     template: "api/{action}/{id}/",
                     defaults: new { controller = "Api" });
                 routes.MapRoute(
+                    name: "scores",
+                    template: "scores",
+                    defaults: new {controller = "Index", Action = "Scores"}
+                );
+                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/");
-                
+                    template: "",
+                    defaults: new {controller = "Index", Action = "Index"}
+                );
+                    
             });
         }
     }

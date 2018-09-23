@@ -9,7 +9,7 @@ using System.Threading;
 namespace Crawler
 {
     public static class Request
-    {       
+    {
         public static List<string> GetCurrentCZIDs()
         {
             Program.Logger.Log("Getting Current CZIDs");
@@ -27,7 +27,7 @@ namespace Crawler
         {
             return Config.Values["endpoints:subEventInfo"].Replace("[CZ_GAME_ID]", czGameId);
         }
-        
+
 
         private static string GetMainEventUrl(string czEventId)
         {
@@ -39,9 +39,15 @@ namespace Crawler
             return Config.Values["endpoints:czMainEventPage"].Replace("[CZ_EVENT_ID]", czEventId);
         }
 
+        public static string GetPlayoffUrl(string czEventId)
+        {
+            return Config.Values["endpoints:czPlayoffPage"].Replace("[CZ_EVENT_ID]", czEventId);
+        }
+
         public static string GetHtml(string url)
         {
-            url = (url.LastIndexOf("#") > 0 ? url.Substring(0,url.LastIndexOf("#")) : url);
+            url = FormatLink(url);
+            url = (url.LastIndexOf("#") > 0 ? url.Substring(0, url.LastIndexOf("#")) : url);
             int attemptNumber = 1;
             while (attemptNumber <= 3)
             {
@@ -50,17 +56,17 @@ namespace Crawler
                 Thread.Sleep(crawlDelayInMilliseconds);
                 try
                 {
-                     using (WebClient client = new WebClient())
+                    using (WebClient client = new WebClient())
                     {
                         string htmlCode = client.DownloadString(url);
                         return htmlCode;
-                    }            
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (attemptNumber == 3)
                     {
-                        throw new Exception (ex.Message);
+                        throw new Exception(ex.Message);
                     }
                 }
                 attemptNumber++;
@@ -68,16 +74,32 @@ namespace Crawler
             return "";
         }
 
+        public static string FormatLink(string link)
+        {
+            string formattedLink = link;
+            if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
+            {
+                Program.Logger.Log("Found relative link: " + link);
+                formattedLink = Config.Values["endpoints:baseCZUrl"] + link;
+                Program.Logger.Log("Formatted Link: " + formattedLink);
+                if (!Uri.IsWellFormedUriString(formattedLink, UriKind.Absolute))
+                {
+                    throw new Exception("Invalid link: " + formattedLink);
+                }
+            }
+            return formattedLink;
+        }
+
         public static Event GetEvent(string czEventId)
         {
-            string drawsJson =  GetDrawsJsonFromCZId(czEventId);
+            string drawsJson = GetDrawsJsonFromCZId(czEventId);
             string czGameId = Parser.GetRandomGameIdFromMainEventJson(drawsJson);
             string subEventJson = GetHtml(GetSubEventUrl(czGameId));
             Event e = Parser.GetEventInfoFromJson(subEventJson);
             Program.Logger.Log("GetEvent", e);
             List<Draw> draws = Parser.GetEventDraws(drawsJson, e.EventId);
             e.Draws = draws;
-            
+
             return e;
         }
 
@@ -113,18 +135,18 @@ namespace Crawler
             e = Parser.GetEventInfoFromJson(subEventJson, e);
             return e;
         }
-        
+
         public static Event UpdateEvent(Event e)
         {
             e = UpdateEventInfo(e);
-            
+
             bool isOverAndFullyParsed = true;
-            for(int i = 0; i < e.Draws.Count; i++) 
+            for (int i = 0; i < e.Draws.Count; i++)
             {
-                if(!e.Draws[i].IsOverAndFullyParsed)
+                if (!e.Draws[i].IsOverAndFullyParsed)
                 {
                     isOverAndFullyParsed = false;
-                    e.Draws[i] = UpdateDraw(e.Draws[i], e.CZId); 
+                    e.Draws[i] = UpdateDraw(e.Draws[i], e.CZId);
                 }
             }
             e.Draws = RemoveEmptyAndDoneDraws(e.Draws);
@@ -143,13 +165,13 @@ namespace Crawler
             draws = draws.Where(d => !d.IsOverAndFullyParsed || d.Games.Count > 0).ToList();
             return draws;
         }
-        
+
         private static Draw UpdateDraw(Draw d, string czId)
         {
             Program.Logger.Log("UpdateDraw", d);
             List<Game> games = new List<Game>();
             bool isOverAndFullyParsed = true;
-            if(Parser.ShouldUpdateDraw(d.Date))
+            if (Parser.ShouldUpdateDraw(d.Date))
             {
                 games = Parser.GetGamesByDrawDisplayNameAndDate(d.DisplayName, d.Date, GetHtml(GetMainEventUrl(czId)), d.EventId, d.DrawId);
                 isOverAndFullyParsed = Parser.GamesAreAllOverAndFullyParsed(games);
@@ -160,7 +182,7 @@ namespace Crawler
                 Program.Logger.Log("DrawStart: " + d.Date.ToString());
                 isOverAndFullyParsed = false;
             }
-            
+
 
             if (DateTime.Now.AddHours(-12) < d.Date)
             {

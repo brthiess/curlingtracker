@@ -59,6 +59,12 @@ namespace CurlingTracker.Models
         }
 
 
+        public List<Game> GetCurrentGames()
+        {
+            return this.CurrentDraw.Games;
+        }
+
+
         private Draw _currentDraw = null;
         public Draw CurrentDraw
         {

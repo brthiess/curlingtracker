@@ -1,0 +1,25 @@
+@*Model= Event[] *@
+<section class='score-ticker-section'>
+    <div class='score-ticker-header-container'>
+        <h2 class='score-ticker-header'>Live Scores</h2>
+        <h4 class='score-ticker-full-scores-link'><a href='/scores/'>Full Scoreboard</a></h4>
+    </div>
+    <div class='score-ticker-events-container'>
+        @foreach(Event e in Model)
+        {
+            if (e.GetCurrentGames().Count() > 0)
+            {
+                <div class='score-ticker-event'>
+                    <h3 class='score-ticker-event-name'>@e.Name</h3>
+                    @foreach(Game g in e.GetCurrentGames())
+                    {
+                        <div class='score-ticker-game-container'>
+                                @{await Html.RenderPartialAsync("/Views/Partials/Scoreboard/_Game.cshtml", g);}
+                        </div>
+                    }
+                    
+                </div>
+            }
+        }
+    </div>
+</section>

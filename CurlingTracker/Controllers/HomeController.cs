@@ -9,14 +9,22 @@ using CurlingTracker.Services;
 
 namespace CurlingTracker.Controllers
 {
-    public class HomeController : Controller
+    public class IndexController : Controller
     {
         private readonly IEventService _eventService;
-        public HomeController(IEventService eventService) 
+        public IndexController(IEventService eventService) 
         {
             _eventService = eventService;
         }
+
         public async Task<IActionResult> Index()
+        {
+            var currentEvents = await _eventService.GetCurrentEventsAsync();
+            return View(currentEvents);
+        }
+
+
+        public async Task<IActionResult> Scores()
         {
             var items = await _eventService.GetCurrentEventsAsync();
             ViewData["DefaultEvent"] = null;

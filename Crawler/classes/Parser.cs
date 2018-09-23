@@ -47,6 +47,7 @@ namespace Crawler
             {
                 brackets = GetBrackets(game.@event.eventId);
             }
+            Playoff playoff = GetPlayoff(game.@event.eventId);
 
             //TODO More robust parsing for dates in case of error.
             if (e == null)
@@ -60,7 +61,8 @@ namespace Crawler
                    czId: game.@event.eventId,
                    eventId: eventId,
                    standings: standings,
-                   brackets: brackets
+                   brackets: brackets,
+                   playoff: playoff
                );
             }
             else
@@ -74,8 +76,23 @@ namespace Crawler
                 e.Type.EventFormat = eventFormat;
                 e.Standings = standings;
                 e.Brackets = brackets;
+                e.Playoff = playoff;
             }
             return e;
+        }
+
+        public static Playoff GetPlayoff(string czId)
+        {
+            string html = Request.GetHtml(Request.GetPlayoffUrl(czId));
+            HtmlNode document = GetHtmlNode(html);
+            IEnumerable<HtmlNode> bracketNodes = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]);
+            if (bracketNodes.Count() == 0)
+            {
+                return null;
+            }
+            string playoffHtml = bracketNodes.First().OuterHtml;
+            string formattedPlayoffHtml = Formatter.Format.FormatPlayoff(playoffHtml);
+            return new Playoff(formattedPlayoffHtml);
         }
 
         private static List<Bracket> GetBrackets(string czId)
@@ -93,8 +110,14 @@ namespace Crawler
         {
             string html = Request.GetHtml(url);
             HtmlNode document = GetHtmlNode(html);
-            string bracketsHtml = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]).First().InnerHtml;
+            IEnumerable<HtmlNode> bracketNodes = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]);
+            if (bracketNodes.Count() == 0)
+            {
+                return null;
+            }
+            string bracketsHtml = bracketNodes.First().OuterHtml;
             string formmattedStandingsHtml = Formatter.Format.FormatBracket(bracketsHtml);
+            url = Request.FormatLink(url);
             Uri uri = new Uri(url);
             string bracketName = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("pdraw");
             return new Bracket(bracketName, formmattedStandingsHtml);
@@ -111,26 +134,10 @@ namespace Crawler
                 string link = bracketLink.GetAttributeValue("href", "");
                 if (link != "")
                 {
-                    links.Add(FormatLink(link));
+                    links.Add(link);
                 }
             }
             return links;
-        }
-
-        public static string FormatLink(string link)
-        {
-            string formattedLink = link;
-            if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
-            {
-                Program.Logger.Log("Found relative link: " + link);
-                formattedLink = Config.Values["endpoints:baseCZUrl"]  + link;
-                Program.Logger.Log("Formatted Link: " + formattedLink);
-                if (!Uri.IsWellFormedUriString(formattedLink, UriKind.Absolute))
-                {
-                    throw new Exception("Invalid link: " + formattedLink);
-                }
-            }
-            return formattedLink;
         }
 
         private static string GetBracketsPageHtml(string czId)
@@ -271,7 +278,11 @@ namespace Crawler
             {
                 int team1Score = Utility.ParseIntWithDefault(apiGame.homeScores[endNumber - 1], 0);
                 int team2Score = Utility.ParseIntWithDefault(apiGame.awayScores[endNumber - 1], 0);
-
+                if (team1Score > 0 && team2Score > 0)
+                {
+                    Program.Logger.Log("Found end where both teams score.  Arbitrarily setting team 2's score to 0.");
+                    team2Score = 0;
+                }
                 var end = new End(
                     team1Score,
                     team2Score,

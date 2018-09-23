@@ -33,8 +33,10 @@ namespace CurlingTracker.Models
         [Required]
         public string Url{get;set;}
 
+        public DateTime Date {get;set;}
+
         public Game(){}
-        public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId, bool isOverAndFullyParsed, Guid drawId){
+        public Game(Team team1, Team team2, Linescore linescore, bool isFinal, Guid eventId, bool isOverAndFullyParsed, Guid drawId, DateTime date){
             this.Team1 = team1;
             this.Team2 = team2;
             this.Linescore = linescore;
@@ -45,6 +47,7 @@ namespace CurlingTracker.Models
             this.IsOverAndFullyParsed = isOverAndFullyParsed;
             this.GameId = Guid.NewGuid();
             this.Url = GenerateUrl();
+            this.Date = date;
         }
         
         [NotMapped]

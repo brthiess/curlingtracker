@@ -11,7 +11,7 @@ namespace Crawler.UnitTests
 {
     public class CrawlerTests
     {
-        /*
+
         [Theory]
         [TestMethod]
         [TestCategory("Event")]
@@ -31,8 +31,9 @@ namespace Crawler.UnitTests
             Xunit.Assert.Equal(name, e.Name);
             Xunit.Assert.Equal(eventFormat, e.Type.EventFormat);
             Xunit.Assert.Equal(standingsIsNull, (e.Standings == null));
+            Xunit.Assert.True(Utility.ValidatePlayoffHtml(e.Playoff.Html));
         }
-        
+
         [Theory]
         [TestMethod]
         [TestCategory("FormatLink")]
@@ -41,10 +42,10 @@ namespace Crawler.UnitTests
         [InlineData("http://curlingzone.com", "http://curlingzone.com")]
         public void FormatLinkTest(string link, string expectedLink)
         {
-            string newLink = Parser.FormatLink(link);
+            string newLink = Request.FormatLink(link);
             Xunit.Assert.Equal(expectedLink, newLink);
         }
-        
+
         [Theory]
         [TestMethod]
         [TestCategory("Game")]
@@ -76,7 +77,7 @@ namespace Crawler.UnitTests
             Xunit.Assert.Equal(teamShortName, t.GetTeamShortName());
             Xunit.Assert.Equal(numPlayers, t.Players.Count);
         }
-        
+
 
         [Theory]
         [TestMethod]
@@ -108,7 +109,7 @@ namespace Crawler.UnitTests
             Xunit.Assert.Equal(bracketName, bracket.Name);
             Xunit.Assert.True(bracket.Html.Contains(bracketContains));
         }
-        */
+
         [Theory]
         [TestMethod]
         [TestCategory("Standings")]
@@ -118,14 +119,28 @@ namespace Crawler.UnitTests
         public void GetStandingsHtmlTest(string czId)
         {
             string html = Parser.GetStandingsHtml(czId);
-            Xunit.Assert.True(html.Contains("<table"));
-            Xunit.Assert.True(html.Contains("<tr"));
-            Xunit.Assert.True(html.Contains("<td"));
-            Xunit.Assert.True(html.Contains("standings-table"));
-            Xunit.Assert.True(html.Contains("standings-pool-name-data"));
-            Xunit.Assert.True(html.Contains("standings-header"));
-            Xunit.Assert.True(html.Contains("standings-pool-teams-flag"));
+            Xunit.Assert.True(Utility.ValidateStandingsHtml(html));
         }
-        
+
+
+        [Theory]
+        [TestMethod]
+        [TestCategory("Playoff")]
+        [InlineData("5341", false)]
+        [InlineData("5503", false)]
+        [InlineData("5326", true)]
+        [InlineData("5500", false)]
+        [InlineData("5000", false)]
+        public void GetPlayoffTest(string czId, bool isNull)
+        {
+            Playoff playoff = Parser.GetPlayoff(czId);
+            if (isNull)
+            {
+                Xunit.Assert.Equal(null, playoff);
+                return;
+            }
+            string html = playoff.Html;
+            Xunit.Assert.True(Utility.ValidatePlayoffHtml(html));
+        }
     }
 }
