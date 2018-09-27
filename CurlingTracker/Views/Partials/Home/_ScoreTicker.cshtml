@@ -4,22 +4,23 @@
         <h2 class='score-ticker-header'>Live Scores</h2>
         <h4 class='score-ticker-full-scores-link'><a href='/scores/'>Full Scoreboard</a></h4>
     </div>
-    <div class='score-ticker-events-container'>
-        @foreach(Event e in Model)
-        {
-            if (e.GetCurrentGames().Count() > 0)
+    <div class='score-ticker-events-container-container'>
+        <div onclick='scrollTicker(-400)' class='score-ticker-arrow score-ticker-left-arrow'><img class='left-arrow-img' src='/images/chevron-white.png'></div>
+        <div onclick='scrollTicker(400)' class='score-ticker-arrow score-ticker-right-arrow active'><img src='/images/chevron-white.png'></div>
+        <div class='score-ticker-events-container'>
+            @foreach(Event e in Model)
             {
-                <div class='score-ticker-event'>
-                    <h3 class='score-ticker-event-name'>@e.Name</h3>
+                if (e.GetCurrentGames().Count() > 0)
+                {
                     @foreach(Game g in e.GetCurrentGames())
                     {
                         <div class='score-ticker-game-container'>
-                                @{await Html.RenderPartialAsync("/Views/Partials/Scoreboard/_Game.cshtml", g);}
+                            <h3 class='score-ticker-event-name'>@e.Name</h3>
+                            @{await Html.RenderPartialAsync("/Views/Partials/Scoreboard/_Game.cshtml", g);}
                         </div>
                     }
-                    
-                </div>
+                }
             }
-        }
+        </div>        
     </div>
 </section>

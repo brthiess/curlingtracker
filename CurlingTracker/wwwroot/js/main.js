@@ -146,6 +146,57 @@ function scrollBracket(amount){
 }
 /* end bracket scroll/arrow functions */ 
 
+/* Start ticker scroll functions */
+function scrollTicker(amount){
+	obj = document.querySelector('.score-ticker-events-container');
+	document.querySelector('.score-ticker-events-container').scroll({
+		top: 0, 
+		left: obj.scrollLeft + amount, 
+		behavior: 'smooth' 
+	});
+}
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+	document.querySelector('.score-ticker-events-container').addEventListener('scroll', handleScrollTickerArrows);
+  });
+
+function handleScrollTickerArrows(){
+	obj = document.querySelector('.score-ticker-events-container');
+	if( obj.scrollLeft === (obj.scrollWidth - obj.offsetWidth) && (obj.scrollLeft <= 1))
+	{
+		hideLeftTickerArrow();
+		hideRightTickerArrow();
+	}
+	else if( obj.scrollLeft === (obj.scrollWidth - obj.offsetWidth))
+	{
+		showLeftTickerArrow();
+		hideRightTickerArrow();
+	}
+	else if (obj.scrollLeft <= 1) {
+		showRightTickerArrow();
+		hideLeftTickerArrow();
+	}
+	else if (obj.scrollLeft >= 1 && obj.scrollLeft <= (obj.scrollWidth - obj.offsetWidth)){
+		showRightTickerArrow();
+		showLeftTickerArrow();
+	}
+}
+
+function showRightTickerArrow(){
+	$(".score-ticker-right-arrow").addClass("active");
+}
+function showLeftTickerArrow(){
+	$(".score-ticker-left-arrow").addClass("active");
+}
+function hideLeftTickerArrow(){
+	$(".score-ticker-left-arrow").removeClass("active");
+}
+function hideRightTickerArrow(){
+	$(".score-ticker-right-arrow").removeClass("active");
+} 
+
+/* END ticker scroll functions */
+
 function closeScores(newUrl){
 	makeScoresContainerInActive();
 	if (typeof(newUrl) !== "undefined"){

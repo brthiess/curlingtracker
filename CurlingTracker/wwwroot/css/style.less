@@ -344,6 +344,7 @@ input[type=radio]{
 }
 .navigation-items-list-container {
 	height: 100%;
+	overflow: hidden;
 }
 .navigation-items-list {
 	list-style: none;
@@ -500,32 +501,100 @@ input[type=radio]{
 	display: flex;
 	overflow: hidden;
 	flex-flow: column;
+	padding: 20px 0;
 }
 .score-ticker-header-container {
 	display: flex;
-	justify-content: space-between
+	justify-content: space-between;
+	padding: 0 40px;
+	margin-bottom: 10px;
+}
+.score-ticker-header {
+	font-size: 18px;
+	color: #333;
+}
+.score-ticker-events-container-container {
+	position: relative;	
+	height: 94px;
+	overflow: hidden;
+	&:after {
+		content: '';
+		display: none;
+		position: absolute;
+		right: 0;
+		width: 50px;
+		bottom: 0;
+		height: 100%;
+		background: linear-gradient(to left, rgba(255,255,255,1),  rgba(255,255,255,.8), rgba(255,255,255,0));
+		@media @mini-tablets {
+			display: block;
+		}
+	}	
 }
 .score-ticker-events-container {
-    display: flex;
+	position: relative;
+	display: flex;
+	padding: 0 0 0 40px;
+	overflow: auto;
+	scroll-behavior: smooth;
+}
+.score-ticker-arrow {
+	display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 40px;
+	align-items: center;
+	justify-content: center;
+	z-index: 2;
+	img {
+		width: 30px;
+	}
+	&:hover {
+		background: rgba(0,0,0,0.7);
+		cursor: pointer;
+	}
+	&.active {
+		display: flex;
+	}
+	@media @mini-tablets {
+		display: none !important;
+	}
+}
+.score-ticker-left-arrow {
+	left: 0;
+	transform: rotate(180deg);
+}
+.score-ticker-right-arrow {
+	right: 0;
 }
 .score-ticker-event {
 	display: flex;
 }
 .score-ticker-event-name {
-	background: #ddd;
     font-size: 15px;
-    display: flex;
-    align-items: center;
-    width: 200px;
+    font-weight: 400;
+    white-space: nowrap;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+	padding: 5px 10px;
+	text-overflow: ellipsis;
+    overflow: hidden;
+
 }
 .score-ticker-game-container {
     width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-right: 20px;
 }
 .score-ticker-game-container .game-container {
 	width: 100%;
     margin: 0;
-    box-shadow: none;
-	border-right: 1px solid #999;
+	box-shadow: none;
+	padding: 0 5px;
 	&:hover {
 		box-shadow: none;
 		transform: none;
