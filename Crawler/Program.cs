@@ -9,6 +9,7 @@ using CurlingTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
+using Config;
 
 namespace Crawler
 {
@@ -19,10 +20,11 @@ namespace Crawler
 
         private static void InitializeDB()
         {
+            
             var optionsBuilder = new DbContextOptionsBuilder<CurlingContext>();
-            optionsBuilder.UseSqlite(Config.Values.GetConnectionString("DefaultConnection"));
-            Logger.Log("Connecting to DB with connection string: " + Config.Values.GetConnectionString("DefaultConnection"));
-            var context = new CurlingContext(Config.Values.GetConnectionString("DefaultConnection"), optionsBuilder.Options);
+            optionsBuilder.UseSqlite(Configuration.Values.GetConnectionString("DefaultConnection"));
+            Logger.Log("Connecting to DB with connection string: " + Configuration.Values.GetConnectionString("DefaultConnection"));
+            var context = new CurlingContext(Configuration.Values.GetConnectionString("DefaultConnection"), optionsBuilder.Options);
             _eventService = new FakeDBEventService(context);
             Logger.Log(_eventService.ToString());
         }

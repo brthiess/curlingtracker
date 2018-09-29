@@ -16,7 +16,7 @@ namespace Crawler
         {
             HtmlNode document = GetHtmlNode(html);
 
-            IEnumerable<HtmlNode> links = document.QuerySelectorAll(Config.Values["selectors:homePageCurrentEventIds"]);
+            IEnumerable<HtmlNode> links = document.QuerySelectorAll(Configuration.Values["selectors:homePageCurrentEventIds"]);
             var eventIds = new List<string>();
             foreach (HtmlNode node in links)
             {
@@ -85,7 +85,7 @@ namespace Crawler
         {
             string html = Request.GetHtml(Request.GetPlayoffUrl(czId));
             HtmlNode document = GetHtmlNode(html);
-            IEnumerable<HtmlNode> bracketNodes = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]);
+            IEnumerable<HtmlNode> bracketNodes = document.QuerySelectorAll(Configuration.Values["selectors:bracketsHtml"]);
             if (bracketNodes.Count() == 0)
             {
                 return null;
@@ -110,7 +110,7 @@ namespace Crawler
         {
             string html = Request.GetHtml(url);
             HtmlNode document = GetHtmlNode(html);
-            IEnumerable<HtmlNode> bracketNodes = document.QuerySelectorAll(Config.Values["selectors:bracketsHtml"]);
+            IEnumerable<HtmlNode> bracketNodes = document.QuerySelectorAll(Configuration.Values["selectors:bracketsHtml"]);
             if (bracketNodes.Count() == 0)
             {
                 return null;
@@ -127,7 +127,7 @@ namespace Crawler
         {
             string html = GetBracketsPageHtml(czId);
             HtmlNode document = GetHtmlNode(html);
-            List<HtmlNode> bracketLinks = document.QuerySelectorAll(Config.Values["selectors:bracketPageBracketLinks"]).ToList();
+            List<HtmlNode> bracketLinks = document.QuerySelectorAll(Configuration.Values["selectors:bracketPageBracketLinks"]).ToList();
             List<string> links = new List<string>();
             foreach (HtmlNode bracketLink in bracketLinks)
             {
@@ -142,7 +142,7 @@ namespace Crawler
 
         private static string GetBracketsPageHtml(string czId)
         {
-            return Request.GetHtml(Config.Values["endpoints:czBracketsPage"].Replace("[CZ_EVENT_ID]", czId));
+            return Request.GetHtml(Configuration.Values["endpoints:czBracketsPage"].Replace("[CZ_EVENT_ID]", czId));
         }
 
         private static Standings GetEventStandings(string czId)
@@ -153,9 +153,9 @@ namespace Crawler
 
         public static string GetStandingsHtml(string czId)
         {
-            string html = Request.GetHtml(Config.Values["endpoints:czStandingsPage"].Replace("[CZ_EVENT_ID]", czId));
+            string html = Request.GetHtml(Configuration.Values["endpoints:czStandingsPage"].Replace("[CZ_EVENT_ID]", czId));
             HtmlNode document = GetHtmlNode(html);
-            string standingsHtml = document.QuerySelectorAll(Config.Values["selectors:standingsHtml"]).First().OuterHtml;           
+            string standingsHtml = document.QuerySelectorAll(Configuration.Values["selectors:standingsHtml"]).First().OuterHtml;           
             string formmattedStandingsHtml = Formatter.Format.FormatStandings(standingsHtml);
             return formmattedStandingsHtml;
         }
@@ -164,8 +164,8 @@ namespace Crawler
             string czEventPageHtml = Request.GetCZEventPage(czId);
             HtmlNode document = GetHtmlNode(czEventPageHtml);
 
-            IEnumerable<HtmlNode> bracketLinks = document.QuerySelectorAll(Config.Values["selectors:bracketLinks"]);
-            IEnumerable<HtmlNode> standingsLink = document.QuerySelectorAll(Config.Values["selectors:roundRobinLink"]);
+            IEnumerable<HtmlNode> bracketLinks = document.QuerySelectorAll(Configuration.Values["selectors:bracketLinks"]);
+            IEnumerable<HtmlNode> standingsLink = document.QuerySelectorAll(Configuration.Values["selectors:roundRobinLink"]);
             if (bracketLinks.Count() == 0 && standingsLink.Count() == 0)
             {
                 throw new Exception("Unable to find event format for CZID: " + czId);
@@ -328,9 +328,9 @@ namespace Crawler
         private static List<Player> GetPlayers(string html, EventType.TeamType teamType)
         {
             HtmlNode document = GetHtmlNode(html);
-            List<HtmlNode> names = document.QuerySelectorAll(Config.Values["selectors:teamPagePlayerFullNames"]).ToList(); ;
-            List<HtmlNode> images = document.QuerySelectorAll(Config.Values["selectors:teamPagePlayerImages"]).ToList();
-            List<HtmlNode> positions = document.QuerySelectorAll(Config.Values["selectors:teamPagePlayerPositions"]).ToList();
+            List<HtmlNode> names = document.QuerySelectorAll(Configuration.Values["selectors:teamPagePlayerFullNames"]).ToList(); ;
+            List<HtmlNode> images = document.QuerySelectorAll(Configuration.Values["selectors:teamPagePlayerImages"]).ToList();
+            List<HtmlNode> positions = document.QuerySelectorAll(Configuration.Values["selectors:teamPagePlayerPositions"]).ToList();
 
             var players = new List<Player>();
             bool addedSkip = false;

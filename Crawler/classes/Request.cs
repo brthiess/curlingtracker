@@ -20,28 +20,28 @@ namespace Crawler
 
         private static string GetCurrentEventPageUrl()
         {
-            return Config.Values["endpoints:currentEvents"];
+            return Configuration.Values["endpoints:currentEvents"];
         }
 
         private static string GetSubEventUrl(string czGameId)
         {
-            return Config.Values["endpoints:subEventInfo"].Replace("[CZ_GAME_ID]", czGameId);
+            return Configuration.Values["endpoints:subEventInfo"].Replace("[CZ_GAME_ID]", czGameId);
         }
 
 
         private static string GetMainEventUrl(string czEventId)
         {
-            return Config.Values["endpoints:drawsInfo"].Replace("[CZ_EVENT_ID]", czEventId);
+            return Configuration.Values["endpoints:drawsInfo"].Replace("[CZ_EVENT_ID]", czEventId);
         }
 
         private static string GetCZEventUrl(string czEventId)
         {
-            return Config.Values["endpoints:czMainEventPage"].Replace("[CZ_EVENT_ID]", czEventId);
+            return Configuration.Values["endpoints:czMainEventPage"].Replace("[CZ_EVENT_ID]", czEventId);
         }
 
         public static string GetPlayoffUrl(string czEventId)
         {
-            return Config.Values["endpoints:czPlayoffPage"].Replace("[CZ_EVENT_ID]", czEventId);
+            return Configuration.Values["endpoints:czPlayoffPage"].Replace("[CZ_EVENT_ID]", czEventId);
         }
 
         public static string GetHtml(string url)
@@ -52,7 +52,7 @@ namespace Crawler
             while (attemptNumber <= 3)
             {
                 Program.Logger.Log("Attempt #" + attemptNumber + " to get URL: " + url);
-                int crawlDelayInMilliseconds = int.Parse(Config.Values["misc:crawlDelay"]) * 1000;
+                int crawlDelayInMilliseconds = int.Parse(Configuration.Values["misc:crawlDelay"]) * 1000;
                 Thread.Sleep(crawlDelayInMilliseconds);
                 try
                 {
@@ -80,7 +80,7 @@ namespace Crawler
             if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
             {
                 Program.Logger.Log("Found relative link: " + link);
-                formattedLink = Config.Values["endpoints:baseCZUrl"] + link;
+                formattedLink = Configuration.Values["endpoints:baseCZUrl"] + link;
                 Program.Logger.Log("Formatted Link: " + formattedLink);
                 if (!Uri.IsWellFormedUriString(formattedLink, UriKind.Absolute))
                 {

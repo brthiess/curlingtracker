@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-CurlingTracker-26D4D0FB-D353-45D4-9E2E-462AAA0C9EBE</UserSecretsId>
-    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.1.4</RuntimeFrameworkVersion>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
@@ -15,9 +15,8 @@
     <PackageReference Include="Humanizer" Version="2.3.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.SelfHost" Version="5.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" PrivateAssets="All" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.1" />
     <PackageReference Include="RandomNameGenerator" Version="1.0.4" />
   </ItemGroup>
 

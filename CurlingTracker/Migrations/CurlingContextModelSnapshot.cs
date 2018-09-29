@@ -14,7 +14,7 @@ namespace CurlingTracker.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932");
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065");
 
             modelBuilder.Entity("CurlingTracker.Models.Bracket", b =>
                 {
@@ -77,6 +77,8 @@ namespace CurlingTracker.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<Guid?>("PlayoffId");
+
                     b.Property<Guid?>("StandingsId");
 
                     b.Property<DateTime>("StartDate");
@@ -88,6 +90,8 @@ namespace CurlingTracker.Migrations
 
                     b.HasAlternateKey("Url")
                         .HasName("Unique_Url");
+
+                    b.HasIndex("PlayoffId");
 
                     b.HasIndex("StandingsId");
 
@@ -123,6 +127,8 @@ namespace CurlingTracker.Migrations
                 {
                     b.Property<Guid>("GameId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<Guid>("DrawId");
 
@@ -201,6 +207,19 @@ namespace CurlingTracker.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("CurlingTracker.Models.Playoff", b =>
+                {
+                    b.Property<Guid>("PlayoffId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Html")
+                        .IsRequired();
+
+                    b.HasKey("PlayoffId");
+
+                    b.ToTable("Playoff");
+                });
+
             modelBuilder.Entity("CurlingTracker.Models.Standings", b =>
                 {
                     b.Property<Guid>("StandingsId")
@@ -247,6 +266,10 @@ namespace CurlingTracker.Migrations
 
             modelBuilder.Entity("CurlingTracker.Models.Event", b =>
                 {
+                    b.HasOne("CurlingTracker.Models.Playoff", "Playoff")
+                        .WithMany()
+                        .HasForeignKey("PlayoffId");
+
                     b.HasOne("CurlingTracker.Models.Standings", "Standings")
                         .WithMany()
                         .HasForeignKey("StandingsId");

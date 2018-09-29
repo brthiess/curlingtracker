@@ -3,10 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CurlingTracker.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class InitalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Playoff",
+                columns: table => new
+                {
+                    PlayoffId = table.Column<Guid>(nullable: false),
+                    Html = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Playoff", x => x.PlayoffId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Standings",
                 columns: table => new
@@ -45,12 +57,19 @@ namespace CurlingTracker.Migrations
                     CZId = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: false),
                     IsOverAndFullyParsed = table.Column<bool>(nullable: false),
-                    StandingsId = table.Column<Guid>(nullable: true)
+                    StandingsId = table.Column<Guid>(nullable: true),
+                    PlayoffId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.EventId);
                     table.UniqueConstraint("Unique_Url", x => x.Url);
+                    table.ForeignKey(
+                        name: "FK_Events_Playoff_PlayoffId",
+                        column: x => x.PlayoffId,
+                        principalTable: "Playoff",
+                        principalColumn: "PlayoffId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Events_Standings_StandingsId",
                         column: x => x.StandingsId,
@@ -161,7 +180,8 @@ namespace CurlingTracker.Migrations
                     IsFinal = table.Column<bool>(nullable: false),
                     IsOverAndFullyParsed = table.Column<bool>(nullable: false),
                     DrawId = table.Column<Guid>(nullable: false),
-                    Url = table.Column<string>(nullable: false)
+                    Url = table.Column<string>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -215,6 +235,11 @@ namespace CurlingTracker.Migrations
                 name: "IX_Draws_EventId",
                 table: "Draws",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_PlayoffId",
+                table: "Events",
+                column: "PlayoffId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_StandingsId",
@@ -279,6 +304,9 @@ namespace CurlingTracker.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Playoff");
 
             migrationBuilder.DropTable(
                 name: "Standings");
