@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
+using System.Collections.Generic;
 using System.Xml;
 using CurlingTracker.Models;
 using CurlingTracker.Data;
@@ -7,6 +8,7 @@ using CurlingTracker.Services;
 using Microsoft.EntityFrameworkCore;
 using Config;
 using Microsoft.Extensions.Configuration;
+
 
 namespace RSSCrawler
 {
@@ -29,14 +31,24 @@ namespace RSSCrawler
         static void Main(string[] args)
         {
             InitializeDB();
+            var feeds = new List<Feed>(
+                new Feed() { Name = "CZ", Type = FeedType.RSS, Url = "http://www.curlingzone.com/talk/?feed=atom" }
+            );
             FeedParser parser = new FeedParser();
-            var items = parser.Parse("http://www.curlingzone.com/talk/?feed=atom", FeedType.Atom);
-            foreach (var item in items)
+            foreach (var feed in feeds)
             {
-                News n = new News(item.Link, item.Title, item.Content, null, item.PublishDate);
+                var items = parser.Parse(feed.Url, FeedType.Atom);
+                foreach (var item in items)
+                {
+                    News n = new News(item.Link, item.Title, item.Content, null, item.PublishDate);
+                }
             }
+
         }
 
-        public enum Feeds { CZ };
+        private static GetLink(string link)
+        {
+            
+        }
     }
 }
