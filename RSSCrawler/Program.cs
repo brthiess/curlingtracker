@@ -8,13 +8,12 @@ using CurlingTracker.Services;
 using Microsoft.EntityFrameworkCore;
 using Config;
 using Microsoft.Extensions.Configuration;
-
+using System.Net;
 
 namespace RSSCrawler
 {
-    class Program
+    public class Program
     {
-
         public static CurlingTracker.ILogger Logger = new CurlingTracker.ConsoleLogger();
         private static FakeDBEventService _eventService;
         private static void InitializeDB()
@@ -30,25 +29,46 @@ namespace RSSCrawler
 
         static void Main(string[] args)
         {
-            InitializeDB();
-            var feeds = new List<Feed>(
-                new Feed() { Name = "CZ", Type = FeedType.RSS, Url = "http://www.curlingzone.com/talk/?feed=atom" }
-            );
-            FeedParser parser = new FeedParser();
+            //InitializeDB();
+            List<IFeedParser> feeds = new List<IFeedParser>();
+            feeds.Add(new CZFeedParser());
             foreach (var feed in feeds)
             {
-                var items = parser.Parse(feed.Url, FeedType.Atom);
-                foreach (var item in items)
+                List<News> newsList = feed.GetNewsFeed();
+
+                foreach (var news in newsList)
                 {
-                    News n = new News(item.Link, item.Title, item.Content, null, item.PublishDate);
+                    news.Image = GetAndDownloadImage(news.Image);
+                    //_eventService.AddOrUpdateNews(news)
                 }
             }
-
         }
 
-        private static GetLink(string link)
+
+
+
+        private static string GetAndDownloadImage(string imageUrl)
         {
-            
+            string imageName = StoreImage(imageUrl);
+            return imageName;
+        }
+
+
+       
+        ///Returns image name with extension
+        private static string StoreImage(string url)
+        {
+            WebClient webClient = new WebClient();
+            Guid imageName = Guid.NewGuid();
+            string fileExtension = GetFileExtension(url);
+            string fullImage = imageName + fileExtension;
+            webClient.DownloadFile(url, Configuration.Values["ImagePath"] + fullImage);
+            return fullImage;
+        }
+
+        private static string GetFileExtension(string url)
+        {
+            return System.IO.Path.GetExtension(url);
         }
     }
 }

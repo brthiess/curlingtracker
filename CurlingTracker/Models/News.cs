@@ -6,7 +6,7 @@ namespace CurlingTracker.Models
     {
 
 
-        public Guid NewsId {get; set;}
+        public string NewsId {get; set;}
 
         public string Link {get;set;}
 
@@ -18,8 +18,9 @@ namespace CurlingTracker.Models
 
         public DateTime PublishDate {get;set;}
         
-        public News(string link, string title, string content, string image, DateTime publishDate)
+        public News(string newsId, string link, string title, string content, string image, DateTime publishDate)
         {
+            this.NewsId = newsId;
             this.Link = link;
             this.Title = title;
             this.Content = content;
