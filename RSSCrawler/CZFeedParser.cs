@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using HtmlAgilityPack;
 using Fizzler.Systems.HtmlAgilityPack;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace RSSCrawler
 {
@@ -27,6 +28,7 @@ namespace RSSCrawler
                     string description = GetDescription(post);
                     DateTime publishDate = GetPublishDate(post);
                     var news = new News(newsId, link, title, description, imageLink, publishDate);
+                    newsList.Add(news);
                 }
                 catch (Exception ex)
                 {
@@ -41,7 +43,14 @@ namespace RSSCrawler
 
         private string GetNewsId(HtmlNode post)
         {
-
+            string link = GetLink(post);
+            Regex r = new Regex("postid=([0-9]+)");
+            Match m = r.Match(link);
+            if (m.Groups.Count > 1)
+            {
+                return m.Groups[1].Value;
+            }
+            return "";
         }
 
         private string GetImage(HtmlNode post)
@@ -70,7 +79,15 @@ namespace RSSCrawler
 
         private DateTime GetPublishDate(HtmlNode post)
         {
-
+            string description = GetDescription(post);
+            Regex r = new Regex("([a-zA-Z0-9, ]+)--");
+            Match m = r.Match(description);
+            DateTime publishDate = DateTime.Now;
+            if (m.Groups.Count > 1)
+            {
+                DateTime.TryParse(m.Groups[1].Value, out publishDate);
+            }
+            return publishDate;
         }
         private static HtmlNodeCollection GetPosts(string html)
         {

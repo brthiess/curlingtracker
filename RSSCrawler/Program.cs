@@ -38,7 +38,7 @@ namespace RSSCrawler
 
                 foreach (var news in newsList)
                 {
-                    news.Image = GetAndDownloadImage(news.Image);
+                    news.Image = GetAndDownloadImage(news.Image,  GetWords(news.Title, 2) + "-" + news.PublishDate.ToString("M-dd-yyyy"));
                     //_eventService.AddOrUpdateNews(news)
                 }
             }
@@ -47,21 +47,20 @@ namespace RSSCrawler
 
 
 
-        private static string GetAndDownloadImage(string imageUrl)
+        private static string GetAndDownloadImage(string imageUrl, string imageName)
         {
-            string imageName = StoreImage(imageUrl);
-            return imageName;
+            string imageNameWithExtension = StoreImage(imageUrl, imageName);
+            return imageNameWithExtension;
         }
 
 
-       
+
         ///Returns image name with extension
-        private static string StoreImage(string url)
+        private static string StoreImage(string url, string imageName)
         {
             WebClient webClient = new WebClient();
-            Guid imageName = Guid.NewGuid();
             string fileExtension = GetFileExtension(url);
-            string fullImage = imageName + fileExtension;
+            string fullImage = imageName + fileExtension; 
             webClient.DownloadFile(url, Configuration.Values["ImagePath"] + fullImage);
             return fullImage;
         }
@@ -69,6 +68,23 @@ namespace RSSCrawler
         private static string GetFileExtension(string url)
         {
             return System.IO.Path.GetExtension(url);
+        }
+
+        private static string GetWords(string input, int count = -1, string[] wordDelimiter = null, StringSplitOptions options = StringSplitOptions.None)
+        {
+            if (string.IsNullOrEmpty(input)) return "";
+
+            if (count < 0)
+                return String.Join(" ", input.Split(wordDelimiter, options));
+
+            string[] words = input.Split(wordDelimiter, count + 1, options);
+            if (words.Length <= count)
+                return String.Join(" ", words);   // not so many words found
+
+            // remove last "word" since that contains the rest of the string
+            Array.Resize(ref words, words.Length - 1);
+
+            return String.Join(" ", words);
         }
     }
 }
